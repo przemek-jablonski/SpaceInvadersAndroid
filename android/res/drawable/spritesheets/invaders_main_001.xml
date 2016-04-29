@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:4a55fffaea6f89a914a9431f1c7ca385:85548107aca9e0deec510922b0b4c81f:8ff30a5f4877d63d4d2bfdeb9bf70dc6$ -->
+<TextureAtlas imagePath="invaders_main_001.png">
+    <SubTexture name="game_character_enemy_001" x="638" y="76" width="84" height="78" frameX="-2" frameY="0" frameWidth="90" frameHeight="80"/>
+    <SubTexture name="game_character_enemy_002" x="944" y="96" width="66" height="110" frameX="-1" frameY="0" frameWidth="70" frameHeight="110"/>
+    <SubTexture name="game_character_enemy_003" x="634" y="156" width="66" height="100" frameX="-1" frameY="0" frameWidth="70" frameHeight="100"/>
+    <SubTexture name="game_character_enemy_004" x="944" y="2" width="76" height="92" frameX="-1" frameY="-3" frameWidth="80" frameHeight="100"/>
+    <SubTexture name="game_character_hero" x="516" y="116" width="82" height="104" frameX="-3" frameY="-2" frameWidth="90" frameHeight="110"/>
+    <SubTexture name="game_character_special_spacedeer" x="516" y="222" width="52" height="92" frameX="-3" frameY="-3" frameWidth="60" frameHeight="100"/>
+    <SubTexture name="game_fx_engine_001" x="570" y="222" width="46" height="78" frameX="-1" frameY="0" frameWidth="50" frameHeight="80"/>
+    <SubTexture name="game_fx_explosion_001" x="746" y="2" width="196" height="198" frameX="-1" frameY="0" frameWidth="200" frameHeight="200"/>
+    <SubTexture name="game_fx_gunfire_001" x="600" y="116" width="32" height="50" frameX="-3" frameY="0" frameWidth="40" frameHeight="50"/>
+    <SubTexture name="game_fx_projectile_laser_001" x="724" y="148" width="16" height="110"/>
+    <SubTexture name="game_fx_projectile_rocket_001" x="724" y="76" width="20" height="70" frameX="0" frameY="-6" frameWidth="20" frameHeight="80"/>
+    <SubTexture name="game_obstacle_barrier_001" x="516" y="50" width="120" height="64" frameX="0" frameY="-2" frameWidth="120" frameHeight="70"/>
+    <SubTexture name="ui_bg_main_tile" x="2" y="2" width="512" height="512"/>
+    <SubTexture name="ui_icon_lives" x="618" y="258" width="44" height="36" frameX="-2" frameY="-6" frameWidth="50" frameHeight="50"/>
+    <SubTexture name="ui_logo_ganymede" x="638" y="50" width="100" height="24" frameX="0" frameY="-2" frameWidth="100" frameHeight="30"/>
+    <SubTexture name="ui_logo_invaders" x="516" y="2" width="228" height="46" frameX="-5" frameY="-1" frameWidth="240" frameHeight="50"/>
+</TextureAtlas>

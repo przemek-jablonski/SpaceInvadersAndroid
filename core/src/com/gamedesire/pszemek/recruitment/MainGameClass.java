@@ -2,22 +2,22 @@ package com.gamedesire.pszemek.recruitment;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gamedesire.pszemek.recruitment.input.TouchProcessorMobile;
 import com.gamedesire.pszemek.recruitment.utilities.Utilities;
 
 public class MainGameClass extends ApplicationAdapter {
 
-	TouchProcessor touchProcessor;
+	TouchProcessorMobile touchProcessorMobile;
 	SpriteBatch spriteBatch;
 	Texture img;
 	Sprite sprite;
 
 
-	//todo: do InputProcessor as another class
+	//todo: camera and handling multiple device resolutions and aspect ratios (important!)
 
 	@Override
 	public void create () {
@@ -26,14 +26,14 @@ public class MainGameClass extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 		sprite = new Sprite(img);
 
-		touchProcessor = new TouchProcessor(sprite);
+		touchProcessorMobile = new TouchProcessorMobile(sprite);
 
 		Utilities.initialize();
 		sprite.setPosition(
 				Utilities.getScreenCenterWidth() - sprite.getWidth() / 2,
 				Utilities.getScreenCenterHeight() - sprite.getHeight() / 2);
 
-		Gdx.input.setInputProcessor(touchProcessor);
+		Gdx.input.setInputProcessor(touchProcessorMobile);
 	}
 
 

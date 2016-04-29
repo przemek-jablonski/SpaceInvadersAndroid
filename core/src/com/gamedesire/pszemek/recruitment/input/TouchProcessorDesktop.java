@@ -1,19 +1,13 @@
-package com.gamedesire.pszemek.recruitment;
+package com.gamedesire.pszemek.recruitment.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
  * Created by Ciemek on 29/04/16.
  */
-public class TouchProcessor implements InputProcessor {
+public class TouchProcessorDesktop implements InputProcessor {
 
-    private Sprite sprite;
-
-    public TouchProcessor(Sprite sprite) {
-        this.sprite = sprite;
-    }
+    //todo: basically everything here
 
     @Override
     public boolean keyDown(int keycode) {
@@ -42,7 +36,6 @@ public class TouchProcessor implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        sprite.setPosition(Gdx.input.getX() - sprite.getWidth()/2, Gdx.graphics.getHeight() - Gdx.input.getY() - sprite.getHeight()/2);
         return false;
     }
 
