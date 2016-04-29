@@ -2,6 +2,7 @@ package com.gamedesire.pszemek.recruitment;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,23 +11,29 @@ import com.gamedesire.pszemek.recruitment.utilities.Utilities;
 
 public class MainGameClass extends ApplicationAdapter {
 
+	TouchProcessor touchProcessor;
 	SpriteBatch spriteBatch;
 	Texture img;
 	Sprite sprite;
 
 
+	//todo: do InputProcessor as another class
 
 	@Override
 	public void create () {
+
 		spriteBatch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		sprite = new Sprite(img);
 
+		touchProcessor = new TouchProcessor(sprite);
+
 		Utilities.initialize();
 		sprite.setPosition(
-				Utilities.getScreenCenterWidth() - sprite.getWidth()/2,
-				Utilities.getScreenCenterHeight() - sprite.getHeight()/2);
+				Utilities.getScreenCenterWidth() - sprite.getWidth() / 2,
+				Utilities.getScreenCenterHeight() - sprite.getHeight() / 2);
 
+		Gdx.input.setInputProcessor(touchProcessor);
 	}
 
 
@@ -38,8 +45,8 @@ public class MainGameClass extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//todo: converter from libgdx screen coordinate system to actual good coordinates
-		if(Gdx.input.isTouched())
-				sprite.setPosition(Gdx.input.getX() - sprite.getWidth()/2, Gdx.graphics.getHeight() - Gdx.input.getY() - sprite.getHeight()/2);
+//		if(Gdx.input.isTouched())
+//				sprite.setPosition(Gdx.input.getX() - sprite.getWidth()/2, Gdx.graphics.getHeight() - Gdx.input.getY() - sprite.getHeight()/2);
 
 		spriteBatch.begin();
 		spriteBatch.draw(sprite, sprite.getX(), sprite.getY());
@@ -58,6 +65,7 @@ public class MainGameClass extends ApplicationAdapter {
 	}
 
 
+
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
@@ -72,6 +80,5 @@ public class MainGameClass extends ApplicationAdapter {
 	public void resume() {
 		super.resume();
 	}
-
 
 }
