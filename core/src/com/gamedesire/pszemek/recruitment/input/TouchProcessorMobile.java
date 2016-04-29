@@ -40,7 +40,8 @@ public class TouchProcessorMobile extends TouchProcessor implements InputProcess
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        sprite.setPosition(Gdx.input.getX() - sprite.getWidth()/2, Gdx.graphics.getHeight() - Gdx.input.getY() - sprite.getHeight()/2);
+//        sprite.setPosition(Gdx.input.getX() - sprite.getWidth()/2, Gdx.graphics.getHeight() - Gdx.input.getY() - sprite.getHeight()/2);
+        sprite.setCenter(screenX, Gdx.graphics.getHeight() - screenY);
         return false;
     }
 

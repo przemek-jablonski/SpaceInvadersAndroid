@@ -1,13 +1,18 @@
 package com.gamedesire.pszemek.recruitment.input;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
  * Created by Ciemek on 29/04/16.
  */
-public class TouchProcessorDesktop implements InputProcessor {
+public class TouchProcessorDesktop extends TouchProcessor implements InputProcessor {
 
-    //todo: basically everything here
+    //todo: basically everything here, except for constructor ofc.
+
+    public TouchProcessorDesktop(Sprite sprite) {
+        super(sprite);
+    }
 
     @Override
     public boolean keyDown(int keycode) {
