@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public abstract class TouchProcessor implements InputProcessor {
 
-    protected Sprite sprite;
+    protected Sprite    sprite;
 
     public TouchProcessor(Sprite sprite) {
         this.sprite = sprite;

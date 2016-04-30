@@ -7,7 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
  * Created by Ciemek on 29/04/16.
  */
-public class TouchProcessorMobile extends TouchProcessor implements InputProcessor {
+public class TouchProcessorMobile extends TouchProcessor{
+
+
+    //todo: ship should not TELEPORT to finger's position, but rather MOVE in this direction.
 
     public TouchProcessorMobile(Sprite sprite) {
         super(sprite);

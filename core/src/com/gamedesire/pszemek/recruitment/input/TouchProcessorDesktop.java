@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
  * Created by Ciemek on 29/04/16.
  */
-public class TouchProcessorDesktop extends TouchProcessor implements InputProcessor {
+public class TouchProcessorDesktop extends TouchProcessor {
 
     //todo: basically everything here, except for constructor ofc.
 
