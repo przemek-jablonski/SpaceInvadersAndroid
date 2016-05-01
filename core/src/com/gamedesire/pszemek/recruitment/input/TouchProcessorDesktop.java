@@ -2,6 +2,7 @@ package com.gamedesire.pszemek.recruitment.input;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gamedesire.pszemek.recruitment.actors.SpaceInvadersActor;
 
 /**
  * Created by Ciemek on 29/04/16.
@@ -10,9 +11,12 @@ public class TouchProcessorDesktop extends TouchProcessor {
 
     //todo: basically everything here, except for constructor ofc.
 
-    public TouchProcessorDesktop(Sprite sprite) {
-        super(sprite);
+
+    @Override
+    public void attachActor(SpaceInvadersActor actor) {
+        this.actor = actor;
     }
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -53,4 +57,5 @@ public class TouchProcessorDesktop extends TouchProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
 }

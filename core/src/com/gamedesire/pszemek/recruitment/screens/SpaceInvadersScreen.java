@@ -28,16 +28,21 @@ public class SpaceInvadersScreen implements Screen {
     private DebugUI         debugUI;
     private OrthographicCamera camera;
 
-    private Sprite heroSprite;
+//    private Sprite heroSprite;
     private Sprite backgroundSprite;
     private ShapeRenderer backgroundGradient;
 
 
 
     public SpaceInvadersScreen(MainGameClass game) {
-
         mainGameClass = game;
-        heroSprite = new Sprite(new Texture("game_character_hero.png"));
+    }
+
+
+    @Override
+    public void show() {
+
+//        heroSprite = new Sprite(new Texture("game_character_hero.png"));
         backgroundSprite = new Sprite(new Texture("ui_bg_main_tile.png"));
         //todo: figure out why this camera shit is not working
 //        camera = new OrthographicCamera();
@@ -48,18 +53,12 @@ public class SpaceInvadersScreen implements Screen {
         backgroundGradient = new ShapeRenderer();
 
 
-        heroSprite.setCenter(Utils.getScreenCenterWidth(), Utils.getScreenCenterHeight());
-		backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
+//        heroSprite.setCenter(Utils.getScreenCenterWidth(), Utils.getScreenCenterHeight());
+        backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
 
-        debugUI = new DebugUI(game.getSpriteBatch());
+        debugUI = new DebugUI(mainGameClass.getSpriteBatch());
 
         Gdx.input.setInputProcessor(getValidInputProcessor());
-    }
-
-
-    @Override
-    public void show() {
-
     }
 
     @Override
@@ -89,9 +88,7 @@ public class SpaceInvadersScreen implements Screen {
 
         mainGameClass.getSpriteBatch().draw(backgroundSprite, backgroundSprite.getX(), backgroundSprite.getY());
 //        mainGameClass.getSpriteBatch().draw(heroSprite, heroSprite.getX(), heroSprite.getY());
-
         mainGameClass.getSpriteBatch().setProjectionMatrix(debugUI.getStage().getCamera().combined);
-
         mainGameClass.getSpriteBatch().end();
 
         debugUI.render();
@@ -100,9 +97,9 @@ public class SpaceInvadersScreen implements Screen {
 
     private TouchProcessor getValidInputProcessor() {
         if (Gdx.app.getType() == Application.ApplicationType.Android)
-            touchProcessor = new TouchProcessorMobile(heroSprite);
+            touchProcessor = new TouchProcessorMobile();
         else
-            touchProcessor = new TouchProcessorDesktop(heroSprite);
+            touchProcessor = new TouchProcessorDesktop();
         return touchProcessor;
     }
 

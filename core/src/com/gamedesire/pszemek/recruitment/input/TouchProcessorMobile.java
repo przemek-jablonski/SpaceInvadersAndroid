@@ -3,17 +3,19 @@ package com.gamedesire.pszemek.recruitment.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.gamedesire.pszemek.recruitment.actors.SpaceInvadersActor;
 
 /**
  * Created by Ciemek on 29/04/16.
  */
 public class TouchProcessorMobile extends TouchProcessor{
 
-
     //todo: ship should not TELEPORT to finger's position, but rather MOVE in this direction.
 
-    public TouchProcessorMobile(Sprite sprite) {
-        super(sprite);
+
+    @Override
+    public void attachActor(SpaceInvadersActor actor) {
+        this.actor = actor;
     }
 
     @Override
@@ -44,8 +46,13 @@ public class TouchProcessorMobile extends TouchProcessor{
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 //        sprite.setPosition(Gdx.input.getX() - sprite.getWidth()/2, Gdx.graphics.getHeight() - Gdx.input.getY() - sprite.getHeight()/2);
-        sprite.setCenter(screenX, Gdx.graphics.getHeight() - screenY);
-        return false;
+//        sprite.setCenter(screenX, Gdx.graphics.getHeight() - screenY);
+
+        if (actor == null)
+            return false;
+
+        actor.setLocation(screenX, Gdx.graphics.getHeight() - screenY);
+        return true;
     }
 
     @Override

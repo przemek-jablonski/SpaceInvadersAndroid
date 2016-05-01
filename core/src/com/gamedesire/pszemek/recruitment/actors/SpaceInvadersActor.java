@@ -12,7 +12,6 @@ import com.gamedesire.pszemek.recruitment.utilities.Utils;
 public abstract class SpaceInvadersActor {
 
     protected Sprite    actorSprite;
-    protected Vector2   location;
     protected Vector2   direction;
     protected Vector2   accelerationVector;
     protected float     accelerationValue;
@@ -25,7 +24,7 @@ public abstract class SpaceInvadersActor {
         this();
         this.actorSprite = actorSprite;
         this.direction = direction;
-        this.location = location;
+        actorSprite.setCenter(location.x, location.y);
     }
 
     public abstract void create();
@@ -36,7 +35,7 @@ public abstract class SpaceInvadersActor {
 
 
     public void render(SpriteBatch batch) {
-        batch.draw(actorSprite.getTexture(), location.x, location.y);
+        batch.draw(actorSprite.getTexture(), Utils.getCenterPosition(actorSprite).x, Utils.getCenterPosition(actorSprite).y);
     }
 
     public void setDirection(float x, float y) {
@@ -44,8 +43,11 @@ public abstract class SpaceInvadersActor {
     }
 
     public void setLocation(float x, float y) {
-//        location.set(x, y);
+        actorSprite.setCenter(x,y);
     }
+
+
+
 
 //    public void setLocation(Vector2 location) {
 //        this.location = location;

@@ -26,7 +26,7 @@ public class HeroActor extends SpaceInvadersActor {
 
     @Override
     public void update() {
-        location.add(direction);
+//        location.add(direction);
     }
 
     @Override
