@@ -17,8 +17,6 @@ public class MainGameClass extends Game {
 		setScreen(new SpaceInvadersScreen(this));
 	}
 
-
-
 	@Override
 	public void render () {
 		super.render();

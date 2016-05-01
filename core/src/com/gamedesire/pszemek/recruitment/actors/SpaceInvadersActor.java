@@ -1,10 +1,10 @@
 package com.gamedesire.pszemek.recruitment.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-
-import java.util.Vector;
+import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -12,7 +12,7 @@ import java.util.Vector;
 public abstract class SpaceInvadersActor {
 
     protected Sprite    actorSprite;
-//    protected Vector2   position;
+    protected Vector2   location;
     protected Vector2   direction;
     protected Vector2   accelerationVector;
     protected float     accelerationValue;
@@ -21,29 +21,38 @@ public abstract class SpaceInvadersActor {
     public SpaceInvadersActor() {
     }
 
-    public SpaceInvadersActor(Sprite actorSprite, Vector2 position, Vector2 direction) {
+    public SpaceInvadersActor(Sprite actorSprite, Vector2 location, Vector2 direction) {
         this();
         this.actorSprite = actorSprite;
         this.direction = direction;
-        actorSprite.setCenter(position.x, position.y);
-
+        this.location = location;
     }
 
-
-    public void render(SpriteBatch batch) {
-        batch.draw(actorSprite.getTexture(), actorSprite.getX(), actorSprite.getY());
-    }
-
+    public abstract void create();
 
     public abstract void update();
 
     public abstract void dispose();
 
 
+    public void render(SpriteBatch batch) {
+        batch.draw(actorSprite.getTexture(), location.x, location.y);
+    }
 
+    public void setDirection(float x, float y) {
+        direction.set(x * Gdx.graphics.getDeltaTime(), y * Gdx.graphics.getDeltaTime());
+    }
 
+    public void setLocation(float x, float y) {
+//        location.set(x, y);
+    }
 
-    //todo: should be part of IDestroyable interface i guess?
+//    public void setLocation(Vector2 location) {
+//        this.location = location;
+//        actorSprite.setCenter(location.x, location.y);
+//    }
+
+    //    todo: should be part of IDestroyable interface i guess?
 //    public abstract void takeDamage();
 //    public abstract void die();
 
@@ -57,12 +66,19 @@ public abstract class SpaceInvadersActor {
 //        return actorSprite;
 //    }
 
-
     public Sprite getActorSprite() {
         return actorSprite;
     }
 
-    public Vector2 getDirection() {
+    public Vector2 getActorPosition() {
+        return new Vector2(actorSprite.getX(), actorSprite.getY());
+    }
+
+    public Vector2 getActorCenterPosition() {
+        return Utils.getCenterPosition(actorSprite);
+    }
+
+    public Vector2 getActorDirection() {
         return direction;
     }
 
@@ -73,4 +89,5 @@ public abstract class SpaceInvadersActor {
     public float getAccelerationValue() {
         return accelerationValue;
     }
+
 }

@@ -1,13 +1,14 @@
 package com.gamedesire.pszemek.recruitment.actors;
 
-
-
 /**
  * Created by Ciemek on 30/04/16.
  */
-public class Hero extends SpaceInvadersActor {
+public class EnemyActor extends SpaceInvadersActor {
 
+    @Override
+    public void create() {
 
+    }
 
     @Override
     public void update() {
@@ -18,5 +19,4 @@ public class Hero extends SpaceInvadersActor {
     public void dispose() {
 
     }
-    
 }

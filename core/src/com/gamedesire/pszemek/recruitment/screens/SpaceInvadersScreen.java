@@ -15,7 +15,7 @@ import com.gamedesire.pszemek.recruitment.input.TouchProcessor;
 import com.gamedesire.pszemek.recruitment.input.TouchProcessorDesktop;
 import com.gamedesire.pszemek.recruitment.input.TouchProcessorMobile;
 import com.gamedesire.pszemek.recruitment.ui.DebugUI;
-import com.gamedesire.pszemek.recruitment.utilities.Utilities;
+import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -44,11 +44,11 @@ public class SpaceInvadersScreen implements Screen {
 //        viewport = new StretchViewport(Preferences.PREF_WIDTH, Preferences.PREF_HEIGHT, camera);
 //        viewport = new FitViewport(Preferences.PREF_WIDTH, Preferences.PREF_HEIGHT, camera);
 
-        Utilities.initialize();
+        Utils.initialize();
         backgroundGradient = new ShapeRenderer();
 
 
-        heroSprite.setCenter(Utilities.getScreenCenterWidth(), Utilities.getScreenCenterHeight());
+        heroSprite.setCenter(Utils.getScreenCenterWidth(), Utils.getScreenCenterHeight());
 		backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
 
         debugUI = new DebugUI(game.getSpriteBatch());
@@ -78,24 +78,25 @@ public class SpaceInvadersScreen implements Screen {
                 0,
                 Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(),
-                Utilities.getColorFrom255(200, 0, 150, 1),
-                Utilities.getColorFrom255(60, 0, 40, 1),
-                Utilities.getColorFrom255(100, 0, 100, 1),
-                Utilities.getColorFrom255(80, 0, 40, 1));
+                Utils.getColorFrom255(200, 0, 150, 1),
+                Utils.getColorFrom255(60, 0, 40, 1),
+                Utils.getColorFrom255(100, 0, 100, 1),
+                Utils.getColorFrom255(80, 0, 40, 1));
         backgroundGradient.end();
 
 
         mainGameClass.getSpriteBatch().begin();
 
         mainGameClass.getSpriteBatch().draw(backgroundSprite, backgroundSprite.getX(), backgroundSprite.getY());
-        mainGameClass.getSpriteBatch().draw(heroSprite, heroSprite.getX(), heroSprite.getY());
+//        mainGameClass.getSpriteBatch().draw(heroSprite, heroSprite.getX(), heroSprite.getY());
+
         mainGameClass.getSpriteBatch().setProjectionMatrix(debugUI.getStage().getCamera().combined);
 
         mainGameClass.getSpriteBatch().end();
 
+        debugUI.render();
         debugUI.getStage().draw();
     }
-
 
     private TouchProcessor getValidInputProcessor() {
         if (Gdx.app.getType() == Application.ApplicationType.Android)

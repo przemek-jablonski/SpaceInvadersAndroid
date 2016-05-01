@@ -15,7 +15,13 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
 		//todo: get this info from SharedPreferences (and create encapsulating class)
+
+
+		//todo: check if those sensors exist on a particular device via Android SDK
 		config.useAccelerometer = true;
+		config.hideStatusBar = true;
+		config.useCompass = true;
+		config.useGyroscope = true;
 
 		initialize(new MainGameClass(), config);
 	}
