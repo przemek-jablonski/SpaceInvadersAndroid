@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.gamedesire.pszemek.recruitment.Preferences;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -37,7 +37,7 @@ public class DebugUI {
         frames = 0;
         delta = 0;
 
-        viewport = new FitViewport(Preferences.PREF_WIDTH, Preferences.PREF_HEIGHT);
+        viewport = new FitViewport(Constants.PREF_WIDTH, Constants.PREF_HEIGHT);
         stage = new Stage(viewport, batch);
 
         Table uiTable = new Table();

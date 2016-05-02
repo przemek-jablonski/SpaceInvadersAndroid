@@ -18,6 +18,11 @@ public abstract class SpaceInvadersActor {
 
 
     public SpaceInvadersActor() {
+
+    }
+
+    public SpaceInvadersActor(Sprite actorSprite, float locationX, float locationY, float directionX, float directionY) {
+        this(actorSprite, new Vector2(locationX, locationY), new Vector2(directionX, directionY));
     }
 
     public SpaceInvadersActor(Sprite actorSprite, Vector2 location, Vector2 direction) {
@@ -35,7 +40,7 @@ public abstract class SpaceInvadersActor {
 
 
     public void render(SpriteBatch batch) {
-        batch.draw(actorSprite.getTexture(), Utils.getCenterPosition(actorSprite).x, Utils.getCenterPosition(actorSprite).y);
+        batch.draw(actorSprite.getTexture(), getActorCenterPosition().x, getActorCenterPosition().y);
     }
 
     public void setDirection(float x, float y) {
@@ -48,25 +53,6 @@ public abstract class SpaceInvadersActor {
 
 
 
-
-//    public void setLocation(Vector2 location) {
-//        this.location = location;
-//        actorSprite.setCenter(location.x, location.y);
-//    }
-
-    //    todo: should be part of IDestroyable interface i guess?
-//    public abstract void takeDamage();
-//    public abstract void die();
-
-
-//    public Sprite setSpriteCenterPos(Vector2 position) {
-//        return setSpriteCenterPos(position.x, position.y);
-//    }
-//
-//    public Sprite setSpriteCenterPos(float positionX, float positionY) {
-//        actorSprite.setPosition(positionX, positionY);
-//        return actorSprite;
-//    }
 
     public Sprite getActorSprite() {
         return actorSprite;

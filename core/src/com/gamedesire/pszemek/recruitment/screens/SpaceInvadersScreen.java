@@ -9,8 +9,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gamedesire.pszemek.recruitment.MainGameClass;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
+import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
 import com.gamedesire.pszemek.recruitment.input.TouchProcessor;
 import com.gamedesire.pszemek.recruitment.input.TouchProcessorDesktop;
 import com.gamedesire.pszemek.recruitment.input.TouchProcessorMobile;
@@ -22,13 +25,14 @@ import com.gamedesire.pszemek.recruitment.utilities.Utils;
  */
 public class SpaceInvadersScreen implements Screen {
 
+    ActorHolder actorHolder;
+
     private MainGameClass   mainGameClass;
     private TouchProcessor  touchProcessor;
     private Viewport        viewport;
     private DebugUI         debugUI;
     private OrthographicCamera camera;
 
-//    private Sprite heroSprite;
     private Sprite backgroundSprite;
     private ShapeRenderer backgroundGradient;
 
@@ -36,41 +40,64 @@ public class SpaceInvadersScreen implements Screen {
 
     public SpaceInvadersScreen(MainGameClass game) {
         mainGameClass = game;
+        actorHolder = new ActorHolder();
     }
 
 
     @Override
     public void show() {
+        actorHolder.spawnHero();
+        actorHolder.beginNewLevel();
 
-//        heroSprite = new Sprite(new Texture("game_character_hero.png"));
+
         backgroundSprite = new Sprite(new Texture("ui_bg_main_tile.png"));
         //todo: figure out why this camera shit is not working
 //        camera = new OrthographicCamera();
-//        viewport = new StretchViewport(Preferences.PREF_WIDTH, Preferences.PREF_HEIGHT, camera);
-//        viewport = new FitViewport(Preferences.PREF_WIDTH, Preferences.PREF_HEIGHT, camera);
+        viewport = new FitViewport(Constants.PREF_WIDTH, Constants.PREF_HEIGHT, camera);
+
+        camera = new OrthographicCamera();
 
         Utils.initialize();
+
         backgroundGradient = new ShapeRenderer();
-
-
-//        heroSprite.setCenter(Utils.getScreenCenterWidth(), Utils.getScreenCenterHeight());
         backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
-
         debugUI = new DebugUI(mainGameClass.getSpriteBatch());
-
         Gdx.input.setInputProcessor(getValidInputProcessor());
     }
 
+
+
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        camera.update();
-//        backgroundGradient.setProjectionMatrix(camera.combined);
-//        mainGameClass.getSpriteBatch().setProjectionMatrix(camera.combined);
+        camera.update();
+        setRenderBackground();
 
-        //todo: fix this background colours shit
+        mainGameClass.getSpriteBatch().begin();
+        mainGameClass.getSpriteBatch().draw(backgroundSprite, backgroundSprite.getX(), backgroundSprite.getY());
+        mainGameClass.getSpriteBatch().setProjectionMatrix(debugUI.getStage().getCamera().combined);
+
+        actorHolder.updateAll();
+        actorHolder.renderAll(mainGameClass.getSpriteBatch());
+
+        mainGameClass.getSpriteBatch().end();
+
+
+        //drawing debug ui
+        debugUI.render();
+        debugUI.getStage().draw();
+    }
+
+    private void setRenderBackground() {
+        //      todo: figure out why setting projection matrix destroys gradient (???)
+//        backgroundGradient.setProjectionMatrix(camera.combined);
+
+        mainGameClass.getSpriteBatch().setProjectionMatrix(camera.combined);
+
+
         backgroundGradient.begin(ShapeRenderer.ShapeType.Filled);
         backgroundGradient.rect(
                 0,
@@ -82,24 +109,16 @@ public class SpaceInvadersScreen implements Screen {
                 Utils.getColorFrom255(100, 0, 100, 1),
                 Utils.getColorFrom255(80, 0, 40, 1));
         backgroundGradient.end();
-
-
-        mainGameClass.getSpriteBatch().begin();
-
-        mainGameClass.getSpriteBatch().draw(backgroundSprite, backgroundSprite.getX(), backgroundSprite.getY());
-//        mainGameClass.getSpriteBatch().draw(heroSprite, heroSprite.getX(), heroSprite.getY());
-        mainGameClass.getSpriteBatch().setProjectionMatrix(debugUI.getStage().getCamera().combined);
-        mainGameClass.getSpriteBatch().end();
-
-        debugUI.render();
-        debugUI.getStage().draw();
     }
+
 
     private TouchProcessor getValidInputProcessor() {
         if (Gdx.app.getType() == Application.ApplicationType.Android)
             touchProcessor = new TouchProcessorMobile();
         else
             touchProcessor = new TouchProcessorDesktop();
+
+        touchProcessor.attachActor(actorHolder.getHero());
         return touchProcessor;
     }
 

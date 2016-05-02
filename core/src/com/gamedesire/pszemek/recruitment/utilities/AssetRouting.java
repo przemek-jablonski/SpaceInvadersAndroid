@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
  * Created by Ciemek on 01/05/16.
  */
-public class AssetCache {
+public class AssetRouting {
 
     private static final String HERO_ASSET = "game_character_hero";
     private static final String SPACE_DEER = "game_character_special_spacedeer";
