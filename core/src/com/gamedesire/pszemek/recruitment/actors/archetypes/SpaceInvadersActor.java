@@ -53,7 +53,7 @@ public abstract class SpaceInvadersActor {
     }
 
 
-    //accessprs: setters:
+    //accessors: setters:
     public void setDirection(float x, float y) {
         directionVector.set(x * Gdx.graphics.getDeltaTime(), y * Gdx.graphics.getDeltaTime());
     }
@@ -63,12 +63,11 @@ public abstract class SpaceInvadersActor {
     }
 
     public void updatePosition() {
-        actorSprite.setPosition(actorSprite.getX() + (directionVector.x * speedValue),
-               actorSprite.getY() + (directionVector.y * speedValue));
-
-//        actorSprite.setPosition(
-//                getActorCenterPosition().x + (directionVector.x * speedValue),
-//                getActorCenterPosition().y + (directionVector.y * speedValue));
+//        actorSprite.setPosition(actorSprite.getX() + (directionVector.x * speedValue),
+//               actorSprite.getY() + (directionVector.y * speedValue));
+        actorSprite.setCenter(
+                getActorCenterPosition().x + (directionVector.x * speedValue),
+                getActorCenterPosition().y + (directionVector.y * speedValue));
     }
 
     public void setLastFiredMillis(long lastFiredMillis) {
@@ -77,13 +76,8 @@ public abstract class SpaceInvadersActor {
 
 
     //accessors: getters:
-
     public Sprite getActorSprite() {
         return actorSprite;
-    }
-
-    public Vector2 getActorPosition() {
-        return new Vector2(actorSprite.getX(), actorSprite.getY());
     }
 
     public Vector2 getActorCenterPosition() {
@@ -94,7 +88,6 @@ public abstract class SpaceInvadersActor {
         return directionVector;
     }
 
-
     public long getRateOfFireIntervalMillis() {
         return rateOfFireIntervalMillis;
     }
@@ -102,6 +95,4 @@ public abstract class SpaceInvadersActor {
     public long getLastFiredMillis() {
         return lastFiredMillis;
     }
-
-
 }
