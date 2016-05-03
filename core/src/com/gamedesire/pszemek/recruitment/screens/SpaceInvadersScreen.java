@@ -40,7 +40,7 @@ public class SpaceInvadersScreen implements Screen {
 
     public SpaceInvadersScreen(MainGameClass game) {
         mainGameClass = game;
-        actorHolder = new ActorHolder();
+        actorHolder = new ActorHolder(getValidInputProcessor());
     }
 
 
@@ -62,7 +62,8 @@ public class SpaceInvadersScreen implements Screen {
         backgroundGradient = new ShapeRenderer();
         backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
         debugUI = new DebugUI(mainGameClass.getSpriteBatch());
-        Gdx.input.setInputProcessor(getValidInputProcessor());
+        touchProcessor.attachActorSpawner(actorHolder);
+        Gdx.input.setInputProcessor(touchProcessor);
     }
 
 
@@ -117,8 +118,6 @@ public class SpaceInvadersScreen implements Screen {
             touchProcessor = new TouchProcessorMobile();
         else
             touchProcessor = new TouchProcessorDesktop();
-
-        touchProcessor.attachActorSpawner(actorHolder);
         return touchProcessor;
     }
 

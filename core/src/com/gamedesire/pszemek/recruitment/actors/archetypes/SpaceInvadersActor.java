@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.HeroActor;
 import com.gamedesire.pszemek.recruitment.utilities.Utils;
@@ -79,11 +80,7 @@ public abstract class SpaceInvadersActor {
     }
 
     public void updatePosition() {
-//        temporaryMovementVector = new Vector2(
-//                (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
-//                (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
-        if (this instanceof HeroActor && !Gdx.input.isTouched())
-                return;
+        if (this instanceof HeroActor && !Gdx.input.isTouched()) return;
             setPosition(
                     getActorPosition().x + (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
                     getActorPosition().y + (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
@@ -110,5 +107,11 @@ public abstract class SpaceInvadersActor {
 
     public long getLastFiredMillis() {
         return lastFiredMillis;
+    }
+
+    public Rectangle getBoundingRectangle() {
+//        return actorSprite.getBoundingRectangle();
+//        return new Rectangle(getActorPosition().x, getActorPosition().y, actorSprite.getTexture().getWidth(), actorSprite.getTexture().getHeight());
+        return new Rectangle(actorSprite.getX(), actorSprite.getY(), actorSprite.getTexture().getWidth(), actorSprite.getTexture().getHeight());
     }
 }

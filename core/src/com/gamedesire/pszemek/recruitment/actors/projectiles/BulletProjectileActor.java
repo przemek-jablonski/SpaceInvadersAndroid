@@ -1,11 +1,9 @@
 package com.gamedesire.pszemek.recruitment.actors.projectiles;
 
-
 import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 import com.gamedesire.pszemek.recruitment.utilities.Constants;
-
 
 
 /**
@@ -20,7 +18,6 @@ public class BulletProjectileActor extends SpaceInvadersActor {
 
     public BulletProjectileActor(Vector2 location) {
         super(AssetRouting.getProjectileRocketSprite(), location, Constants.VECTOR_DIRECTION_UP);
-        speedValue = 3;
         System.err.println("BULLET CREATED");
     }
 

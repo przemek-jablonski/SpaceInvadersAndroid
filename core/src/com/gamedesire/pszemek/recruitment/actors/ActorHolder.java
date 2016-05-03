@@ -1,13 +1,16 @@
 package com.gamedesire.pszemek.recruitment.actors;
 
+import java.util.LinkedList;
+import java.util.Random;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.BulletProjectileActor;
+import com.gamedesire.pszemek.recruitment.input.TouchProcessor;
 import com.gamedesire.pszemek.recruitment.utilities.Constants;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Ciemek on 02/05/16.
@@ -15,31 +18,34 @@ import java.util.Random;
 public class ActorHolder {
 
     //todo: double check if LinkedList of actors is thread-safe (just in case)
-    List<com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor> actors;
+//    List<SpaceInvadersActor> actors;
+    DelayedRemovalArray<SpaceInvadersActor> actors;
 
-    short       actualLevel;
-    short       remainingActorsInWave;
-    short       remainingActorsInLevel;
-    short       aliveNonHeroActorsInWave;
-    HeroActor   heroActor;
-    Random      random;
+    //todo: fix this workaround as soon as possible!
+    LinkedList<EnemyActor> temporaryEnemyList;
+    LinkedList<BulletProjectileActor> temporaryProjectileList;
+
+    short           actualLevel;
+    short           remainingActorsInWave;
+    short           remainingActorsInLevel;
+    short           aliveNonHeroActorsInWave;
+    TouchProcessor  touchProcessor;
+    HeroActor       heroActor;
+    Random          random;
 
 
-    public ActorHolder() {
-        actors = new LinkedList<com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor>();
+    public ActorHolder(TouchProcessor touchProcessor) {
+//        actors = new LinkedList<SpaceInvadersActor>();
+        this.touchProcessor = touchProcessor;
+        actors = new DelayedRemovalArray<SpaceInvadersActor>();
         random = new Random();
         actualLevel = 0;
         remainingActorsInWave = 0;
         aliveNonHeroActorsInWave = remainingActorsInWave;
     }
 
-    public void devStart(){
-        spawnHero();
-
-    }
-
     public HeroActor spawnHero() {
-        if (actors.size() != 0) {
+        if (actors.size != 0) {
             System.out.println("ERROR: ACTOR LIST IS NOT EMPTY");
             return null;
         }
@@ -60,8 +66,6 @@ public class ActorHolder {
         for (int i=0; i < 10; ++i) {
             addActor(
                     new EnemyActor(
-//                        (float)random.nextInt(Constants.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth()) + AssetRouting.getEnemy001Texture().getWidth(),
-//                        (float)(random.nextInt(Constants.PREF_HEIGHT*2) + Constants.PREF_HEIGHT),
                         (float) random.nextInt(Constants.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth() - Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD) + AssetRouting.getEnemy001Texture().getWidth() + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
                         (float) random.nextInt(Constants.PREF_HEIGHT - AssetRouting.getEnemy001Texture().getHeight() - Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD) + AssetRouting.getEnemy001Texture().getHeight() + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
                         Constants.VECTOR_DIRECTION_DOWN
@@ -72,17 +76,40 @@ public class ActorHolder {
     }
 
     public void updateAll() {
-        for (com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor actor : actors)
+        actors.begin();
+
+        if(touchProcessor.isTouchPressedDown())
+            playerSpawnProjectile();
+
+        for (SpaceInvadersActor actor : actors) {
             actor.update();
+
+            if (disposeActor(actor))
+                break;
+
+//            if (actor instanceof BulletProjectileActor)
+//                checkProjectileHit( (BulletProjectileActor)actor );
+        }
+
+//        for (SpaceInvadersActor projectile : actors) {
+////            if (projectile instanceof BulletProjectileActor)
+////                checkProjectileHit( (BulletProjectileActor) projectile);
+//            getHero();
+//        }
+
+        checkProjectileHitAll();
+
+        actors.end();
     }
 
+    //todo: optimise traversal through actors list
     public void renderAll(SpriteBatch spriteBatch) {
         //rendering enemies on screen, as one layer
-        for (com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor actor : actors)
+        for (SpaceInvadersActor actor : actors)
             if (actor instanceof EnemyActor)
                 actor.render(spriteBatch);
 
-        for (com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor actor : actors)
+        for (SpaceInvadersActor actor : actors)
             if (actor instanceof BulletProjectileActor)
                 actor.render(spriteBatch);
 
@@ -94,7 +121,7 @@ public class ActorHolder {
     }
 
 
-    public void addActor(com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor actor) {
+    public void addActor(SpaceInvadersActor actor) {
         actors.add(actor);
         remainingActorsInWave = 0;
     }
@@ -118,6 +145,76 @@ public class ActorHolder {
 
         System.err.println("PLAYER SPAWN PROJECTILE TEST - FALSE");
         return false;
+    }
+
+
+    private boolean disposeActor(SpaceInvadersActor actor) {
+        if (actor.getActorPosition().y < -actor.getBoundingRectangle().getHeight()) {
+            System.err.println("REMOVAL-> actor pos: " + actor.getActorPosition() + " (too low in scene) ");
+//            actors.remove(actor);
+            actors.removeValue(actor, false);
+            return true;
+        }
+
+        if (actor instanceof BulletProjectileActor
+        && actor.getActorPosition().y > Gdx.graphics.getHeight() + actor.getBoundingRectangle().getHeight()) {
+            System.err.println("REMOVAL-> missle pos: " + actor.getActorPosition() + " (too high in scene) ");
+//            actors.remove(actor);
+            actors.removeValue(actor, false);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private boolean checkProjectileHitAll() {
+
+        temporaryCreateEnemyList();
+        temporaryCreateProjectileList();
+
+//        for (int i=0; i < temporaryEnemyList.size(); ++i)
+//                if (temporaryEnemyList.get(i).getBoundingRectangle().contains(projectile.getBoundingRectangle())
+//                        || temporaryEnemyList.get(i).getBoundingRectangle().overlaps(projectile.getBoundingRectangle())) {
+//                    System.err.println("COLLISION-> " + temporaryEnemyList.get(i).getActorPosition() + " (collided with projectile at " + projectile.getActorPosition() + ") ");
+//                    actors.removeValue(projectile, false);
+//                    actors.removeValue(temporaryEnemyList.get(i), false);
+//                    return true;
+//                }
+
+        for (BulletProjectileActor projectile : temporaryProjectileList)
+            for (EnemyActor enemy : temporaryEnemyList)
+                if (enemy.getBoundingRectangle().contains(projectile.getBoundingRectangle())
+                        || enemy.getBoundingRectangle().overlaps(projectile.getBoundingRectangle())) {
+                    System.err.println("COLLISION-> " + enemy.getActorPosition() + " (collided with projectile at " + projectile.getActorPosition() + ") ");
+                    actors.removeValue(projectile, false);
+                    actors.removeValue(enemy, false);
+                    return true;
+                }
+
+        return false;
+    }
+
+    private LinkedList<EnemyActor> temporaryCreateEnemyList() {
+        temporaryEnemyList = new LinkedList<EnemyActor>();
+
+        for (SpaceInvadersActor enemy : actors) {
+            if (enemy instanceof EnemyActor)
+                temporaryEnemyList.add((EnemyActor)enemy);
+        }
+
+        return temporaryEnemyList;
+    }
+
+    public LinkedList<BulletProjectileActor> temporaryCreateProjectileList() {
+        temporaryProjectileList = new LinkedList<BulletProjectileActor>();
+
+        for (SpaceInvadersActor projectile : actors) {
+            if (projectile instanceof BulletProjectileActor)
+                temporaryProjectileList.add((BulletProjectileActor)projectile);
+        }
+
+        return temporaryProjectileList;
     }
 
 

@@ -2,12 +2,13 @@ package com.gamedesire.pszemek.recruitment.actors;
 
 
 import com.badlogic.gdx.math.Vector2;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 
 /**
  * Created by Ciemek on 30/04/16.
  */
-public class HeroActor extends com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor {
+public class HeroActor extends SpaceInvadersActor {
 
 
     public HeroActor(Vector2 location, Vector2 direction) {
@@ -27,8 +28,6 @@ public class HeroActor extends com.gamedesire.pszemek.recruitment.actors.archety
 
     @Override
     public void update() {
-//        location.add(directionVector);
-//        setDirection(Vector2.Zero);
         updatePosition();
     }
 

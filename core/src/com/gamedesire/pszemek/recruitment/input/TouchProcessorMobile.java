@@ -38,13 +38,16 @@ public class TouchProcessorMobile extends TouchProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        actorHolder.playerSpawnProjectile();
-        return false;
+        if (!touchPressedDown)
+            touchPressedDown = true;
+//        actorHolder.playerSpawnProjectile();
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        if (touchPressedDown) touchPressedDown = false;
+        return true;
     }
 
     //origin of screenX and screenY is in TOP LEFT CORNER (...goddamnit)
@@ -71,6 +74,8 @@ public class TouchProcessorMobile extends TouchProcessor {
 
         controlledActor.setDirection(differenceVector);
 
+//        System.err.println("touchpos: " + screenVector);
+
         return true;
     }
 
@@ -83,4 +88,5 @@ public class TouchProcessorMobile extends TouchProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
 }
