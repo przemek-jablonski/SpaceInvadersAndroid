@@ -29,7 +29,7 @@ public class EnemyActor extends com.gamedesire.pszemek.recruitment.actors.archet
 
     @Override
     public void create() {
-        speedValue = 10;
+        speedValue = 100;
     }
 
     @Override

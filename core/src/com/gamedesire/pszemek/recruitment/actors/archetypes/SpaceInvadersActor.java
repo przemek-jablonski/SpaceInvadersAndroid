@@ -1,9 +1,11 @@
 package com.gamedesire.pszemek.recruitment.actors.archetypes;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.gamedesire.pszemek.recruitment.actors.HeroActor;
 import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
@@ -77,13 +79,14 @@ public abstract class SpaceInvadersActor {
     }
 
     public void updatePosition() {
-        temporaryMovementVector = new Vector2(
-                (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
-                (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
-        
-        setPosition(
-                getActorPosition().x + (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
-                getActorPosition().y + (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
+//        temporaryMovementVector = new Vector2(
+//                (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
+//                (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
+        if (this instanceof HeroActor && !Gdx.input.isTouched())
+                return;
+            setPosition(
+                    getActorPosition().x + (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
+                    getActorPosition().y + (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
     }
 
     public void setLastFiredMillis(long lastFiredMillis) {
@@ -92,10 +95,6 @@ public abstract class SpaceInvadersActor {
 
 
     //accessors: getters:
-    //not available for 'security' reasons
-//    public Sprite getActorSprite() {
-//        return actorSprite;
-//    }
 
     public Vector2 getActorPosition() {
         return Utils.getCenterPosition(actorSprite);

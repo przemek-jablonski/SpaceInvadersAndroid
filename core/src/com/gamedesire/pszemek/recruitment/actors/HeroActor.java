@@ -22,12 +22,13 @@ public class HeroActor extends com.gamedesire.pszemek.recruitment.actors.archety
     @Override
     public void create() {
         rateOfFireIntervalMillis = 200;
-        speedValue = 500;
+        speedValue = 200;
     }
 
     @Override
     public void update() {
 //        location.add(directionVector);
+//        setDirection(Vector2.Zero);
         updatePosition();
     }
 

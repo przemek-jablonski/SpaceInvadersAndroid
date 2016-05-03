@@ -59,19 +59,15 @@ public class TouchProcessorMobile extends TouchProcessor {
         //v2:
 //        if (controlledActor == null) return false;
 
-        System.err.print("TOUCHDIFF: ");
-
+//        System.err.print("TOUCHDIFF: ");
         differenceVector = controlledActor.getActorPosition();
-        System.err.print("pos: " + differenceVector + ", ");
-
+//        System.err.print("pos: " + differenceVector + ", ");
         Vector2 screenVector = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-        System.err.print("screen: " + "(" + screenVector + ", ");
-
+//        System.err.print("screen: " + "(" + screenVector + ", ");
         differenceVector.sub(screenVector);
-        System.err.print("diff: " + differenceVector);
-
+//        System.err.print("diff: " + differenceVector);
         differenceVector = Utils.transformVectorToDirection(differenceVector);
-        System.err.print("dir: " + differenceVector + "\n");
+//        System.err.print("dir: " + differenceVector + "\n");
 
         controlledActor.setDirection(differenceVector);
 
