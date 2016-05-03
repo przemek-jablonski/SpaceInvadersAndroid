@@ -1,22 +1,21 @@
 package com.gamedesire.pszemek.recruitment.input;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.gamedesire.pszemek.recruitment.actors.SpaceInvadersActor;
+import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
 
 /**
  * Created by Ciemek on 29/04/16.
  */
 public class TouchProcessorMobile extends TouchProcessor{
 
-    //todo: ship should not TELEPORT to finger's position, but rather MOVE in this direction.
-
+    //todo: ship should not TELEPORT to finger's position, but rather MOVE in this directionVector.
 
     @Override
-    public void attachActor(SpaceInvadersActor actor) {
-        this.actor = actor;
+    public void attachActorSpawner(ActorHolder actorHolder) {
+        this.actorHolder = actorHolder;
+        controlledActor = this.actorHolder.getHero();
     }
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -35,6 +34,7 @@ public class TouchProcessorMobile extends TouchProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        actorHolder.playerSpawnProjectile();
         return false;
     }
 
@@ -48,10 +48,10 @@ public class TouchProcessorMobile extends TouchProcessor{
 //        sprite.setPosition(Gdx.input.getX() - sprite.getWidth()/2, Gdx.graphics.getHeight() - Gdx.input.getY() - sprite.getHeight()/2);
 //        sprite.setCenter(screenX, Gdx.graphics.getHeight() - screenY);
 
-        if (actor == null)
-            return false;
+        if (controlledActor == null) return false;
 
-        actor.setLocation(screenX, Gdx.graphics.getHeight() - screenY);
+        controlledActor.setLocation(screenX, Gdx.graphics.getHeight() - screenY);
+//        System.err.println("TouchMobile: location changed: " + controlledActor.getActorCenterPosition());
         return true;
     }
 

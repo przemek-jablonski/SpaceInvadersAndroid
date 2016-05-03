@@ -1,8 +1,7 @@
 package com.gamedesire.pszemek.recruitment.input;
 
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.gamedesire.pszemek.recruitment.actors.SpaceInvadersActor;
+import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 
 /**
  * Created by Ciemek on 29/04/16.
@@ -13,10 +12,10 @@ public class TouchProcessorDesktop extends TouchProcessor {
 
 
     @Override
-    public void attachActor(SpaceInvadersActor actor) {
-        this.actor = actor;
+    public void attachActorSpawner(ActorHolder actorHolder) {
+        this.actorHolder = actorHolder;
+        controlledActor = this.actorHolder.getHero();
     }
-
 
     @Override
     public boolean keyDown(int keycode) {

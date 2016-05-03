@@ -1,16 +1,17 @@
 package com.gamedesire.pszemek.recruitment.input;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.gamedesire.pszemek.recruitment.actors.SpaceInvadersActor;
+import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 
 /**
  * Created by Ciemek on 29/04/16.
  */
 public abstract class TouchProcessor implements InputProcessor {
 
-    protected SpaceInvadersActor actor;
+    protected ActorHolder        actorHolder;
+    protected SpaceInvadersActor controlledActor;
 
-    public abstract void attachActor(SpaceInvadersActor actor);
+    public abstract void attachActorSpawner(ActorHolder actorHolder);
 
 }

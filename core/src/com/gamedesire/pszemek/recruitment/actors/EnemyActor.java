@@ -6,9 +6,7 @@ import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 /**
  * Created by Ciemek on 30/04/16.
  */
-public class EnemyActor extends SpaceInvadersActor {
-
-
+public class EnemyActor extends com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor {
 
 
 
@@ -16,12 +14,16 @@ public class EnemyActor extends SpaceInvadersActor {
         super(AssetRouting.getEnemy001Sprite(), location, direction);
         //todo: rotate only enemy001 (i guess)
         actorSprite.setRotation(180);
-        System.out.println("ENEMY CREATED");
+        System.err.println("ENEMY CREATED, pos: " + getActorCenterPosition());
     }
 
 
     public EnemyActor(float locationX, float locationY, float directionX, float directionY) {
         this(new Vector2(locationX, locationY), new Vector2(directionX, directionY));
+    }
+
+    public EnemyActor(float locationX, float locationY, Vector2 direction) {
+        this(new Vector2(locationX, locationY), direction);
     }
 
 
@@ -32,7 +34,7 @@ public class EnemyActor extends SpaceInvadersActor {
 
     @Override
     public void update() {
-
+        actorSprite.setPosition(actorSprite.getX() + (directionVector.x * speedValue), actorSprite.getY() + (directionVector.y * speedValue));
     }
 
     @Override

@@ -118,7 +118,7 @@ public class SpaceInvadersScreen implements Screen {
         else
             touchProcessor = new TouchProcessorDesktop();
 
-        touchProcessor.attachActor(actorHolder.getHero());
+        touchProcessor.attachActorSpawner(actorHolder);
         return touchProcessor;
     }
 
