@@ -52,16 +52,16 @@ public class TouchProcessorMobile extends TouchProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
         //v1:
-//        if (controlledActor == null) return false;
+        if (controlledActor == null) return false;
 //        controlledActor.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
 //        return true;
 
         //v2:
-        if (controlledActor == null) return false;
+//        if (controlledActor == null) return false;
 
         System.err.print("TOUCHDIFF: ");
 
-        differenceVector = controlledActor.getActorCenterPosition();
+        differenceVector = controlledActor.getActorPosition();
         System.err.print("pos: " + differenceVector + ", ");
 
         Vector2 screenVector = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
@@ -72,6 +72,8 @@ public class TouchProcessorMobile extends TouchProcessor {
 
         differenceVector = Utils.transformVectorToDirection(differenceVector);
         System.err.print("dir: " + differenceVector + "\n");
+
+        controlledActor.setDirection(differenceVector);
 
         return true;
     }

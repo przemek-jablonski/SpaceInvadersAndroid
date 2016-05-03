@@ -15,6 +15,7 @@ public abstract class SpaceInvadersActor {
     protected float     speedValue;
     protected float     accelerationValue;
     protected Vector2   directionVector;
+    private   Vector2   temporaryMovementVector;
     protected long      rateOfFireIntervalMillis;
     protected long      lastFiredMillis;
 
@@ -30,14 +31,15 @@ public abstract class SpaceInvadersActor {
     }
 
     public SpaceInvadersActor(Sprite actorSprite, Vector2 location, Vector2 directionVector) {
-        create();
+
         this.actorSprite = actorSprite;
         this.directionVector = directionVector;
         speedValue = 1;
         rateOfFireIntervalMillis = 500;
         lastFiredMillis = System.currentTimeMillis();
         actorSprite.setCenter(location.x, location.y);
-        System.err.println("new actor created => pos: " + getActorCenterPosition() + ", dir:" + getActorDirection());
+        System.err.println("new actor created => pos: " + getActorPosition() + ", dir:" + getActorDirection());
+        create();
     }
 
 
@@ -49,13 +51,25 @@ public abstract class SpaceInvadersActor {
     public abstract void dispose();
 
     public void render(SpriteBatch batch) {
-        batch.draw(actorSprite.getTexture(), getActorCenterPosition().x, getActorCenterPosition().y);
+        batch.draw(actorSprite.getTexture(), getActorPosition().x, getActorPosition().y);
     }
 
 
     //accessors: setters:
+    public void setDirection(Vector2 vector) {
+        setDirection(vector.x, vector.y);
+    }
+
     public void setDirection(float x, float y) {
-        directionVector.set(x * Gdx.graphics.getDeltaTime(), y * Gdx.graphics.getDeltaTime());
+        //v1:
+//        directionVector.set(x * Gdx.graphics.getDeltaTime(), y * Gdx.graphics.getDeltaTime());
+
+        //v2:
+        directionVector.set(x, y);
+    }
+
+    public void setPosition(Vector2 vector) {
+        setPosition(vector.x, vector.y);
     }
 
     public void setPosition(float x, float y) {
@@ -63,11 +77,13 @@ public abstract class SpaceInvadersActor {
     }
 
     public void updatePosition() {
-//        actorSprite.setPosition(actorSprite.getX() + (directionVector.x * speedValue),
-//               actorSprite.getY() + (directionVector.y * speedValue));
-        actorSprite.setCenter(
-                getActorCenterPosition().x + (directionVector.x * speedValue),
-                getActorCenterPosition().y + (directionVector.y * speedValue));
+        temporaryMovementVector = new Vector2(
+                (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
+                (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
+        
+        setPosition(
+                getActorPosition().x + (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
+                getActorPosition().y + (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
     }
 
     public void setLastFiredMillis(long lastFiredMillis) {
@@ -76,11 +92,12 @@ public abstract class SpaceInvadersActor {
 
 
     //accessors: getters:
-    public Sprite getActorSprite() {
-        return actorSprite;
-    }
+    //not available for 'security' reasons
+//    public Sprite getActorSprite() {
+//        return actorSprite;
+//    }
 
-    public Vector2 getActorCenterPosition() {
+    public Vector2 getActorPosition() {
         return Utils.getCenterPosition(actorSprite);
     }
 

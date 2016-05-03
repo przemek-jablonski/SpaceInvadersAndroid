@@ -57,15 +57,16 @@ public class Utils {
         return new Vector2(transformValueToDirection(x), transformValueToDirection(y));
     }
 
+    //this transformation doesn't make any sense, but works in a game
     private static float transformValueToDirection(float value) {
-        if (value > 0) return 1;
-        if (value < 0) return -1;
+        if (value > 0) return -1;
+        if (value < 0) return +1;
         return value;
     }
 
     private static float transformValueToDirection(float value, float margin) {
-        if (value > margin) return 1;
-        if (value < -margin) return -1;
+        if (value > margin) return -1;
+        if (value < -margin) return +1;
         return 0;
     }
 

@@ -110,7 +110,7 @@ public class ActorHolder {
         System.err.println("PLAYER SPAWN PROJECTILE TEST, diff: " + timeDiff + ", rate: " + heroActor.getRateOfFireIntervalMillis());
 
         if (timeDiff > heroActor.getRateOfFireIntervalMillis()) {
-            addActor(new BulletProjectileActor(heroActor.getActorCenterPosition()));
+            addActor(new BulletProjectileActor(heroActor.getActorPosition()));
             heroActor.setLastFiredMillis(System.currentTimeMillis());
             System.err.println("PLAYER SPAWN PROJECTILE TEST - TRUE");
             return true;

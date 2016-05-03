@@ -12,7 +12,7 @@ public class HeroActor extends com.gamedesire.pszemek.recruitment.actors.archety
 
     public HeroActor(Vector2 location, Vector2 direction) {
         super(AssetRouting.getHeroSprite(), location, direction);
-        rateOfFireIntervalMillis = 200;
+
     }
 
     public HeroActor(float locationX, float locationY, float directionX, float directionY) {
@@ -21,12 +21,14 @@ public class HeroActor extends com.gamedesire.pszemek.recruitment.actors.archety
 
     @Override
     public void create() {
-
+        rateOfFireIntervalMillis = 200;
+        speedValue = 500;
     }
 
     @Override
     public void update() {
 //        location.add(directionVector);
+        updatePosition();
     }
 
     @Override

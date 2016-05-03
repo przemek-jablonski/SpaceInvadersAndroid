@@ -26,7 +26,7 @@ public class BulletProjectileActor extends SpaceInvadersActor {
 
     @Override
     public void create() {
-
+        speedValue = 800;
     }
 
     @Override
