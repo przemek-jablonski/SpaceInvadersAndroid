@@ -31,7 +31,7 @@ public class BulletProjectileActor extends SpaceInvadersActor {
 
     @Override
     public void update() {
-        actorSprite.setPosition(actorSprite.getX() + (directionVector.x * speedValue), actorSprite.getY() + (directionVector.y * speedValue));
+        updatePosition();
     }
 
     @Override

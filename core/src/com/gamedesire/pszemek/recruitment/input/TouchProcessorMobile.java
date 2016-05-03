@@ -1,21 +1,25 @@
 package com.gamedesire.pszemek.recruitment.input;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
+import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
  * Created by Ciemek on 29/04/16.
  */
-public class TouchProcessorMobile extends TouchProcessor{
+public class TouchProcessorMobile extends TouchProcessor {
 
     //todo: ship should not TELEPORT to finger's position, but rather MOVE in this directionVector.
+
+    Vector2 differenceVector;
+
 
     @Override
     public void attachActorSpawner(ActorHolder actorHolder) {
         this.actorHolder = actorHolder;
         controlledActor = this.actorHolder.getHero();
     }
-
 
     @Override
     public boolean keyDown(int keycode) {
@@ -43,15 +47,32 @@ public class TouchProcessorMobile extends TouchProcessor{
         return false;
     }
 
+    //origin of screenX and screenY is in TOP LEFT CORNER (...goddamnit)
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-//        sprite.setPosition(Gdx.input.getX() - sprite.getWidth()/2, Gdx.graphics.getHeight() - Gdx.input.getY() - sprite.getHeight()/2);
-//        sprite.setCenter(screenX, Gdx.graphics.getHeight() - screenY);
 
+        //v1:
+//        if (controlledActor == null) return false;
+//        controlledActor.setPosition(screenX, Gdx.graphics.getHeight() - screenY);
+//        return true;
+
+        //v2:
         if (controlledActor == null) return false;
 
-        controlledActor.setLocation(screenX, Gdx.graphics.getHeight() - screenY);
-//        System.err.println("TouchMobile: location changed: " + controlledActor.getActorCenterPosition());
+        System.err.print("TOUCHDIFF: ");
+
+        differenceVector = controlledActor.getActorCenterPosition();
+        System.err.print("pos: " + differenceVector + ", ");
+
+        Vector2 screenVector = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+        System.err.print("screen: " + "(" + screenVector + ", ");
+
+        differenceVector.sub(screenVector);
+        System.err.print("diff: " + differenceVector);
+
+        differenceVector = Utils.transformVectorToDirection(differenceVector);
+        System.err.print("dir: " + differenceVector + "\n");
+
         return true;
     }
 

@@ -13,7 +13,7 @@ public class EnemyActor extends com.gamedesire.pszemek.recruitment.actors.archet
     public EnemyActor(Vector2 location, Vector2 direction) {
         super(AssetRouting.getEnemy001Sprite(), location, direction);
         //todo: rotate only enemy001 (i guess)
-        actorSprite.setRotation(180);
+//        actorSprite.setRotation(180);
         System.err.println("ENEMY CREATED, pos: " + getActorCenterPosition());
     }
 
@@ -34,7 +34,7 @@ public class EnemyActor extends com.gamedesire.pszemek.recruitment.actors.archet
 
     @Override
     public void update() {
-        actorSprite.setPosition(actorSprite.getX() + (directionVector.x * speedValue), actorSprite.getY() + (directionVector.y * speedValue));
+        updatePosition();
     }
 
     @Override

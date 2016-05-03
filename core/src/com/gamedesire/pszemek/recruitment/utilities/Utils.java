@@ -15,7 +15,9 @@ public class Utils {
     private static int SCREEN_WIDTH;
     private static int SCREEN_HEIGHT;
 
+
     //todo: converter from libgdx screen coordinate system to actual good coordinates
+
 
     public static void initialize() {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -39,5 +41,24 @@ public class Utils {
         return new Vector2(sprite.getX() + sprite.getWidth()/2, sprite.getY() + sprite.getHeight()/2);
     }
 
+    public static Vector2 transformVectorToDirection(Vector2 vector) {
+        return transformVectorToDirection(vector.x, vector.y);
+    }
+
+    public static Vector2 transformVectorToDirection(float x, float y) {
+        return new Vector2(transformValueToDirection(x), transformValueToDirection(y));
+    }
+
+    private static float transformValueToDirection(float value) {
+        if (value > 0) return 1;
+        if (value < 0) return -1;
+        return value;
+    }
+
+    private static float transformValueToDirection(float value, float margin) {
+        if (value > margin) return 1;
+        if (value < -margin) return -1;
+        return 0;
+    }
 
 }

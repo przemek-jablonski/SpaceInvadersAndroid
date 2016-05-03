@@ -77,7 +77,7 @@ public class SpaceInvadersScreen implements Screen {
         setRenderBackground();
 
         mainGameClass.getSpriteBatch().begin();
-        mainGameClass.getSpriteBatch().draw(backgroundSprite, backgroundSprite.getX(), backgroundSprite.getY());
+//        mainGameClass.getSpriteBatch().draw(backgroundSprite, backgroundSprite.getX(), backgroundSprite.getY());
         mainGameClass.getSpriteBatch().setProjectionMatrix(debugUI.getStage().getCamera().combined);
 
         actorHolder.updateAll();

@@ -30,45 +30,53 @@ public abstract class SpaceInvadersActor {
     }
 
     public SpaceInvadersActor(Sprite actorSprite, Vector2 location, Vector2 directionVector) {
-//        this();
+        create();
         this.actorSprite = actorSprite;
+        this.directionVector = directionVector;
         speedValue = 1;
         rateOfFireIntervalMillis = 500;
         lastFiredMillis = System.currentTimeMillis();
-        this.directionVector = directionVector;
         actorSprite.setCenter(location.x, location.y);
         System.err.println("new actor created => pos: " + getActorCenterPosition() + ", dir:" + getActorDirection());
     }
 
 
-
+    //functional methods:
     public abstract void create();
 
     public abstract void update();
 
     public abstract void dispose();
 
-
     public void render(SpriteBatch batch) {
         batch.draw(actorSprite.getTexture(), getActorCenterPosition().x, getActorCenterPosition().y);
     }
 
+
+    //accessprs: setters:
     public void setDirection(float x, float y) {
         directionVector.set(x * Gdx.graphics.getDeltaTime(), y * Gdx.graphics.getDeltaTime());
     }
 
-    public void setLocation(float x, float y) {
+    public void setPosition(float x, float y) {
         actorSprite.setCenter(x, y);
     }
 
-    public void incrementSpeed(float incrementValue) {
-        speedValue += incrementValue;
+    public void updatePosition() {
+        actorSprite.setPosition(actorSprite.getX() + (directionVector.x * speedValue),
+               actorSprite.getY() + (directionVector.y * speedValue));
+
+//        actorSprite.setPosition(
+//                getActorCenterPosition().x + (directionVector.x * speedValue),
+//                getActorCenterPosition().y + (directionVector.y * speedValue));
     }
 
-    public void multiplySpeed(float multiplyValue) {
-        speedValue *= multiplyValue;
+    public void setLastFiredMillis(long lastFiredMillis) {
+        this.lastFiredMillis = lastFiredMillis;
     }
 
+
+    //accessors: getters:
 
     public Sprite getActorSprite() {
         return actorSprite;
@@ -86,9 +94,6 @@ public abstract class SpaceInvadersActor {
         return directionVector;
     }
 
-    public float getAccelerationValue() {
-        return accelerationValue;
-    }
 
     public long getRateOfFireIntervalMillis() {
         return rateOfFireIntervalMillis;
@@ -98,11 +103,5 @@ public abstract class SpaceInvadersActor {
         return lastFiredMillis;
     }
 
-    public void setRateOfFireIntervalMillis(long rateOfFireIntervalMillis) {
-        this.rateOfFireIntervalMillis = rateOfFireIntervalMillis;
-    }
 
-    public void setLastFiredMillis(long lastFiredMillis) {
-        this.lastFiredMillis = lastFiredMillis;
-    }
 }
