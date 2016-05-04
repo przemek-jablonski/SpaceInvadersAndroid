@@ -69,12 +69,11 @@ public class TouchProcessorMobile extends TouchProcessor {
 //        System.err.print("screen: " + "(" + screenVector + ", ");
         differenceVector.sub(screenVector);
 //        System.err.print("diff: " + differenceVector);
-        differenceVector = Utils.transformVectorToDirection(differenceVector);
+        differenceVector = Utils.transformVectorToDirection(differenceVector, 10);
 //        System.err.print("dir: " + differenceVector + "\n");
 
         controlledActor.setDirection(differenceVector);
-
-//        System.err.println("touchpos: " + screenVector);
+        System.err.println("touchpos: " + screenVector);
 
         return true;
     }

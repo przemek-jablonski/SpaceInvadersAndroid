@@ -1,4 +1,4 @@
-package com.gamedesire.pszemek.recruitment.actors;
+package com.gamedesire.pszemek.recruitment.actors.primary;
 
 /**
  * Created by Ciemek on 01/05/16.

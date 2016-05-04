@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.gamedesire.pszemek.recruitment.actors.HeroActor;
+import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
 import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
@@ -13,6 +13,7 @@ import com.gamedesire.pszemek.recruitment.utilities.Utils;
  */
 public abstract class SpaceInvadersActor {
 
+    private   int       actorId;
     protected Sprite    actorSprite;
     protected float     velocityValue;
     protected float     accelerationValue;
@@ -25,7 +26,6 @@ public abstract class SpaceInvadersActor {
     protected int       actualShieldPoints;
     protected int       maxHealthPoints;
     protected int       maxShieldPoints;
-
 
 
 
@@ -58,9 +58,8 @@ public abstract class SpaceInvadersActor {
     public abstract void dispose();
 
     public void render(SpriteBatch batch) {
-        batch.draw(actorSprite.getTexture(), getActorPosition().x, getActorPosition().y);
+        batch.draw(actorSprite.getTexture(), actorSprite.getX(), actorSprite.getY());
     }
-
 
     //accessors: setters:
     public void setDirection(Vector2 vector) {
@@ -68,15 +67,7 @@ public abstract class SpaceInvadersActor {
     }
 
     public void setDirection(float x, float y) {
-        //v1:
-//        directionVector.set(x * Gdx.graphics.getDeltaTime(), y * Gdx.graphics.getDeltaTime());
-
-        //v2:
         directionVector.set(x, y);
-    }
-
-    public void setPosition(Vector2 vector) {
-        setPosition(vector.x, vector.y);
     }
 
     public void setPosition(float x, float y) {
@@ -94,9 +85,7 @@ public abstract class SpaceInvadersActor {
         this.lastFiredMillis = lastFiredMillis;
     }
 
-
     //accessors: getters:
-
     public Vector2 getActorPosition() {
         return Utils.getCenterPosition(actorSprite);
     }

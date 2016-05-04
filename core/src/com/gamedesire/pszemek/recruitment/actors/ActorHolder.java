@@ -4,8 +4,12 @@ import java.util.LinkedList;
 import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
+import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor;
+import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.BulletProjectileActor;
 import com.gamedesire.pszemek.recruitment.input.TouchProcessor;
 import com.gamedesire.pszemek.recruitment.utilities.Constants;
@@ -17,8 +21,6 @@ import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
  */
 public class ActorHolder {
 
-    //todo: double check if LinkedList of actors is thread-safe (just in case)
-//    List<SpaceInvadersActor> actors;
     DelayedRemovalArray<SpaceInvadersActor> actors;
 
     //todo: fix this workaround as soon as possible!
@@ -30,7 +32,7 @@ public class ActorHolder {
     short           remainingActorsInLevel;
     short           aliveNonHeroActorsInWave;
     TouchProcessor  touchProcessor;
-    HeroActor       heroActor;
+    HeroActor heroActor;
     Random          random;
 
 
@@ -58,14 +60,13 @@ public class ActorHolder {
 
         //debug only (or maybe not):
         remainingActorsInWave = 10;
-        for (int i=0; i < 10; ++i) {
+        for (int i=0; i < 30; ++i) {
             addActor(
                     new EnemyActor(
-                        (float) random.nextInt(Constants.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth() - Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD * 2) + AssetRouting.getEnemy001Texture().getWidth()/2 + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
-                        (float) random.nextInt(Constants.PREF_HEIGHT * 2) + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
-                        Constants.VECTOR_DIRECTION_DOWN
-            ));
-
+                            MathUtils.random(Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD + AssetRouting.getEnemy001Texture().getWidth()/2, Constants.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth()/2 - Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD),
+                            MathUtils.random((float) (Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() / 2), Constants.PREF_HEIGHT * 2f),
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
         }
 
     }
@@ -73,8 +74,10 @@ public class ActorHolder {
     public void updateAll() {
         actors.begin();
 
+        //todo: move it to another method?
         if(touchProcessor.isTouchPressedDown())
             playerSpawnProjectile();
+
 
         for (SpaceInvadersActor actor : actors) {
             actor.update();
@@ -82,9 +85,12 @@ public class ActorHolder {
             if (disposeActor(actor))
                 break;
 
+            if (actor instanceof EnemyActor)
+                enemySpawnProjectile((EnemyActor)actor);
         }
 
         checkProjectileHitAll();
+
 
         for (SpaceInvadersActor actor : actors) {
             if(actor instanceof EnemyActor) {
@@ -130,8 +136,18 @@ public class ActorHolder {
         long timeDiff = System.currentTimeMillis() - heroActor.getLastFiredMillis();
 
         if (timeDiff > heroActor.getRateOfFireIntervalMillis()) {
-            addActor(new BulletProjectileActor(heroActor.getActorPosition()));
+            addActor(new BulletProjectileActor(heroActor.getActorPosition(), ActorType.HERO));
             heroActor.setLastFiredMillis(System.currentTimeMillis());
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean enemySpawnProjectile(EnemyActor enemy) {
+        if (enemy.isShoot()) {
+            enemy.setShot();
+            addActor(new BulletProjectileActor(enemy.getActorPosition(), Constants.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
             return true;
         }
 
@@ -161,23 +177,22 @@ public class ActorHolder {
 
         temporaryCreateEnemyList();
         temporaryCreateProjectileList();
-        for (BulletProjectileActor projectile : temporaryProjectileList)
-            for (EnemyActor enemy : temporaryEnemyList)
-                if (enemy.getBoundingRectangle().contains(projectile.getBoundingRectangle())
-                        || enemy.getBoundingRectangle().overlaps(projectile.getBoundingRectangle())) {
-                    System.err.println("COLLISION-> " + enemy.getActorPosition() + " (collided with projectile at " + projectile.getActorPosition() + ") ");
-//                    actors.removeValue(enemy, false);
-
-                    //todo: WHAT THE FUCK, THIS IS LOOP INSIDE LOOP INSIDE LOOP (O^3), REWRITE THAT ASAP
-                    for (SpaceInvadersActor actor : actors)
-                        if (actor.equals(enemy)) {
-                            ((EnemyActor) actor).onHit(projectile.getDamageValue());
-                            System.err.println("TESTESTNWAITANITNASITBASIUTKBASTIUSBTIUAK TIUAKVST");
-                        }
-
-                    actors.removeValue(projectile, false);
-                    return true;
-                }
+//        for (BulletProjectileActor projectile : temporaryProjectileList)
+//            for (EnemyActor enemy : temporaryEnemyList)
+//                if (enemy.getBoundingRectangle().contains(projectile.getBoundingRectangle())
+//                        || enemy.getBoundingRectangle().overlaps(projectile.getBoundingRectangle())) {
+//                    System.err.println("COLLISION-> " + enemy.getActorPosition() + " (collided with projectile at " + projectile.getActorPosition() + ") ");
+////                    actors.removeValue(enemy, false);
+//
+//                    //todo: WHAT THE FUCK, THIS IS LOOP INSIDE LOOP INSIDE LOOP (O^3), REWRITE THAT ASAP
+//                    for (SpaceInvadersActor actor : actors)
+//                        if (actor.equals(enemy)) {
+//                            ((EnemyActor) actor).onHit(projectile.getDamageValue());
+//                        }
+//
+//                    actors.removeValue(projectile, false);
+//                    return true;
+//                }
 
         return false;
     }

@@ -21,11 +21,11 @@ public class Constants {
     public static final int SPAWN_MARGIN_HORIZONTAL_HUGE = 24; //px in PREF_ dimensions
 
     public static final int VELOCITY_VALUE_PLAYER = 1200;
-    public static final int VELOCITY_VALUE_ENEMY_SLOW = 100;
+    public static final int VELOCITY_VALUE_ENEMY_SLOW = 50;
     public static final int VELOCITY_VALUE_PROJECTILE_BULLET = 400;
 
-    public static final int RATEOFFIRE_INTERVAL_BASE_PLAYER = 300;
-    public static final int RATEOFFIRE_INTERVAL_BASE_ENEMY001 = 550;
+    public static final int RATEOFFIRE_INTERVAL_BASE_PLAYER = 400;
+    public static final int RATEOFFIRE_INTERVAL_BASE_ENEMY001 = 1000;
 
 
 

@@ -1,4 +1,4 @@
-package com.gamedesire.pszemek.recruitment.actors;
+package com.gamedesire.pszemek.recruitment.actors.primary;
 
 
 import com.badlogic.gdx.math.Vector2;
@@ -23,7 +23,7 @@ public class HeroActor extends SpaceInvadersActor {
 
     @Override
     public void create() {
-        rateOfFireIntervalMillis = 200;
+        rateOfFireIntervalMillis = Constants.RATEOFFIRE_INTERVAL_BASE_PLAYER;
         velocityValue = Constants.VELOCITY_VALUE_PLAYER;
     }
 
