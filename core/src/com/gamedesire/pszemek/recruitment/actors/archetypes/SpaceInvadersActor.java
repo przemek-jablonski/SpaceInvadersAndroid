@@ -22,6 +22,11 @@ public abstract class SpaceInvadersActor {
     protected long      rateOfFireIntervalMillis;
     protected long      lastFiredMillis;
 
+    protected int       actualHealthPoints;
+    protected int       actualShieldPoints;
+    protected int       maxHealthPoints;
+    protected int       maxShieldPoints;
+
 
 
 

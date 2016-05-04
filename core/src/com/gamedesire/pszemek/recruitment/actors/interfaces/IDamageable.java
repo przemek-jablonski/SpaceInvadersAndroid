@@ -5,18 +5,14 @@ package com.gamedesire.pszemek.recruitment.actors.interfaces;
  */
 public interface IDamageable {
 
-    float maxHealthPoints = 10;
-    float actualHealthPoints = 10;
-
-    float maxShieldPoints = 0;
-    float actualShieldPoints = 0;
-
-
-
+    //todo: set healthPoints and shields
     void    onSpawn();
 
-    float   onHit();
+    //todo: paint red for 1-2 frames
+    float   onHit(float damageDealt);
 
+    //todo: remove (implement callbacks or sth?)
     void    onDeath();
+
 
 }

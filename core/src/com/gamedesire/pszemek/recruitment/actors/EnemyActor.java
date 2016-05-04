@@ -1,12 +1,14 @@
 package com.gamedesire.pszemek.recruitment.actors;
 
 import com.badlogic.gdx.math.Vector2;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
+import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 
 /**
  * Created by Ciemek on 30/04/16.
  */
-public class EnemyActor extends com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor {
+public class EnemyActor extends SpaceInvadersActor implements IDamageable{
 
 
 
@@ -39,6 +41,37 @@ public class EnemyActor extends com.gamedesire.pszemek.recruitment.actors.archet
 
     @Override
     public void dispose() {
+
+    }
+
+    @Override
+    public void onSpawn() {
+        actualHealthPoints = maxHealthPoints;
+    }
+
+    @Override
+    public float onHit(float damageDealt) {
+
+        actualShieldPoints -= damageDealt;
+
+        if (actualShieldPoints <= 0) {
+
+
+            actualHealthPoints += actualShieldPoints;
+            actualShieldPoints = 0;
+            if(actualHealthPoints <= 0) {
+                actualHealthPoints = 0;
+                onDeath();
+            }
+
+        }
+        
+        System.err.println("DAMAGE=> dmg: " + damageDealt + ", remaining: " + actualHealthPoints);
+        return actualHealthPoints;
+    }
+
+    @Override
+    public void onDeath() {
 
     }
 }
