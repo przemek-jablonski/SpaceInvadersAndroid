@@ -3,13 +3,14 @@ package com.gamedesire.pszemek.recruitment.actors.primary;
 
 import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
+import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 30/04/16.
  */
-public class HeroActor extends SpaceInvadersActor {
+public class HeroActor extends SpaceInvadersActor implements IDamageable{
 
 
     public HeroActor(Vector2 location, Vector2 direction) {
@@ -37,4 +38,19 @@ public class HeroActor extends SpaceInvadersActor {
 
     }
 
+    @Override
+    public void onSpawn() {
+        System.err.println("HERO SPAWNED");
+    }
+
+    @Override
+    public float onHit(float damageDealt) {
+        System.err.println("HERO HIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        return 0;
+    }
+
+    @Override
+    public void onDeath() {
+        System.err.println("HERO DIED ?!?!?!?!?!?!?!?!?!?!?!!?!?!??!");
+    }
 }

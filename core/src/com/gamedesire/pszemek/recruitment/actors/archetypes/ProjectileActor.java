@@ -29,5 +29,7 @@ public abstract class ProjectileActor extends SpaceInvadersActor {
         return damageValue;
     }
 
-
+    public ActorType getActorType() {
+        return actorType;
+    }
 }

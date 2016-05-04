@@ -47,7 +47,7 @@ public class SpaceInvadersScreen implements Screen {
     @Override
     public void show() {
         actorHolder.spawnHero();
-        actorHolder.beginNewLevel();
+        actorHolder.spawnEnemiesTest();
 
 
         backgroundSprite = new Sprite(new Texture("ui_bg_main_tile.png"));

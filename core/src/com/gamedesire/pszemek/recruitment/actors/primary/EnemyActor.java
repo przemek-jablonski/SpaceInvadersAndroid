@@ -45,8 +45,8 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
             onDeath();
 
         if (System.currentTimeMillis() - lastFiredMillis > rateOfFireIntervalMillis * MathUtils.random(0.85f, 1.25f)) {
-            shoot = true;
-            lastFiredMillis = System.currentTimeMillis();
+            if (!shoot)
+                shoot = true;
         }
 
     }
