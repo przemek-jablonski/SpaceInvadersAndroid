@@ -35,7 +35,6 @@ public class ActorHolder {
 
 
     public ActorHolder(TouchProcessor touchProcessor) {
-//        actors = new LinkedList<SpaceInvadersActor>();
         this.touchProcessor = touchProcessor;
         actors = new DelayedRemovalArray<SpaceInvadersActor>();
         random = new Random();
@@ -45,15 +44,11 @@ public class ActorHolder {
     }
 
     public HeroActor spawnHero() {
-        if (actors.size != 0) {
-            System.out.println("ERROR: ACTOR LIST IS NOT EMPTY");
-            return null;
-        }
+        if (actors.size != 0) return null;
         else
             actors.add(new HeroActor(Constants.PREF_HEIGHT / 3f, Constants.PREF_WIDTH / 3f, 0f, 0f));
 
         heroActor = (HeroActor)actors.get(0);
-
         return heroActor;
     }
 
@@ -66,8 +61,8 @@ public class ActorHolder {
         for (int i=0; i < 10; ++i) {
             addActor(
                     new EnemyActor(
-                        (float) random.nextInt(Constants.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth() - Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD) + AssetRouting.getEnemy001Texture().getWidth() + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
-                        (float) random.nextInt(Constants.PREF_HEIGHT - AssetRouting.getEnemy001Texture().getHeight() - Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD) + AssetRouting.getEnemy001Texture().getHeight() + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
+                        (float) random.nextInt(Constants.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth() - Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD * 2) + AssetRouting.getEnemy001Texture().getWidth()/2 + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
+                        (float) random.nextInt(Constants.PREF_HEIGHT * 2) + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
                         Constants.VECTOR_DIRECTION_DOWN
             ));
 
@@ -87,17 +82,16 @@ public class ActorHolder {
             if (disposeActor(actor))
                 break;
 
-//            if (actor instanceof BulletProjectileActor)
-//                checkProjectileHit( (BulletProjectileActor)actor );
         }
 
-//        for (SpaceInvadersActor projectile : actors) {
-////            if (projectile instanceof BulletProjectileActor)
-////                checkProjectileHit( (BulletProjectileActor) projectile);
-//            getHero();
-//        }
-
         checkProjectileHitAll();
+
+        for (SpaceInvadersActor actor : actors) {
+            if(actor instanceof EnemyActor) {
+                if (((EnemyActor)actor).isDead())
+                    actors.removeValue(actor, false);
+            }
+        }
 
         actors.end();
     }
@@ -134,16 +128,13 @@ public class ActorHolder {
 
     public boolean playerSpawnProjectile() {
         long timeDiff = System.currentTimeMillis() - heroActor.getLastFiredMillis();
-        System.err.println("PLAYER SPAWN PROJECTILE TEST, diff: " + timeDiff + ", rate: " + heroActor.getRateOfFireIntervalMillis());
 
         if (timeDiff > heroActor.getRateOfFireIntervalMillis()) {
             addActor(new BulletProjectileActor(heroActor.getActorPosition()));
             heroActor.setLastFiredMillis(System.currentTimeMillis());
-            System.err.println("PLAYER SPAWN PROJECTILE TEST - TRUE");
             return true;
         }
 
-        System.err.println("PLAYER SPAWN PROJECTILE TEST - FALSE");
         return false;
     }
 
@@ -151,7 +142,6 @@ public class ActorHolder {
     private boolean disposeActor(SpaceInvadersActor actor) {
         if (actor.getActorPosition().y < -actor.getBoundingRectangle().getHeight()) {
             System.err.println("REMOVAL-> actor pos: " + actor.getActorPosition() + " (too low in scene) ");
-//            actors.remove(actor);
             actors.removeValue(actor, false);
             return true;
         }
@@ -159,7 +149,6 @@ public class ActorHolder {
         if (actor instanceof BulletProjectileActor
         && actor.getActorPosition().y > Gdx.graphics.getHeight() + actor.getBoundingRectangle().getHeight()) {
             System.err.println("REMOVAL-> missle pos: " + actor.getActorPosition() + " (too high in scene) ");
-//            actors.remove(actor);
             actors.removeValue(actor, false);
             return true;
         }
@@ -172,23 +161,21 @@ public class ActorHolder {
 
         temporaryCreateEnemyList();
         temporaryCreateProjectileList();
-
-//        for (int i=0; i < temporaryEnemyList.size(); ++i)
-//                if (temporaryEnemyList.get(i).getBoundingRectangle().contains(projectile.getBoundingRectangle())
-//                        || temporaryEnemyList.get(i).getBoundingRectangle().overlaps(projectile.getBoundingRectangle())) {
-//                    System.err.println("COLLISION-> " + temporaryEnemyList.get(i).getActorPosition() + " (collided with projectile at " + projectile.getActorPosition() + ") ");
-//                    actors.removeValue(projectile, false);
-//                    actors.removeValue(temporaryEnemyList.get(i), false);
-//                    return true;
-//                }
-
         for (BulletProjectileActor projectile : temporaryProjectileList)
             for (EnemyActor enemy : temporaryEnemyList)
                 if (enemy.getBoundingRectangle().contains(projectile.getBoundingRectangle())
                         || enemy.getBoundingRectangle().overlaps(projectile.getBoundingRectangle())) {
                     System.err.println("COLLISION-> " + enemy.getActorPosition() + " (collided with projectile at " + projectile.getActorPosition() + ") ");
+//                    actors.removeValue(enemy, false);
+
+                    //todo: WHAT THE FUCK, THIS IS LOOP INSIDE LOOP INSIDE LOOP (O^3), REWRITE THAT ASAP
+                    for (SpaceInvadersActor actor : actors)
+                        if (actor.equals(enemy)) {
+                            ((EnemyActor) actor).onHit(projectile.getDamageValue());
+                            System.err.println("TESTESTNWAITANITNASITBASIUTKBASTIUSBTIUAK TIUAKVST");
+                        }
+
                     actors.removeValue(projectile, false);
-                    actors.removeValue(enemy, false);
                     return true;
                 }
 
@@ -196,8 +183,8 @@ public class ActorHolder {
     }
 
     private LinkedList<EnemyActor> temporaryCreateEnemyList() {
-        temporaryEnemyList = new LinkedList<EnemyActor>();
 
+        temporaryEnemyList = new LinkedList<EnemyActor>();
         for (SpaceInvadersActor enemy : actors) {
             if (enemy instanceof EnemyActor)
                 temporaryEnemyList.add((EnemyActor)enemy);
@@ -207,8 +194,8 @@ public class ActorHolder {
     }
 
     public LinkedList<BulletProjectileActor> temporaryCreateProjectileList() {
-        temporaryProjectileList = new LinkedList<BulletProjectileActor>();
 
+        temporaryProjectileList = new LinkedList<BulletProjectileActor>();
         for (SpaceInvadersActor projectile : actors) {
             if (projectile instanceof BulletProjectileActor)
                 temporaryProjectileList.add((BulletProjectileActor)projectile);

@@ -12,6 +12,8 @@ import com.gamedesire.pszemek.recruitment.utilities.Constants;
 public class BulletProjectileActor extends SpaceInvadersActor {
 
 
+    private float damageValue = 8;
+
     public BulletProjectileActor(float locationX, float locationY) {
         this(new Vector2(locationX, locationY));
     }
@@ -23,7 +25,7 @@ public class BulletProjectileActor extends SpaceInvadersActor {
 
     @Override
     public void create() {
-        speedValue = 400;
+        velocityValue = Constants.VELOCITY_VALUE_PROJECTILE_BULLET;
     }
 
     @Override
@@ -34,5 +36,9 @@ public class BulletProjectileActor extends SpaceInvadersActor {
     @Override
     public void dispose() {
 
+    }
+
+    public float getDamageValue() {
+        return damageValue;
     }
 }

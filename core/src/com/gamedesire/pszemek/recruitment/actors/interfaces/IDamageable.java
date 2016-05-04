@@ -14,5 +14,4 @@ public interface IDamageable {
     //todo: remove (implement callbacks or sth?)
     void    onDeath();
 
-
 }

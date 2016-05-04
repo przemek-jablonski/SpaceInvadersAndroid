@@ -4,6 +4,7 @@ package com.gamedesire.pszemek.recruitment.actors;
 import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -23,7 +24,7 @@ public class HeroActor extends SpaceInvadersActor {
     @Override
     public void create() {
         rateOfFireIntervalMillis = 200;
-        speedValue = 200;
+        velocityValue = Constants.VELOCITY_VALUE_PLAYER;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.gamedesire.pszemek.recruitment.actors.archetypes;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,7 +14,7 @@ import com.gamedesire.pszemek.recruitment.utilities.Utils;
 public abstract class SpaceInvadersActor {
 
     protected Sprite    actorSprite;
-    protected float     speedValue;
+    protected float     velocityValue;
     protected float     accelerationValue;
     protected Vector2   directionVector;
     private   Vector2   temporaryMovementVector;
@@ -42,7 +41,7 @@ public abstract class SpaceInvadersActor {
 
         this.actorSprite = actorSprite;
         this.directionVector = directionVector;
-        speedValue = 1;
+        velocityValue = 1;
         rateOfFireIntervalMillis = 500;
         lastFiredMillis = System.currentTimeMillis();
         actorSprite.setCenter(location.x, location.y);
@@ -87,8 +86,8 @@ public abstract class SpaceInvadersActor {
     public void updatePosition() {
         if (this instanceof HeroActor && !Gdx.input.isTouched()) return;
             setPosition(
-                    getActorPosition().x + (directionVector.x * speedValue) * Gdx.graphics.getDeltaTime(),
-                    getActorPosition().y + (directionVector.y * speedValue) * Gdx.graphics.getDeltaTime());
+                    getActorPosition().x + (directionVector.x * velocityValue) * Gdx.graphics.getDeltaTime(),
+                    getActorPosition().y + (directionVector.y * velocityValue) * Gdx.graphics.getDeltaTime());
     }
 
     public void setLastFiredMillis(long lastFiredMillis) {
