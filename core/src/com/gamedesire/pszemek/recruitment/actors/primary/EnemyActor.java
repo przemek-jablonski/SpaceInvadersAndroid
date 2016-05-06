@@ -1,6 +1,5 @@
 package com.gamedesire.pszemek.recruitment.actors.primary;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
@@ -31,9 +30,6 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
     @Override
     public void create() {
         velocityValue = Constants.VELOCITY_VALUE_ENEMY_SLOW;
-        rateOfFireIntervalMillis = Constants.RATEOFFIRE_INTERVAL_BASE_ENEMY001;
-        lastFiredMillis = System.currentTimeMillis() + (long)(MathUtils.random(0.75f, 2f) * 1000);
-        shoot = false;
         onSpawn();
     }
 
@@ -44,10 +40,9 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
         if (actualHealthPoints == 0)
             onDeath();
 
-        if (System.currentTimeMillis() - lastFiredMillis > rateOfFireIntervalMillis * MathUtils.random(0.85f, 1.25f)) {
             if (!shoot)
                 shoot = true;
-        }
+
 
     }
 
@@ -58,10 +53,14 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
 
     @Override
     public void onSpawn() {
+//        rateOfFireIntervalMillis = (long)(Constants.RATEOFFIRE_INTERVAL_ENEMY001_BASE * MathUtils.random(0.90f,1.40f));
+        rateOfFireIntervalMillis = (long)(Constants.RATEOFFIRE_INTERVAL_ENEMY001_BASE * Constants.RATEOFFIRE_RANDOM_OFFSET_HIGH_EASY);
+//        lastFiredMillis -= (Constants.TIMEINTERVAL_SECOND_INMILLIS * Constants.RATEOFFIRE_RANDOM_BINARY);
         maxHealthPoints = 10;
         actualHealthPoints = maxHealthPoints;
         actualShieldPoints = 0;
         dead = false;
+        shoot = false;
     }
 
     @Override

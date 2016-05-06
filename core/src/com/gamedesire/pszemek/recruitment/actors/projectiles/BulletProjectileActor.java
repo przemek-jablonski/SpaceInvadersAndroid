@@ -22,6 +22,9 @@ public class BulletProjectileActor extends ProjectileActor {
 
     @Override
     public void create() {
+        if (getActorType() == ActorType.ENEMY) {
+            actorSprite.flip(true, true);
+        }
         velocityValue = Constants.VELOCITY_VALUE_PROJECTILE_BULLET;
         damageValue = 8;
     }

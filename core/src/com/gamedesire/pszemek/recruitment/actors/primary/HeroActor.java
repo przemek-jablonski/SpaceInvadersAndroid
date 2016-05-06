@@ -24,7 +24,7 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
 
     @Override
     public void create() {
-        rateOfFireIntervalMillis = Constants.RATEOFFIRE_INTERVAL_BASE_PLAYER;
+        rateOfFireIntervalMillis = Constants.RATEOFFIRE_INTERVAL_PLAYER_BASE;
         velocityValue = Constants.VELOCITY_VALUE_PLAYER;
     }
 
@@ -45,7 +45,7 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
 
     @Override
     public float onHit(float damageDealt) {
-        System.err.println("HERO HIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        System.err.println("HERO HIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return 0;
     }
 

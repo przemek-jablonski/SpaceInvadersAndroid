@@ -1,7 +1,12 @@
 package com.gamedesire.pszemek.recruitment.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.particles.emitters.Emitter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
@@ -13,6 +18,8 @@ import com.gamedesire.pszemek.recruitment.actors.projectiles.BulletProjectileAct
 import com.gamedesire.pszemek.recruitment.input.TouchProcessor;
 import com.gamedesire.pszemek.recruitment.utilities.Constants;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
+
+import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 
 /**
@@ -36,7 +43,16 @@ public class ActorHolder {
     TouchProcessor  touchProcessor;
     short           actualLevel;
     short           remainingActorsInWave;
+    long            currentTimeMillis;
+    float           randomnessFactor;
 
+    Texture vlt = AssetRouting.getVignetteLTTexture();
+    Texture vlb = AssetRouting.getVignetteLBTexture();
+    Texture vrt = AssetRouting.getVignetteRTTexture();
+    Texture vrb = AssetRouting.getVignetteRBTexture();
+
+    //dev only, refactor!:
+    ParticleEffect exploParticle;
 
 
     public ActorHolder(TouchProcessor touchProcessor) {
@@ -46,10 +62,16 @@ public class ActorHolder {
         projectiles = new DelayedRemovalArray<ProjectileActor>();
         actualLevel = 0;
         remainingActorsInWave = 0;
+
+        exploParticle = new ParticleEffect();
+        exploParticle.load(Gdx.files.internal("particle_explosion_alllayers.p"), Gdx.files.internal(""));
+        exploParticle.scaleEffect(2.75f);
     }
 
 
     public void updateAll() {
+        currentTimeMillis = System.currentTimeMillis();
+        randomnessFactor = MathUtils.random(0.7f, 1.3f);
         actors.begin();
         projectiles.begin();
 
@@ -58,30 +80,41 @@ public class ActorHolder {
             spawnProjectile(getHero(), ActorType.HERO);
 
 
-        //iterating actors
+        //iterating over actors
         for (SpaceInvadersActor actor : actors) {
             actor.update();
 
             if(checkActorOutOfScreen(actor))
-                disposeActor(actor);
+                if (disposeActor(actor)) {
+                    System.err.println("ACTOR (actor) DISPOSED, pos: " + actor.getActorPosition());
+                }
 
+            //spawn projectile, if applicable
             if (actor instanceof EnemyActor) {
-                if (checkEnemySpawnProjectile((EnemyActor) actor))
+                if (checkEnemySpawnProjectile((EnemyActor) actor)) {
                     spawnProjectile(actor, ActorType.ENEMY);
+                }
 
-                if (((EnemyActor)actor).isDead())
-                    disposeActor(actor);
+            //check if actor is dead
+            if (((EnemyActor)actor).isDead())
+                if (disposeActor(actor))
+                    System.err.println("ACTOR (actor) DEAD, pos: " + actor.getActorPosition());
             }
 
         }
 
-        //iterating projectiles
+        //iterating over projectiles
         for (ProjectileActor projectile : projectiles) {
+            //update actor
             projectile.update();
 
+            //check if is out of screen
             if(checkActorOutOfScreen(projectile))
-                disposeActor(projectile);
+                if (disposeActor(projectile)) {
+                    System.err.println("ACTOR (projectile) DISPOSED, pos: " + projectile.getActorPosition());
+                }
 
+            //check for collisions
             checkProjectileHit(projectile);
         }
 
@@ -101,6 +134,20 @@ public class ActorHolder {
         renderAllProjectiles(spriteBatch);
         renderHero(spriteBatch);
 
+        exploParticle.update(Gdx.graphics.getDeltaTime());
+        exploParticle.draw(spriteBatch);
+        if(exploParticle.isComplete())
+            exploParticle.reset();
+
+        Color col = spriteBatch.getColor();
+        spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
+
+        spriteBatch.draw(vlb, 0f, 0f, vlb.getWidth(), vlb.getHeight());
+        spriteBatch.draw(vlt, 0f, Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
+        spriteBatch.draw(vrt, Gdx.graphics.getWidth() - vrt.getWidth(), Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
+        spriteBatch.draw(vrb, Gdx.graphics.getWidth() - vrt.getWidth(), 0f, vlt.getWidth(), vlt.getHeight());
+
+        spriteBatch.setColor(col);
     }
 
     /**
@@ -154,17 +201,6 @@ public class ActorHolder {
 
     }
 
-//    public boolean playerSpawnProjectile() {
-//        long timeDiff = System.currentTimeMillis() - heroActor.getLastFiredMillis();
-//
-//        if (timeDiff > heroActor.getRateOfFireIntervalMillis()) {
-//            addActor(new BulletProjectileActor(heroActor.getActorPosition(), ActorType.HERO));
-//            heroActor.setLastFiredMillis(System.currentTimeMillis());
-//            return true;
-//        }
-//
-//        return false;
-//    }
 
     /**
      * Performing simple check whether given enemy is requesting for projectile spawn on it's behalf.
@@ -190,19 +226,14 @@ public class ActorHolder {
      * @param actor Actor, which requested projectile spawn (needed for position fetch)
      * @param actorType ActorType, passed as projectile constructor parameter.
      */
+    //todo: this random shit should be here - players rate of fire shouldn't be affected
     private void spawnProjectile(SpaceInvadersActor actor, ActorType actorType) {
-//        if (actorType == ActorType.ENEMY)
-//            projectiles.add(new BulletProjectileActor(actor.getActorPosition(), Constants.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
-//        else {
-//            checkIntervalForProjectile(actor);
-//        }
-
-        if (System.currentTimeMillis() - actor.getLastFiredMillis() > actor.getRateOfFireIntervalMillis()) {
+        if (currentTimeMillis - actor.getLastFiredMillis() > actor.getRateOfFireIntervalMillis() * MathUtils.random(0.8f, 1.5f)) {
             if (actorType == ActorType.HERO)
                 projectiles.add(new BulletProjectileActor(actor.getActorPosition(), ActorType.HERO));
             else
                 projectiles.add(new BulletProjectileActor(actor.getActorPosition(), Constants.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
-            actor.setLastFiredMillis(System.currentTimeMillis());
+            actor.setLastFiredMillis(currentTimeMillis);
         }
 
     }
@@ -219,14 +250,8 @@ public class ActorHolder {
         if (actor.getActorPosition().y < -actor.getBoundingRectangle().getHeight())
             return true;
 
-        if (actor.getActorPosition().y > Gdx.graphics.getHeight() + actor.getBoundingRectangle().getHeight())
+        if (actor instanceof ProjectileActor && actor.getActorPosition().y > Gdx.graphics.getHeight() + actor.getBoundingRectangle().getHeight())
             return true;
-
-        //needed ?
-//        if (actor instanceof BulletProjectileActor
-//        && actor.getActorPosition().y > Gdx.graphics.getHeight() + actor.getBoundingRectangle().getHeight()) {
-//            return true;
-//        }
 
         return false;
     }
@@ -239,31 +264,16 @@ public class ActorHolder {
      * @return true if disposal action(s) were executed properly.
      */
     private boolean disposeActor(SpaceInvadersActor actor) {
+        if (actor instanceof ProjectileActor)
+            return projectiles.removeValue((ProjectileActor) actor, false);
+        for (ParticleEmitter emitter : exploParticle.getEmitters())
+                emitter.setPosition(actor.getActorPosition().x, actor.getActorPosition().y);
+        exploParticle.start();
         return actors.removeValue(actor, false);
     }
 
 
     private boolean checkProjectileHit(ProjectileActor projectile) {
-//        temporaryCreateEnemyList();
-//        temporaryCreateProjectileList();
-////        for (BulletProjectileActor projectile : temporaryProjectileList)
-////            for (EnemyActor enemy : temporaryEnemyList)
-////                if (enemy.getBoundingRectangle().contains(projectile.getBoundingRectangle())
-////                        || enemy.getBoundingRectangle().overlaps(projectile.getBoundingRectangle())) {
-////                    System.err.println("COLLISION-> " + enemy.getActorPosition() + " (collided with projectile at " + projectile.getActorPosition() + ") ");
-//////                    actors.removeValue(enemy, false);
-////
-////                    //todo: WHAT THE FUCK, THIS IS LOOP INSIDE LOOP INSIDE LOOP (O^3), REWRITE THAT ASAP
-////                    for (SpaceInvadersActor actor : actors)
-////                        if (actor.equals(enemy)) {
-////                            ((EnemyActor) actor).onHit(projectile.getDamageValue());
-////                        }
-////
-////                    actors.removeValue(projectile, false);
-////                    return true;
-////                }
-//        return false;
-
         for (SpaceInvadersActor actor : actors)
             if ((actor instanceof EnemyActor && projectile.getActorType() == ActorType.HERO) || (actor instanceof HeroActor && projectile.getActorType() == ActorType.ENEMY)) {
                 if (checkCollision(actor, projectile))
@@ -273,13 +283,12 @@ public class ActorHolder {
                             //todo: move away this shit to projectileCollided().
                             if (actor instanceof EnemyActor)
                                 ((EnemyActor) actor).onHit(projectile.getDamageValue());
-                            if (actor instanceof HeroActor)
+                            else if (actor instanceof HeroActor)
                                 ((HeroActor) actor).onHit(projectile.getDamageValue());
+                            projectiles.removeValue(projectile, false);
                             return true;
                         }
                     }
-
-
             }
 
         return false;
@@ -293,32 +302,6 @@ public class ActorHolder {
         return false;
     }
 
-    //todo:
-//    private boolean projectileCollided(SpaceInvadersActor actor, ProjectileActor projectile) {
-//
-//    }
-
-//    private LinkedList<EnemyActor> temporaryCreateEnemyList() {
-//
-//        temporaryEnemyList = new LinkedList<EnemyActor>();
-//        for (SpaceInvadersActor enemy : actors) {
-//            if (enemy instanceof EnemyActor)
-//                temporaryEnemyList.add((EnemyActor)enemy);
-//        }
-//
-//        return temporaryEnemyList;
-//    }
-//
-//    public LinkedList<BulletProjectileActor> temporaryCreateProjectileList() {
-//
-//        temporaryProjectileList = new LinkedList<BulletProjectileActor>();
-//        for (SpaceInvadersActor projectile : actors) {
-//            if (projectile instanceof BulletProjectileActor)
-//                temporaryProjectileList.add((BulletProjectileActor)projectile);
-//        }
-//
-//        return temporaryProjectileList;
-//    }
 
     public HeroActor getHero() {
         return (HeroActor)actors.get(0);

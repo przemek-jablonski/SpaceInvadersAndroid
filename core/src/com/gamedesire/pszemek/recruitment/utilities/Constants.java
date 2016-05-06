@@ -1,5 +1,6 @@
 package com.gamedesire.pszemek.recruitment.utilities;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -24,9 +25,18 @@ public class Constants {
     public static final int VELOCITY_VALUE_ENEMY_SLOW = 50;
     public static final int VELOCITY_VALUE_PROJECTILE_BULLET = 400;
 
-    public static final int RATEOFFIRE_INTERVAL_BASE_PLAYER = 400;
-    public static final int RATEOFFIRE_INTERVAL_BASE_ENEMY001 = 1000;
+    public static final int RATEOFFIRE_INTERVAL_PLAYER_BASE = 400;
+    public static final int RATEOFFIRE_INTERVAL_ENEMY001_BASE = 2900;
+    public static final int TIMEINTERVAL_SECOND_INMILLIS = 1000;
 
 
+    public static final float RATEOFFIRE_RANDOM_OFFSET_LOW = MathUtils.random(0.95f, 1.05f);
+    public static final float RATEOFFIRE_RANDOM_OFFSET_STANDARD = MathUtils.random(0.85f, 1.25f);
+    public static final float RATEOFFIRE_RANDOM_OFFSET_HIGH = MathUtils.random(0.70f, 1.60f);
+    public static final float RATEOFFIRE_RANDOM_OFFSET_LOW_EASY = MathUtils.random(0.95f, 1.15f);
+    public static final float RATEOFFIRE_RANDOM_OFFSET_STANDARD_EASY = MathUtils.random(0.90f, 1.50f);
+    public static final float RATEOFFIRE_RANDOM_OFFSET_HIGH_EASY = MathUtils.random(0.85f, 2.00f);
+
+    public static final float RATEOFFIRE_RANDOM_BINARY = MathUtils.random(0f, 1f);
 
 }

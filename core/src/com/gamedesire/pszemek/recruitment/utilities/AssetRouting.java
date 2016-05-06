@@ -17,7 +17,12 @@ public class AssetRouting {
     private static final String ENEMY_ASSET_003 = "game_character_enemy_003";
     private static final String ENEMY_ASSET_004 = "game_character_enemy_004";
     private static final String PROJECTILE_ROCKET = "game_fx_projectile_rocket_001";
+    private static final String VIGNETTE_LB = "vignette_001_leftbottom";
+    private static final String VIGNETTE_LT = "vignette_001_lefttop";
+    private static final String VIGNETTE_RT = "vignette_001_righttop";
+    private static final String VIGNETTE_RB = "vignette_001_rightbottom";
     private static final String BACKGROUND_ASSET = "ui_bg_main_tile";
+
     private static final String PNG = ".png";
     private static final String JPG = ".jpg";
     private static final String OGG = ".ogg";
@@ -53,6 +58,15 @@ public class AssetRouting {
     public static final Texture getEnemy004Texture() {return new Texture(getAssetFullLocation(ENEMY_ASSET_004, PNG));}
 
     public static final Texture getProjectileRocketTexture() {return new Texture(getAssetFullLocation(PROJECTILE_ROCKET, PNG));}
+
+    public static final Texture getVignetteLBTexture() {return new Texture(getAssetFullLocation(VIGNETTE_LB, PNG));}
+
+    public static final Texture getVignetteLTTexture() {return new Texture(getAssetFullLocation(VIGNETTE_LT, PNG));}
+
+    public static final Texture getVignetteRTTexture() {return new Texture(getAssetFullLocation(VIGNETTE_RT, PNG));}
+
+    public static final Texture getVignetteRBTexture() {return new Texture(getAssetFullLocation(VIGNETTE_RB, PNG));}
+
 
     //full location creator:
     private static final FileHandle getAssetFullLocation(final String location, final String format) {
