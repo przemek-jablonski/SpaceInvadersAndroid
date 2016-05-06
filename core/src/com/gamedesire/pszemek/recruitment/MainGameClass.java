@@ -8,7 +8,6 @@ public class MainGameClass extends Game {
 
 	private SpriteBatch spriteBatch;
 
-
 	//todo: camera and handling multiple device resolutions and aspect ratios (important!)
 
 	@Override

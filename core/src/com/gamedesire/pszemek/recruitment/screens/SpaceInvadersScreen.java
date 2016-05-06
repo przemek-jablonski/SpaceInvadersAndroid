@@ -45,6 +45,8 @@ public class SpaceInvadersScreen implements Screen {
     private TextureRegion prevScreen;
     private Texture       prevScreenTex;
 
+    private long          heroPoints;
+
 
 
     public SpaceInvadersScreen(MainGameClass game) {
@@ -78,6 +80,8 @@ public class SpaceInvadersScreen implements Screen {
         backgroundGradient = new ShapeRenderer();
         backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
         debugUI = new DebugUI(mainGameClass.getSpriteBatch());
+        debugUI.create();
+
         touchProcessor.attachActorSpawner(actorHolder);
         Gdx.input.setInputProcessor(touchProcessor);
 
@@ -99,12 +103,7 @@ public class SpaceInvadersScreen implements Screen {
         mainGameClass.getSpriteBatch().begin();
         prevScreenTex = prevScreen.getTexture();
         setRenderBackground();
-//        Color sbc = mainGameClass.getSpriteBatch().getColor();
-//        mainGameClass.getSpriteBatch().setColor(sbc.r, sbc.g, sbc.b, 0.1f);
-//        mainGameClass.getSpriteBatch().draw(prevScreen, 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        mainGameClass.getSpriteBatch().setColor(sbc.r, sbc.g, sbc.b, 1);
 
-//        mainGameClass.getSpriteBatch().draw(backgroundSprite, backgroundSprite.getX(), backgroundSprite.getY());
         mainGameClass.getSpriteBatch().setProjectionMatrix(debugUI.getStage().getCamera().combined);
 
         actorHolder.updateAll();
@@ -114,7 +113,7 @@ public class SpaceInvadersScreen implements Screen {
 
 //        prevScreen = ScreenUtils.getFrameBufferTexture();
 
-        //drawing debug ui
+        debugUI.update();
         debugUI.render();
         debugUI.getStage().draw();
     }

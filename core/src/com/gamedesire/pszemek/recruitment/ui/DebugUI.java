@@ -5,68 +5,170 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 import com.gamedesire.pszemek.recruitment.utilities.Constants;
+
+import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 /**
  * Created by Ciemek on 30/04/16.
  */
-public class DebugUI {
+public class DebugUI extends AbstractBaseUI {
 
     private Viewport viewport;
     private Stage   stage;
 
-    private float   frames;
-    private float   delta;
+    //// FIXME: 06/05/16 store this in some logic (model) class
     private long    actualTime;
     private long    startTime;
 
-    private Label   labelFrames;
-    private Label   labelDelta;
-    private Label   labelTimer;
+    private long    heroHP = 50;
+    private long    heroSP = 0;
+
+    private long    heroPoints = 1234;
+    private long    gameTime;
+    private long    gameLevel = 1;
+
+
+//    private Label   labelFrames;
+//    private Label   labelDelta;
+//    private Label   labelTimer;
+
+
+    private Label   labelLeftHPText;
+    private Label   labelLeftSPText;
+    private Label   labelLeftHP;
+    private Label   labelLeftSP;
+
+    private Label   labelRightPointsText;
+    private Label   labelRightTimeText;
+    private Label   labelRightLevelText;
+    private Label   labelRightPoints;
+    private Label   labelRightTime;
+    private Label   labelRightLevel;
+
+    private Image   imageBottomGameLogo;
+    private Image   imageBottomCompanyLogo;
+
+    private LabelStyle labelStyle;
+
 
 
     public DebugUI(SpriteBatch batch) {
-
-        startTime = System.currentTimeMillis();
-        frames = 0;
-        delta = 0;
-
+        super(batch);
         viewport = new FitViewport(Constants.PREF_WIDTH, Constants.PREF_HEIGHT);
         stage = new Stage(viewport, batch);
-
-        Table uiTable = new Table();
-        uiTable.top();
-        uiTable.setFillParent(true);
-
-        labelFrames = new Label(Float.toString(frames), new LabelStyle(new BitmapFont(), Color.RED));
-        labelDelta = new Label(Float.toString(delta), new LabelStyle(new BitmapFont(), Color.RED));
-        labelTimer = new Label(Long.toString(actualTime), new LabelStyle(new BitmapFont(), Color.RED));
-
-        uiTable.add(labelFrames).align(Align.right).right().padTop(10);
-        uiTable.row();
-        uiTable.add(labelDelta).align(Align.right).padTop(10);
-        uiTable.row();
-        uiTable.add(labelTimer).align(Align.right).padTop(10);
-        uiTable.row();
-
-        stage.addActor(uiTable);
-
-        render();
     }
 
-    //todo: make this abstract class in superUI class or something
-    public void render() {
-        actualTime = System.currentTimeMillis() - startTime;
-        actualTime /= 1000;
-        frames = Gdx.graphics.getFramesPerSecond();
-        delta = Gdx.graphics.getDeltaTime();
 
+    @Override
+    public void create() {
+        //// FIXME: 06/05/16 this should be done in logic (model) class, not in UI class, come on...
+        startTime = System.currentTimeMillis();
+        BitmapFont bitmapFont = new BitmapFont();
+        bitmapFont.getData().setScale(2f);
+        labelStyle = new LabelStyle(bitmapFont, new Color(1f, 1f, 1f, 0.45f));
+
+
+        Table leftTable = new Table();
+        Table rightTable = new Table();
+        Table bottomTableCompanyLogo = new Table();
+        Table bottomTableInvadersLogo = new Table();
+
+        leftTable.setFillParent(true);
+        rightTable.setFillParent(true);
+        bottomTableCompanyLogo.setFillParent(true);
+        bottomTableInvadersLogo.setFillParent(true);
+
+        leftTable.setDebug(true);
+        rightTable.setDebug(true);
+        bottomTableCompanyLogo.setDebug(true);
+        bottomTableInvadersLogo.setDebug(true);
+
+        //// FIXME: 06/05/16 USAGE OF PIXELS INSTEAD OF GETTING CONSTANTS.GETCAMERA.GETWIDTH * 0.05f
+        leftTable.pad(15f);
+        rightTable.pad(15f);
+        bottomTableCompanyLogo.pad(4f);
+        bottomTableInvadersLogo.pad(5f);
+
+        leftTable.top().left();
+        rightTable.top().right();
+        bottomTableCompanyLogo.bottom().left();
+        bottomTableInvadersLogo.bottom().right();
+
+
+        labelLeftHPText = new Label("HP:", labelStyle);
+        labelLeftHP = new Label(Long.toString(heroHP), labelStyle);
+        labelLeftSPText = new Label("SP:", labelStyle);
+        labelLeftSP = new Label(Long.toString(heroSP), labelStyle);
+
+        leftTable.add(labelLeftHPText).left().padRight(10f);
+        leftTable.add(labelLeftHP).left();
+        leftTable.row();
+
+        leftTable.add(labelLeftSPText).left().padRight(10f);
+        leftTable.add(labelLeftSP).left();
+        leftTable.row();
+
+
+        labelRightPointsText = new Label("POINTS", labelStyle);
+        labelRightPoints = new Label(Long.toString(heroPoints), labelStyle);
+        labelRightLevelText = new Label("LEVEL", labelStyle);
+        labelRightLevel = new Label(Long.toString(gameLevel), labelStyle);
+        labelRightTimeText = new Label("TIME", labelStyle);
+        labelRightTime = new Label(Long.toString(actualTime), labelStyle);
+
+        rightTable.add(labelRightPoints).right().padRight(10f);
+        rightTable.add(labelRightPointsText).right();
+        rightTable.row();
+
+        rightTable.add(labelRightTime).right().padRight(10f);
+        rightTable.add(labelRightTimeText).right();
+        rightTable.row();
+
+        rightTable.add(labelRightLevel).right().padRight(10f);
+        rightTable.add(labelRightLevelText).right();
+        rightTable.row();
+
+
+        imageBottomCompanyLogo = new Image(AssetRouting.getUiLogoGanymede());
+        imageBottomGameLogo = new Image(AssetRouting.getUiLogoInvaders());
+
+        bottomTableCompanyLogo.add(imageBottomGameLogo).left();
+        bottomTableInvadersLogo.add(imageBottomCompanyLogo).right();
+
+
+        stage.addActor(leftTable);
+        stage.addActor(rightTable);
+        stage.addActor(bottomTableCompanyLogo);
+        stage.addActor(bottomTableInvadersLogo);
+
+        update();
+    }
+
+    @Override
+    public void update() {
+        actualTime = (long)((System.currentTimeMillis() - startTime) / 1000f);
+
+        labelRightTime.setText(Long.toString(actualTime));
+
+//        labelFrames.setText(Float.toString(Gdx.graphics.getFramesPerSecond()));
+//        labelDelta.setText(Float.toString(Gdx.graphics.getDeltaTime()));
+//        labelTimer.setText(Float.toString(actualTime));
+    }
+
+
+    @Override
+    public void render() {
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
 

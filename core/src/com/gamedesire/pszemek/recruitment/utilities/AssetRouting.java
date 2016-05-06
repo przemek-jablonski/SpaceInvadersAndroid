@@ -22,11 +22,14 @@ public class AssetRouting {
     private static final String VIGNETTE_RT = "vignette_001_righttop";
     private static final String VIGNETTE_RB = "vignette_001_rightbottom";
     private static final String BACKGROUND_ASSET = "ui_bg_main_tile";
+    private static final String UI_LOGO_GANYMEDE = "ui_logo_ganymede";
+    private static final String UI_LOGO_INVADERS = "ui_logo_invaders";
 
     private static final String PNG = ".png";
     private static final String JPG = ".jpg";
     private static final String OGG = ".ogg";
     private static final String MP3 = ".mp3";
+
 
 
     //sprite accessors:
@@ -43,6 +46,7 @@ public class AssetRouting {
     public static final Sprite getEnemy004Sprite() {return new Sprite(getEnemy004Texture());}
 
     public static final Sprite getProjectileRocketSprite() {return new Sprite(getProjectileRocketTexture());}
+
 
     //texture accessors:
     public static final Texture getHeroTexture() {return new Texture(getAssetFullLocation(HERO_ASSET, PNG));}
@@ -66,6 +70,10 @@ public class AssetRouting {
     public static final Texture getVignetteRTTexture() {return new Texture(getAssetFullLocation(VIGNETTE_RT, PNG));}
 
     public static final Texture getVignetteRBTexture() {return new Texture(getAssetFullLocation(VIGNETTE_RB, PNG));}
+
+    public static final Texture getUiLogoGanymede() {return new Texture(getAssetFullLocation(UI_LOGO_GANYMEDE, PNG));}
+
+    public static final Texture getUiLogoInvaders() {return new Texture(getAssetFullLocation(UI_LOGO_INVADERS, PNG));}
 
 
     //full location creator:
