@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
-import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.screens.SpaceInvadersScreen;
-import com.gamedesire.pszemek.recruitment.utilities.Constants;
 import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
@@ -86,7 +84,7 @@ public class TouchProcessorMobile extends TouchProcessor {
 //        Vector2 screenVector = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
         Vector3 screenVectorInput = screen.getCamera().unproject(new Vector3(screenX,screenY,0f));
         Vector2 screenVector = new Vector2(screenVectorInput.x, screenVectorInput.y);
-//        Vector2 screenVector = new Vector2(screenX, (Gdx.graphics.getHeight() * (Constants.PREF_HEIGHT / Gdx.graphics.getHeight())) - screenY);
+//        Vector2 screenVector = new Vector2(screenX, (Gdx.graphics.getHeight() * (Const.PREF_HEIGHT / Gdx.graphics.getHeight())) - screenY);
 //        Vector2 screenVector = new Vector2(screenX, screen.getCamera().viewportHeight - screenY);
 //        Vector2 screenVector = new Vector2(screenX, screen.getViewport().getScreenHeight()- screenY);
 //        System.err.print("screen: " + "(" + screenVector + ", ");

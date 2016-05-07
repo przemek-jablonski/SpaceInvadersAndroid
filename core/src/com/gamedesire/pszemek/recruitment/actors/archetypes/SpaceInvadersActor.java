@@ -61,8 +61,12 @@ public abstract class SpaceInvadersActor {
     public abstract void dispose();
 
     public void render(SpriteBatch batch) {
+
+        //todo: this shit should be in rendering class
+        //fixme: rotating 90 degrees for ENEMY projectiles!
         batch.draw(actorSprite.getTexture(), actorSprite.getX(), actorSprite.getY());
     }
+
 
     //accessors: setters:
     public void setDirection(Vector2 vector) {

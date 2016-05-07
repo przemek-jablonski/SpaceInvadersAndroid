@@ -1,4 +1,4 @@
-package com.gamedesire.pszemek.recruitment.actors.archetypes;
+package com.gamedesire.pszemek.recruitment.actors.enums;
 
 /**
  * Created by Ciemek on 02/05/16.

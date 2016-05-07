@@ -6,20 +6,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.particles.emitters.Emitter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ProjectileActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
-import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor;
+import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor001;
 import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
-import com.gamedesire.pszemek.recruitment.actors.projectiles.BulletProjectileActor;
+import com.gamedesire.pszemek.recruitment.actors.projectiles.RocketProjectileActor;
 import com.gamedesire.pszemek.recruitment.input.TouchProcessor;
-import com.gamedesire.pszemek.recruitment.utilities.Constants;
+import com.gamedesire.pszemek.recruitment.utilities.Const;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
-
-import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 
 /**
@@ -101,13 +98,13 @@ public class ActorHolder {
                 }
 
             //spawn projectile, if applicable
-            if (actor instanceof EnemyActor) {
-                if (checkEnemySpawnProjectile((EnemyActor) actor)) {
+            if (actor instanceof EnemyActor001) {
+                if (checkEnemySpawnProjectile((EnemyActor001) actor)) {
                     spawnProjectile(actor, ActorType.ENEMY);
                 }
 
             //check if actor is dead
-            if (((EnemyActor)actor).isDead())
+            if (((EnemyActor001)actor).isDead())
                 if (disposeActor(actor))
                     System.err.println("ACTOR (actor) DEAD, pos: " + actor.getActorPosition());
             }
@@ -177,8 +174,11 @@ public class ActorHolder {
      * @param spriteBatch Rendering batch.
      */
     private void renderAllProjectiles(SpriteBatch spriteBatch) {
-        for (int p = 0; p < projectiles.size; ++p)
+        for (int p = 0; p < projectiles.size; ++p) {
+            if (projectiles.get(p).getActorType() == ActorType.ENEMY)
+                projectiles.get(p).render(spriteBatch);
             projectiles.get(p).render(spriteBatch);
+        }
     }
 
     /**
@@ -193,7 +193,7 @@ public class ActorHolder {
 
 
     public HeroActor spawnHero() {
-        actors.add(new HeroActor(Constants.PREF_HEIGHT / 5f, Constants.PREF_WIDTH / 2f, 0f, 0f));
+        actors.add(new HeroActor(Const.PREF_HEIGHT / 5f, Const.PREF_WIDTH / 2f, 0f, 0f));
         return (HeroActor)actors.get(0);
     }
 
@@ -203,10 +203,10 @@ public class ActorHolder {
 
         for (int i=0; i < 30; ++i)
             actors.add(
-                    new EnemyActor(
-                            MathUtils.random(Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD + AssetRouting.getEnemy001Texture().getWidth() / 2, Constants.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth() / 2 - Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD),
-                            MathUtils.random((float) (Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() / 2), Constants.PREF_HEIGHT * 2f),
-                            Constants.VECTOR_DIRECTION_DOWN
+                    new EnemyActor001(
+                            MathUtils.random(Const.SPAWN_MARGIN_HORIZONTAL_STANDARD + AssetRouting.getEnemy001Texture().getWidth() / 2, Const.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth() / 2 - Const.SPAWN_MARGIN_HORIZONTAL_STANDARD),
+                            MathUtils.random((float) (Const.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() / 2), Const.PREF_HEIGHT * 2f),
+                            Const.VECTOR_DIRECTION_DOWN
                     ));
 
 
@@ -294,10 +294,10 @@ public class ActorHolder {
     private void spawnEnemyWave(int enemyCount, int heightLine) {
         for (int e=0; e<enemyCount; ++e)
             actors.add(
-                    new EnemyActor(
-                            (Constants.PREF_WIDTH / (enemyCount + 1)) * (e+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Constants.VECTOR_DIRECTION_DOWN
+                    new EnemyActor001(
+                            (Const.PREF_WIDTH / (enemyCount + 1)) * (e+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Const.VECTOR_DIRECTION_DOWN
                     ));
     }
 
@@ -308,9 +308,9 @@ public class ActorHolder {
      * @param enemy Enemy requesting (perhaps) for projectile spawn.
      * @return true, if enemy is actually requesting for projectile spawn.
      */
-    //todo: make this method not only for enemy, but for player as well (make 'boolean shoot' part of SpaceInvActor, not only EnemyActor)
+    //todo: make this method not only for enemy, but for player as well (make 'boolean shoot' part of SpaceInvActor, not only EnemyActor001)
     //todo: check time here?
-    public boolean checkEnemySpawnProjectile(EnemyActor enemy) {
+    public boolean checkEnemySpawnProjectile(EnemyActor001 enemy) {
         if (enemy.isShoot()) {
             enemy.setShot();
             return true;
@@ -330,9 +330,9 @@ public class ActorHolder {
     private void spawnProjectile(SpaceInvadersActor actor, ActorType actorType) {
         if (currentTimeMillis - actor.getLastFiredMillis() > actor.getRateOfFireIntervalMillis() * MathUtils.random(0.8f, 1.5f)) {
             if (actorType == ActorType.HERO)
-                projectiles.add(new BulletProjectileActor(actor.getActorPosition(), ActorType.HERO));
+                projectiles.add(new RocketProjectileActor(actor.getActorPosition(), ActorType.HERO));
             else
-                projectiles.add(new BulletProjectileActor(actor.getActorPosition(), Constants.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
+                projectiles.add(new RocketProjectileActor(actor.getActorPosition(), Const.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
             actor.setLastFiredMillis(currentTimeMillis);
         }
 
@@ -366,19 +366,19 @@ public class ActorHolder {
     private boolean disposeActor(SpaceInvadersActor actor) {
         if (actor instanceof ProjectileActor)
             return projectiles.removeValue((ProjectileActor) actor, false);
-        if (actor instanceof EnemyActor) {
+        if (actor instanceof EnemyActor001) {
             for (ParticleEmitter emitter : exploParticle.getEmitters())
                 emitter.setPosition(actor.getActorPosition().x, actor.getActorPosition().y);
 
             exploParticle.start();
 
             //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
-            heroPoints += Constants.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
+            heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
 
-//            ((EnemyActor) actor).getSprite().setAlpha(0f);
-//            ((EnemyActor) actor).getSprite().setColor(1f, 1f, 1f, 0.5f);
+//            ((EnemyActor001) actor).getSprite().setAlpha(0f);
+//            ((EnemyActor001) actor).getSprite().setColor(1f, 1f, 1f, 0.5f);
 
-//            actor.setPosition(0, Constants.PREF_HEIGHT * 3);
+//            actor.setPosition(0, Const.PREF_HEIGHT * 3);
 //            actor.setDirection(0f, 0f);
 
             return actors.removeValue(actor, false);
@@ -390,14 +390,14 @@ public class ActorHolder {
 
     private boolean checkProjectileHit(ProjectileActor projectile) {
         for (SpaceInvadersActor actor : actors)
-            if ((actor instanceof EnemyActor && projectile.getActorType() == ActorType.HERO) || (actor instanceof HeroActor && projectile.getActorType() == ActorType.ENEMY)) {
+            if ((actor instanceof EnemyActor001 && projectile.getActorType() == ActorType.HERO) || (actor instanceof HeroActor && projectile.getActorType() == ActorType.ENEMY)) {
                 if (checkCollision(actor, projectile))
                     //todo: actors need to have their indexes inside them, so this STUPID LOOP can be thrashed out.
                     for (SpaceInvadersActor actorInList : actors) {
                         if (actorInList.equals(actor)) {
                             //todo: move away this shit to projectileCollided().
-                            if (actor instanceof EnemyActor)
-                                ((EnemyActor) actor).onHit(projectile.getDamageValue());
+                            if (actor instanceof EnemyActor001)
+                                ((EnemyActor001) actor).onHit(projectile.getDamageValue());
                             else if (actor instanceof HeroActor)
                                 ((HeroActor) actor).onHit(projectile.getDamageValue());
                             projectiles.removeValue(projectile, false);

@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
-import com.gamedesire.pszemek.recruitment.utilities.Constants;
+import com.gamedesire.pszemek.recruitment.utilities.Const;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -24,8 +24,8 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
 
     @Override
     public void create() {
-        rateOfFireIntervalMillis = Constants.RATEOFFIRE_INTERVAL_PLAYER_BASE;
-        velocityValue = Constants.VELOCITY_VALUE_PLAYER;
+        rateOfFireIntervalMillis = Const.RATEOFFIRE_INTERVAL_PLAYER_BASE;
+        velocityValue = Const.VELOCITY_VALUE_PLAYER;
         onSpawn();
     }
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.gamedesire.pszemek.recruitment.utilities.Constants;
+import com.gamedesire.pszemek.recruitment.utilities.Const;
 
 /**
  * Created by Ciemek on 06/05/16.
@@ -17,7 +17,7 @@ public abstract class AbstractBaseUI {
 
 
     public AbstractBaseUI(SpriteBatch spriteBatch) {
-        viewport = new FitViewport(Constants.PREF_WIDTH, Constants.PREF_HEIGHT);
+        viewport = new FitViewport(Const.PREF_WIDTH, Const.PREF_HEIGHT);
         stage = new Stage(viewport, spriteBatch);
     }
 
