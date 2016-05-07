@@ -68,15 +68,6 @@ public abstract class SpaceInvadersActor {
     }
 
 
-
-    public void updateVelocityPercentage(int percentage) {
-        velocityValue += velocityValue * (percentage / 100f);
-    }
-
-    public void updateRateOfFireIntervalPercentage(int percentage) {
-        rateOfFireIntervalMillis = (long)(rateOfFireIntervalMillis / (1 + (percentage/100f)));
-    }
-
     //accessors: setters:
     public void setDirection(Vector2 vector) {
         setDirection(vector.x, vector.y);
@@ -91,10 +82,6 @@ public abstract class SpaceInvadersActor {
         actorSprite.setCenter(x, y);
     }
 
-    public void setLastFiredMillis(long lastFiredMillis) {
-        this.lastFiredMillis = lastFiredMillis;
-    }
-
     public void updatePosition() {
         if (this instanceof HeroActor && !Gdx.input.isTouched()) return;
             setPosition(
@@ -102,11 +89,9 @@ public abstract class SpaceInvadersActor {
                     getActorPosition().y + (directionY * velocityValue) * Gdx.graphics.getDeltaTime());
     }
 
-
-
-
-
-
+    public void setLastFiredMillis(long lastFiredMillis) {
+        this.lastFiredMillis = lastFiredMillis;
+    }
 
     //accessors: getters:
     public Vector2 getActorPosition() {
@@ -143,9 +128,5 @@ public abstract class SpaceInvadersActor {
 
     public int getMaxShieldPoints() {
         return maxShieldPoints;
-    }
-
-    public float getVelocityValue() {
-        return velocityValue;
     }
 }
