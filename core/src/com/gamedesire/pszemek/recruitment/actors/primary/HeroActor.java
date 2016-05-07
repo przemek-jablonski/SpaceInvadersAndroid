@@ -58,4 +58,9 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
     public void onDeath() {
         System.err.println("HERO DIED ?!?!?!?!?!?!?!?!?!?!?!!?!?!??!");
     }
+
+    public int updateHealthPointsPercentage(int percentage) {
+        this.actualHealthPoints += actualHealthPoints * (percentage/100f);
+        return actualHealthPoints;
+    }
 }

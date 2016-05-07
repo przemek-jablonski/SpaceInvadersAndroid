@@ -131,6 +131,21 @@ public class ActorHolder {
 
     }
 
+    //after spawning new wave
+    public void updateAllActorsAtNextLevel() {
+
+        getHero().updateHealthPointsPercentage(50);
+
+        for (int a = 1; a < actors.size; a++) {
+            System.err.print("UPDATING VELOCITY ON LEVEL: actual: " + actors.get(a).getVelocityValue());
+            actors.get(a).updateVelocityPercentage(16 * actualLevel);
+            System.err.print(", now: " + actors.get(a).getVelocityValue() + "\n");
+            System.err.print("UPDATING ROF ON LEVEL: actual: " + actors.get(a).getRateOfFireIntervalMillis());
+            actors.get(a).updateRateOfFireIntervalPercentage((int)(10 - MathUtils.random(-1f, 6f))  * actualLevel);
+            System.err.print(", now: " + actors.get(a).getRateOfFireIntervalMillis() + "\n");
+        }
+    }
+
     /**
      * Calling all available renderers.
      *
@@ -282,10 +297,12 @@ public class ActorHolder {
 
     public void spawnLevelProcedural(int levelNumber) {
         int waveHeight = 0;
-        for (int i=0; i < levelNumber + MathUtils.random(-1, 3); ++i) {
+        for (int i=0; i < levelNumber + MathUtils.random(0, 2); ++i) {
             waveHeight += i;
-            waveHeight += MathUtils.random(0f, 0.5f);
-            spawnEnemyWave(MathUtils.clamp(MathUtils.random(0,3) + MathUtils.random(1, 4), 1, 5), waveHeight);
+            if (i > levelNumber / 2 && MathUtils.randomBoolean(levelNumber * 8))
+                waveHeight += MathUtils.random(0,0.15f);
+//            waveHeight += (MathUtils.random(0, 1) * MathUtils.random(0f, 0.15f)) * MathUtils.clamp(i, levelNumber/2, levelNumber);
+            spawnEnemyWave(MathUtils.clamp(MathUtils.random(1,5) + MathUtils.random(1, 3), 1, 5), waveHeight);
         }
 
     }

@@ -1,366 +1,3 @@
-burst
-- Delay -
-active: false
-- Duration - 
-lowMin: 600.0
-lowMax: 1100.0
-- Count - 
-min: 0
-max: 38
-- Emission - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 50.0
-highMax: 50.0
-relative: false
-scalingCount: 4
-scaling0: 0.4489796
-scaling1: 0.7755102
-scaling2: 1.0
-scaling3: 0.3265306
-timelineCount: 4
-timeline0: 0.0
-timeline1: 0.06849315
-timeline2: 0.29452056
-timeline3: 0.89726025
-- Life - 
-lowMin: 150.0
-lowMax: 250.0
-highMin: 500.0
-highMax: 800.0
-relative: false
-scalingCount: 4
-scaling0: 0.0
-scaling1: 0.20408164
-scaling2: 0.9183673
-scaling3: 1.0
-timelineCount: 4
-timeline0: 0.0
-timeline1: 0.14283562
-timeline2: 0.3219178
-timeline3: 1.0
-- Life Offset - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 80.0
-highMax: 100.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- X Offset - 
-active: true
-lowMin: -8.0
-lowMax: 8.0
-highMin: 0.0
-highMax: 0.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Y Offset - 
-active: true
-lowMin: -4.0
-lowMax: 8.0
-highMin: 0.0
-highMax: 0.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Spawn Shape - 
-shape: ellipse
-edges: false
-side: both
-- Spawn Width - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Spawn Height - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Scale - 
-lowMin: 30.0
-lowMax: 30.0
-highMin: 20.0
-highMax: 60.0
-relative: false
-scalingCount: 2
-scaling0: 0.0
-scaling1: 1.0
-timelineCount: 2
-timeline0: 0.0
-timeline1: 1.0
-- Velocity - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -8.0
-highMax: 8.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Angle - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -360.0
-highMax: 360.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Rotation - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -360.0
-highMax: 360.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Wind - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 10.0
-highMax: -10.0
-relative: false
-scalingCount: 2
-scaling0: 1.0
-scaling1: 0.67346936
-timelineCount: 2
-timeline0: 0.0
-timeline1: 0.9041096
-- Gravity - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -15.0
-highMax: 15.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Tint - 
-colorsCount: 3
-colors0: 0.8784314
-colors1: 0.37254903
-colors2: 0.2
-timelineCount: 1
-timeline0: 0.0
-- Transparency - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 1.0
-highMax: 1.0
-relative: false
-scalingCount: 8
-scaling0: 0.64606744
-scaling1: 1.0
-scaling2: 0.51123595
-scaling3: 1.0
-scaling4: 0.6741573
-scaling5: 0.85393256
-scaling6: 0.45614034
-scaling7: 0.0
-timelineCount: 8
-timeline0: 0.0
-timeline1: 0.20373832
-timeline2: 0.30093458
-timeline3: 0.4504673
-timeline4: 0.5495327
-timeline5: 0.65607476
-timeline6: 0.740726
-timeline7: 1.0
-- Options - 
-attached: false
-continuous: false
-aligned: false
-additive: true
-behind: false
-premultipliedAlpha: true
-- Image Path -
-game_fx_explosion_001.png
-
-
-sparks
-- Delay -
-active: false
-- Duration - 
-lowMin: 1000.0
-lowMax: 1000.0
-- Count - 
-min: 0
-max: 10
-- Emission - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 50.0
-highMax: 50.0
-relative: false
-scalingCount: 2
-scaling0: 1.0
-scaling1: 0.0
-timelineCount: 2
-timeline0: 0.0
-timeline1: 0.12328767
-- Life - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 1000.0
-highMax: 2000.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Life Offset - 
-active: false
-- X Offset - 
-active: false
-- Y Offset - 
-active: false
-- Spawn Shape - 
-shape: ellipse
-edges: false
-side: both
-- Spawn Width - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: -10.0
-highMax: 10.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Spawn Height - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: -20.0
-highMax: 20.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Scale - 
-lowMin: 3.0
-lowMax: 3.0
-highMin: 7.0
-highMax: 7.0
-relative: false
-scalingCount: 2
-scaling0: 1.0
-scaling1: 0.0
-timelineCount: 2
-timeline0: 0.0
-timeline1: 1.0
-- Velocity - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 50.0
-highMax: 100.0
-relative: false
-scalingCount: 5
-scaling0: 1.0
-scaling1: 0.97959185
-scaling2: 0.75510204
-scaling3: 0.2244898
-scaling4: 0.10204082
-timelineCount: 5
-timeline0: 0.0
-timeline1: 0.01369863
-timeline2: 0.14383562
-timeline3: 0.3561644
-timeline4: 0.89726025
-- Angle - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: -45.0
-highMax: -150.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Rotation - 
-active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 15.0
-highMax: -20.0
-relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
-timeline0: 0.0
-- Wind - 
-active: false
-- Gravity - 
-active: false
-- Tint - 
-colorsCount: 3
-colors0: 1.0
-colors1: 0.41960785
-colors2: 0.047058824
-timelineCount: 1
-timeline0: 0.0
-- Transparency - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 1.0
-highMax: 1.0
-relative: false
-scalingCount: 5
-scaling0: 1.0
-scaling1: 1.0
-scaling2: 0.9649123
-scaling3: 0.21052632
-scaling4: 0.12280702
-timelineCount: 5
-timeline0: 0.0
-timeline1: 0.14383562
-timeline2: 0.5684931
-timeline3: 0.6849315
-timeline4: 1.0
-- Options - 
-attached: false
-continuous: false
-aligned: true
-additive: true
-behind: false
-premultipliedAlpha: false
-- Image Path -
-custom_explo_shard_simple_color90_orange.png
-
-
 sparks
 - Delay -
 active: true
@@ -442,8 +79,8 @@ timeline2: 0.89041096
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 100.0
-highMax: 150.0
+highMin: 50.0
+highMax: 60.0
 relative: false
 scalingCount: 4
 scaling0: 1.0
@@ -470,8 +107,8 @@ timeline0: 0.0
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: -40.0
-highMax: 30.0
+highMin: -10.0
+highMax: 10.0
 relative: true
 scalingCount: 1
 scaling0: 1.0
@@ -483,9 +120,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 1.0
-colors1: 0.9490196
-colors2: 0.047058824
+colors0: 0.047058824
+colors1: 0.8666667
+colors2: 1.0
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -514,7 +151,7 @@ additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-custom_explo_shard_simple_color90_long.png
+custom_explo_shard_simple_color90_long_white.png
 
 
 sparks
@@ -581,15 +218,15 @@ timeline0: 0.0
 - Scale - 
 lowMin: 1.0
 lowMax: 1.0
-highMin: 5.0
-highMax: 5.0
+highMin: 15.0
+highMax: 15.0
 relative: false
 scalingCount: 2
-scaling0: 1.0
+scaling0: 0.5102041
 scaling1: 0.0
 timelineCount: 2
 timeline0: 0.0
-timeline1: 1.0
+timeline1: 0.7328767
 - Velocity - 
 active: true
 lowMin: 0.0
@@ -626,9 +263,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 1.0
-colors1: 0.6431373
-colors2: 0.047058824
+colors0: 0.31764707
+colors1: 0.45882353
+colors2: 0.6862745
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -657,7 +294,7 @@ additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-custom_explo_shard_simple_color90.png
+custom_explo_shard_simple_color90_long_white.png
 
 
 white
@@ -688,8 +325,8 @@ timeline3: 0.89726025
 - Life - 
 lowMin: 0.0
 lowMax: 2000.0
-highMin: 500.0
-highMax: 2000.0
+highMin: 1250.0
+highMax: 3000.0
 relative: false
 scalingCount: 4
 scaling0: 0.08163265
@@ -759,8 +396,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 20.0
-highMax: 20.0
+highMin: 5.0
+highMax: 15.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -818,9 +455,9 @@ timelineCount: 1
 timeline0: 0.0
 - Tint - 
 colorsCount: 3
-colors0: 0.7607843
-colors1: 0.4745098
-colors2: 0.1764706
+colors0: 0.62352943
+colors1: 0.5529412
+colors2: 0.6039216
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -832,7 +469,7 @@ relative: false
 scalingCount: 4
 scaling0: 0.0
 scaling1: 0.24561404
-scaling2: 0.07017544
+scaling2: 0.05263158
 scaling3: 0.0
 timelineCount: 4
 timeline0: 0.0
@@ -845,9 +482,9 @@ continuous: false
 aligned: false
 additive: true
 behind: true
-premultipliedAlpha: true
+premultipliedAlpha: false
 - Image Path -
-pre_particle.png
+game_fx_explosion_blur.png
 
 
 burstmono
@@ -855,26 +492,22 @@ burstmono
 active: false
 - Duration - 
 lowMin: 1000.0
-lowMax: 1500.0
+lowMax: 1000.0
 - Count - 
 min: 0
-max: 38
+max: 20
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 50.0
-highMax: 50.0
+highMin: 5.0
+highMax: 5.0
 relative: false
-scalingCount: 4
-scaling0: 0.7755102
-scaling1: 0.7755102
-scaling2: 1.0
-scaling3: 0.3265306
-timelineCount: 4
+scalingCount: 2
+scaling0: 1.0
+scaling1: 1.0
+timelineCount: 2
 timeline0: 0.0
-timeline1: 0.06849315
-timeline2: 0.29452056
-timeline3: 0.89726025
+timeline1: 0.29452056
 - Life - 
 lowMin: 150.0
 lowMax: 250.0
@@ -951,23 +584,21 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 40.0
-highMax: 60.0
+highMin: 10.0
+highMax: 25.0
 relative: false
-scalingCount: 3
-scaling0: 0.0
+scalingCount: 2
+scaling0: 1.0
 scaling1: 1.0
-scaling2: 1.0
-timelineCount: 3
+timelineCount: 2
 timeline0: 0.0
-timeline1: 0.41095892
-timeline2: 1.0
+timeline1: 1.0
 - Velocity - 
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: -8.0
-highMax: 8.0
+highMin: 10.0
+highMax: 10.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -1021,9 +652,9 @@ timelineCount: 1
 timeline0: 0.0
 - Tint - 
 colorsCount: 3
-colors0: 0.41960785
-colors1: 0.39607844
-colors2: 0.3882353
+colors0: 0.3882353
+colors1: 0.4
+colors2: 0.41960785
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -1033,8 +664,8 @@ highMin: 1.0
 highMax: 1.0
 relative: false
 scalingCount: 8
-scaling0: 1.0
-scaling1: 1.0
+scaling0: 0.0
+scaling1: 0.61403507
 scaling2: 0.7894737
 scaling3: 0.8245614
 scaling4: 0.6741573
@@ -1043,7 +674,7 @@ scaling6: 0.47368422
 scaling7: 0.0877193
 timelineCount: 8
 timeline0: 0.0
-timeline1: 0.20373832
+timeline1: 0.20547946
 timeline2: 0.3219178
 timeline3: 0.46575344
 timeline4: 0.5495327
@@ -1058,4 +689,452 @@ additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-game_fx_explosion_003.png
+game_fx_explosion_ball.png
+
+
+Untitled
+- Delay -
+active: false
+- Duration - 
+lowMin: 1000.0
+lowMax: 1000.0
+- Count - 
+min: 0
+max: 15
+- Emission - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 50.0
+highMax: 50.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Life - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 1000.0
+highMax: 2000.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Life Offset - 
+active: false
+- X Offset - 
+active: false
+- Y Offset - 
+active: false
+- Spawn Shape - 
+shape: point
+- Spawn Width - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Spawn Height - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Scale - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 20.0
+highMax: 20.0
+relative: false
+scalingCount: 4
+scaling0: 0.0
+scaling1: 0.7346939
+scaling2: 0.8979592
+scaling3: 0.2244898
+timelineCount: 4
+timeline0: 0.0
+timeline1: 0.21917808
+timeline2: 0.84246576
+timeline3: 1.0
+- Velocity - 
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 20.0
+highMax: 30.0
+relative: false
+scalingCount: 3
+scaling0: 1.0
+scaling1: 0.8367347
+scaling2: 0.3265306
+timelineCount: 3
+timeline0: 0.0
+timeline1: 0.45890412
+timeline2: 0.8767123
+- Angle - 
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 100.0
+highMax: 250.0
+relative: true
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Rotation - 
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 360.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Wind - 
+active: false
+- Gravity - 
+active: false
+- Tint - 
+colorsCount: 3
+colors0: 0.3372549
+colors1: 0.4745098
+colors2: 0.5058824
+timelineCount: 1
+timeline0: 0.0
+- Transparency - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 1.0
+highMax: 1.0
+relative: false
+scalingCount: 5
+scaling0: 0.0
+scaling1: 0.68421054
+scaling2: 0.1754386
+scaling3: 0.15789473
+scaling4: 0.0
+timelineCount: 5
+timeline0: 0.0
+timeline1: 0.24657534
+timeline2: 0.4520548
+timeline3: 0.70547944
+timeline4: 0.8767123
+- Options - 
+attached: false
+continuous: false
+aligned: false
+additive: true
+behind: false
+premultipliedAlpha: false
+- Image Path -
+game_fx_explosion_001_black.png
+
+
+Untitled
+- Delay -
+active: false
+- Duration - 
+lowMin: 1000.0
+lowMax: 1000.0
+- Count - 
+min: 0
+max: 15
+- Emission - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 50.0
+highMax: 50.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Life - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 1000.0
+highMax: 2000.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Life Offset - 
+active: false
+- X Offset - 
+active: false
+- Y Offset - 
+active: false
+- Spawn Shape - 
+shape: point
+- Spawn Width - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Spawn Height - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Scale - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 32.0
+highMax: 32.0
+relative: false
+scalingCount: 3
+scaling0: 0.0
+scaling1: 0.42857143
+scaling2: 1.0
+timelineCount: 3
+timeline0: 0.0
+timeline1: 0.25342464
+timeline2: 1.0
+- Velocity - 
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 20.0
+highMax: 30.0
+relative: false
+scalingCount: 3
+scaling0: 1.0
+scaling1: 0.8367347
+scaling2: 0.3265306
+timelineCount: 3
+timeline0: 0.0
+timeline1: 0.45890412
+timeline2: 0.8767123
+- Angle - 
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 10.0
+highMax: 50.0
+relative: true
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Rotation - 
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 360.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Wind - 
+active: false
+- Gravity - 
+active: false
+- Tint - 
+colorsCount: 6
+colors0: 0.28627452
+colors1: 0.18431373
+colors2: 0.18039216
+colors3: 0.08627451
+colors4: 0.08627451
+colors5: 0.07058824
+timelineCount: 2
+timeline0: 0.0
+timeline1: 1.0
+- Transparency - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 1.0
+highMax: 1.0
+relative: false
+scalingCount: 5
+scaling0: 0.0
+scaling1: 0.68421054
+scaling2: 1.0
+scaling3: 0.8245614
+scaling4: 0.36842105
+timelineCount: 5
+timeline0: 0.0
+timeline1: 0.24657534
+timeline2: 0.5068493
+timeline3: 0.77397263
+timeline4: 0.9589041
+- Options - 
+attached: false
+continuous: false
+aligned: false
+additive: true
+behind: false
+premultipliedAlpha: false
+- Image Path -
+game_fx_explosion_001_black.png
+
+
+Untitled
+- Delay -
+active: false
+- Duration - 
+lowMin: 1000.0
+lowMax: 1000.0
+- Count - 
+min: 0
+max: 10
+- Emission - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 50.0
+highMax: 50.0
+relative: false
+scalingCount: 2
+scaling0: 1.0
+scaling1: 0.0
+timelineCount: 2
+timeline0: 0.0
+timeline1: 0.061643835
+- Life - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 500.0
+highMax: 500.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Life Offset - 
+active: false
+- X Offset - 
+active: false
+- Y Offset - 
+active: true
+lowMin: -10.0
+lowMax: 10.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Spawn Shape - 
+shape: point
+- Spawn Width - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Spawn Height - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 0.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Scale - 
+lowMin: 1.0
+lowMax: 1.0
+highMin: 3.0
+highMax: 3.0
+relative: false
+scalingCount: 3
+scaling0: 1.0
+scaling1: 0.42857143
+scaling2: 0.0
+timelineCount: 3
+timeline0: 0.0
+timeline1: 0.10958904
+timeline2: 0.53424656
+- Velocity - 
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 15.0
+highMax: 15.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Angle - 
+active: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: 0.0
+highMax: 360.0
+relative: false
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Rotation - 
+active: false
+- Wind - 
+active: false
+- Gravity - 
+active: false
+- Tint - 
+colorsCount: 3
+colors0: 0.43529412
+colors1: 0.5803922
+colors2: 1.0
+timelineCount: 1
+timeline0: 0.0
+- Transparency - 
+lowMin: 0.0
+lowMax: 0.0
+highMin: 1.0
+highMax: 1.0
+relative: false
+scalingCount: 5
+scaling0: 0.05263158
+scaling1: 0.31578946
+scaling2: 0.8245614
+scaling3: 1.0
+scaling4: 0.0
+timelineCount: 5
+timeline0: 0.0
+timeline1: 0.14383562
+timeline2: 0.3561644
+timeline3: 0.5753425
+timeline4: 1.0
+- Options - 
+attached: false
+continuous: false
+aligned: false
+additive: true
+behind: false
+premultipliedAlpha: false
+- Image Path -
+/Users/Ciemek/dev/projects/Gamedesire/particle.png

@@ -87,6 +87,7 @@ public class SpaceInvadersScreen implements Screen {
     public void render(float delta) {
         if (actorHolder.getActualActorsSize() <= 1) {
             actorHolder.spawnLevel();
+            actorHolder.updateAllActorsAtNextLevel();
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
