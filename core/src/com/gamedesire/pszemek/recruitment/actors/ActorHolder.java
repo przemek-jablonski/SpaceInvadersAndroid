@@ -54,6 +54,7 @@ public class ActorHolder {
     //dev only, refactor!:
     ParticleEffect exploParticle;
 
+    public boolean levelCleared = true;
 
     private int heroPoints;
 
@@ -84,6 +85,10 @@ public class ActorHolder {
         //todo: move it to another method?
         if(touchProcessor.isTouchPressedDown())
             spawnProjectile(getHero(), ActorType.HERO);
+
+        if (actors.size <= 1)
+            if (!levelCleared)
+                levelCleared = true;
 
 
         //iterating over actors
@@ -117,7 +122,7 @@ public class ActorHolder {
             //check if is out of screen
             if(checkActorOutOfScreen(projectile))
                 if (disposeActor(projectile)) {
-                    System.err.println("ACTOR (projectile) DISPOSED, pos: " + projectile.getActorPosition());
+                    System.err.println("ACTOR (projectile) DISPOSED, pos: " + projectile.getActorPosition() + ", act size: " + actors.size);
                 }
 
             //check for collisions
@@ -210,113 +215,88 @@ public class ActorHolder {
 
     public void spawnLevel() {
         ++actualLevel;
+        System.err.println("SPAWNING: SPAWNLEVEL / actual level: " + actualLevel);
+        if (actualLevel == 1) {
+            spawnLevel1();
+            return;
+        }
+        if (actualLevel == 2) {
+            spawnLevel2();
+            return;
+        }
+        if (actualLevel == 3) {
+            spawnLevel3();
+            return;
+        }
+        if (actualLevel == 4) {
+            spawnLevel4();
+            return;
+        }
+        if (actualLevel == 5) {
+            spawnLevel5();
+            return;
+        }
+
+        spawnLevelProcedural(actualLevel);
+
     }
 
     public void spawnLevel1(){
-        ++actualLevel;
-//        int enemiesInWave = 2;
-//        for (int i=0; i < enemiesInWave; ++i)
-////            actors.add(
-////                    new EnemyActor(
-////                            (AssetRouting.getEnemy001Texture().getWidth()/1.75f) + ((Constants.PREF_WIDTH / 5) * i),
-////                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-////                            Constants.VECTOR_DIRECTION_DOWN
-////                    ));
-//            actors.add(
-//                    new EnemyActor(
-//                            (Constants.PREF_WIDTH / enemiesInWave + 1) * (i + 1) - AssetRouting.getEnemy001Texture().getHeight() / 1.5f,
-//                            0 +Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-//                            Constants.VECTOR_DIRECTION_DOWN
-//                    ));
-        int enemiesInWave = 1;
-        for (int i=0; i<enemiesInWave; ++i)
-            actors.add(
-                    new EnemyActor(
-                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * 0 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
-
-        enemiesInWave = 2;
-        for (int i=0; i<enemiesInWave; ++i)
-            actors.add(
-                    new EnemyActor(
-                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * 2 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
-
-        enemiesInWave = 3;
-        for (int i=0; i<enemiesInWave; ++i)
-            actors.add(
-                    new EnemyActor(
-                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * 4 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
-
-        enemiesInWave = 4;
-        for (int i=0; i<enemiesInWave; ++i)
-            actors.add(
-                    new EnemyActor(
-                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * 6 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
-
-        enemiesInWave = 5;
-        for (int i=0; i<enemiesInWave; ++i)
-            actors.add(
-                    new EnemyActor(
-                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * 8 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
-
+        System.err.println("SPAWNING: SPAWNLEVEL 1/ actual level: " + actualLevel);
+        spawnEnemyWave(2, 1);
+        spawnEnemyWave(3, 2);
     }
 
-
     public void spawnLevel2(){
-        for (int i=0; i < 5; ++i)
-            actors.add(
-                    new EnemyActor(
-                            0 + ((Constants.PREF_WIDTH / 5) * i) + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD + AssetRouting.getEnemy001Texture().getWidth(),
-                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight(),
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
-
-        for (int i=0; i < 5; ++i)
-            actors.add(
-                    new EnemyActor(
-                            0 + ((Constants.PREF_WIDTH / 5) * i) + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD + AssetRouting.getEnemy001Texture().getWidth(),
-                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2.5f,
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
-
+        System.err.println("SPAWNING: SPAWNLEVEL 2/ actual level: " + actualLevel);
+        spawnEnemyWave(1, 1);
+        spawnEnemyWave(3, 2);
+        spawnEnemyWave(4, 3);
     }
 
     public void spawnLevel3() {
-        for (int i=0; i < 5; ++i)
-            actors.add(
-                    new EnemyActor(
-                            0 + ((Constants.PREF_WIDTH / 5) * i),
-                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight(),
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
+        System.err.println("SPAWNING: SPAWNLEVEL 3/ actual level: " + actualLevel);
+        spawnEnemyWave(1, 1); //todo: here should be spawned enemy002
+        spawnEnemyWave(3, 2);
+        spawnEnemyWave(5, 3); //todo: here as well (in the middle)
+    }
 
-        for (int i=0; i < 5; ++i)
-            actors.add(
-                    new EnemyActor(
-                            0 + ((Constants.PREF_WIDTH / 5) * i),
-                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2.5f,
-                            Constants.VECTOR_DIRECTION_DOWN
-                    ));
+    public void spawnLevel4() {
+        System.err.println("SPAWNING: SPAWNLEVEL 4/ actual level: " + actualLevel);
+        spawnEnemyWave(2, 1);
+        spawnEnemyWave(2, 2);
+        spawnEnemyWave(3, 3); //todo: here on the sides
+        spawnEnemyWave(4, 4);
+        spawnEnemyWave(5, 5); //todo: here as well (in the middle)
+    }
 
-        for (int i=0; i < 5; ++i)
+
+    public void spawnLevel5() {
+        System.err.println("SPAWNING: SPAWNLEVEL 5/ actual level: " + actualLevel);
+        spawnEnemyWave(4, 1);
+        spawnEnemyWave(3, 2); //todo: all enemies002
+        spawnEnemyWave(3, 3); //todo: 002 + 003 in the middle
+        spawnEnemyWave(4, 4); //todo: 2x 003
+        spawnEnemyWave(5, 5); //todo: all 001
+    }
+
+    public void spawnLevelProcedural(int levelNumber) {
+        int waveHeight = 0;
+        for (int i=0; i < levelNumber + MathUtils.random(-1, 3); ++i) {
+            waveHeight += i;
+            waveHeight += MathUtils.random(0f, 0.5f);
+            spawnEnemyWave(MathUtils.clamp(MathUtils.random(0,3) + MathUtils.random(1, 4), 1, 5), waveHeight);
+        }
+
+    }
+
+
+    private void spawnEnemyWave(int enemyCount, int heightLine) {
+        for (int e=0; e<enemyCount; ++e)
             actors.add(
                     new EnemyActor(
-                            0 + ((Constants.PREF_WIDTH / 5) * i),
-                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 5f,
+                            (Constants.PREF_WIDTH / (enemyCount + 1)) * (e+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
                             Constants.VECTOR_DIRECTION_DOWN
                     ));
     }
@@ -386,18 +366,25 @@ public class ActorHolder {
     private boolean disposeActor(SpaceInvadersActor actor) {
         if (actor instanceof ProjectileActor)
             return projectiles.removeValue((ProjectileActor) actor, false);
-        for (ParticleEmitter emitter : exploParticle.getEmitters())
+        if (actor instanceof EnemyActor) {
+            for (ParticleEmitter emitter : exploParticle.getEmitters())
                 emitter.setPosition(actor.getActorPosition().x, actor.getActorPosition().y);
-        exploParticle.start();
 
-        //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
-//        heroPoints += Constants.BASE_POINTS_FOR_ENEMY + BASEPOINTSFORENEMY * actualLevel * 0.25f + hp;
-        heroPoints += 100;
+            exploParticle.start();
 
-        System.err.println("HERO POINTS SHOULD BE ADDED HERE (val:" + heroPoints + ")");
+            //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
+            heroPoints += Constants.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
 
+//            ((EnemyActor) actor).getSprite().setAlpha(0f);
+//            ((EnemyActor) actor).getSprite().setColor(1f, 1f, 1f, 0.5f);
 
-        return actors.removeValue(actor, false);
+//            actor.setPosition(0, Constants.PREF_HEIGHT * 3);
+//            actor.setDirection(0f, 0f);
+
+            return actors.removeValue(actor, false);
+
+        }
+        return false;
     }
 
 
@@ -441,5 +428,9 @@ public class ActorHolder {
 
     public short getActualLevel() {
         return actualLevel;
+    }
+
+    public int getActualActorsSize() {
+        return actors.size;
     }
 }

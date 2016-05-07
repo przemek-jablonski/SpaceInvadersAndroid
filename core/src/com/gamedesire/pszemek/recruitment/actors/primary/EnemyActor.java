@@ -1,6 +1,8 @@
 package com.gamedesire.pszemek.recruitment.actors.primary;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.EnemyActorType;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
@@ -14,10 +16,10 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
     //todo: this is lame architecture, because at the end of a tick there is a need to iterate over
     //todo:   ALL of the actors, to check whether it's alive or not.
     //todo:   - come up with solution that will pass info to actorholder in order to delete this actor.
-    boolean     dead;
-    boolean     shoot;
-    boolean     visible;
-
+    boolean         dead;
+    boolean         shoot;
+    public boolean  visible = true;
+    private EnemyActorType enemyType;
 
     public EnemyActor(Vector2 location, Vector2 direction) {
         super(AssetRouting.getEnemy001Sprite(), location, direction);
@@ -39,12 +41,11 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
         updatePosition();
         //todo: maybe here check for hp amount?
         if (actualHealthPoints == 0)
-            onDeath();
+            if (!dead)
+                onDeath();
 
             if (!shoot)
                 shoot = true;
-
-
     }
 
     @Override
@@ -86,6 +87,11 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
     public void onDeath() {
         System.err.println("DEATH, hp: " + actualHealthPoints + ", sp: " + actualShieldPoints);
         dead = true;
+//        actorSprite.setAlpha(0f);
+        //fixme: THIS SHOULD BE IN RENDERING CLASS, NOT IN ENTITY
+//        actorSprite.setColor(actorSprite.getColor().r, actorSprite.getColor().g, actorSprite.getColor().b, 0f);
+//        actorSprite.setAlpha(0f);
+
     }
 
     public boolean isDead() {
@@ -98,5 +104,9 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
 
     public void setShot() {
         shoot = false;
+    }
+
+    public Sprite getSprite() {
+        return actorSprite;
     }
 }

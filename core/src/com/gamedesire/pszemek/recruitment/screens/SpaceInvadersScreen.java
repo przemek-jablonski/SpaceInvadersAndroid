@@ -56,9 +56,6 @@ public class SpaceInvadersScreen implements Screen {
     public void show() {
 
         actorHolder.spawnHero();
-        actualLevel = 0;
-//        actorHolder.spawnEnemiesTest();
-        actorHolder.spawnLevel1();
 
         backgroundSprite = new Sprite(new Texture("ui_bg_main_tile.png"));
 
@@ -88,9 +85,9 @@ public class SpaceInvadersScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-
-
+        if (actorHolder.getActualActorsSize() <= 1) {
+            actorHolder.spawnLevel();
+        }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -99,6 +96,8 @@ public class SpaceInvadersScreen implements Screen {
 
         debugUI.updateHeroPoints(actorHolder.getHeroPoints());
         debugUI.updateLevel(actorHolder.getActualLevel());
+        debugUI.updateHP(actorHolder.getHero().getActualHealthPoints());
+        debugUI.updateSP(actorHolder.getHero().getActualShieldPoints());
 
 
         mainGameClass.getSpriteBatch().begin();
@@ -111,8 +110,6 @@ public class SpaceInvadersScreen implements Screen {
         actorHolder.renderAll(mainGameClass.getSpriteBatch());
 
         mainGameClass.getSpriteBatch().end();
-
-//        prevScreen = ScreenUtils.getFrameBufferTexture();
 
         debugUI.update();
         debugUI.render();

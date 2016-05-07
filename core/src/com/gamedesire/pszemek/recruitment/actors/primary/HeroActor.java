@@ -26,6 +26,7 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
     public void create() {
         rateOfFireIntervalMillis = Constants.RATEOFFIRE_INTERVAL_PLAYER_BASE;
         velocityValue = Constants.VELOCITY_VALUE_PLAYER;
+        onSpawn();
     }
 
     @Override
@@ -41,6 +42,10 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
     @Override
     public void onSpawn() {
         System.err.println("HERO SPAWNED");
+        maxHealthPoints = 45;
+        maxShieldPoints = 10;
+        actualHealthPoints = maxHealthPoints;
+        actualShieldPoints = maxShieldPoints;
     }
 
     @Override

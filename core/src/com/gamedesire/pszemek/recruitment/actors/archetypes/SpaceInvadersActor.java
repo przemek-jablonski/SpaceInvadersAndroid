@@ -18,7 +18,8 @@ public abstract class SpaceInvadersActor {
     protected Sprite    actorSprite;
     protected float     velocityValue;
     protected float     accelerationValue;
-    protected Vector2   directionVector;
+    protected float     directionX;
+    protected float     directionY;
     private   Vector2   temporaryMovementVector;
     protected long      rateOfFireIntervalMillis;
     protected long      lastFiredMillis;
@@ -41,7 +42,8 @@ public abstract class SpaceInvadersActor {
     public SpaceInvadersActor(Sprite actorSprite, Vector2 location, Vector2 directionVector) {
 
         this.actorSprite = actorSprite;
-        this.directionVector = directionVector;
+        directionX = directionVector.x;
+        directionY = directionVector.y;
         velocityValue = 1;
         rateOfFireIntervalMillis = 500;
         lastFiredMillis = System.currentTimeMillis();
@@ -68,7 +70,8 @@ public abstract class SpaceInvadersActor {
     }
 
     public void setDirection(float x, float y) {
-        directionVector.set(x, y);
+        directionX = x;
+        directionY = y;
     }
 
     public void setPosition(float x, float y) {
@@ -78,8 +81,8 @@ public abstract class SpaceInvadersActor {
     public void updatePosition() {
         if (this instanceof HeroActor && !Gdx.input.isTouched()) return;
             setPosition(
-                    getActorPosition().x + (directionVector.x * velocityValue) * Gdx.graphics.getDeltaTime(),
-                    getActorPosition().y + (directionVector.y * velocityValue) * Gdx.graphics.getDeltaTime());
+                    getActorPosition().x + (directionX * velocityValue) * Gdx.graphics.getDeltaTime(),
+                    getActorPosition().y + (directionY * velocityValue) * Gdx.graphics.getDeltaTime());
     }
 
     public void setLastFiredMillis(long lastFiredMillis) {
@@ -92,7 +95,7 @@ public abstract class SpaceInvadersActor {
     }
 
     public Vector2 getActorDirection() {
-        return directionVector;
+        return new Vector2(directionX, directionY);
     }
 
     public long getRateOfFireIntervalMillis() {
@@ -104,8 +107,22 @@ public abstract class SpaceInvadersActor {
     }
 
     public Rectangle getBoundingRectangle() {
-//        return actorSprite.getBoundingRectangle();
-//        return new Rectangle(getActorPosition().x, getActorPosition().y, actorSprite.getTexture().getWidth(), actorSprite.getTexture().getHeight());
         return new Rectangle(actorSprite.getX(), actorSprite.getY(), actorSprite.getTexture().getWidth(), actorSprite.getTexture().getHeight());
+    }
+
+    public int getActualHealthPoints() {
+        return actualHealthPoints;
+    }
+
+    public int getActualShieldPoints() {
+        return actualShieldPoints;
+    }
+
+    public int getMaxHealthPoints() {
+        return maxHealthPoints;
+    }
+
+    public int getMaxShieldPoints() {
+        return maxShieldPoints;
     }
 }

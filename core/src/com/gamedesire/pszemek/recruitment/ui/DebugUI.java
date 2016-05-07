@@ -68,15 +68,6 @@ public class DebugUI extends AbstractBaseUI {
     }
 
 
-    public void updateHeroPoints(int heroPoints) {
-        this.heroPoints = heroPoints;
-    }
-
-    public void updateLevel(int gameLevel) {
-        this.gameLevel = gameLevel;
-    }
-
-
     @Override
     public void create() {
         //// FIXME: 06/05/16 this should be done in logic (model) class, not in UI class, come on...
@@ -166,9 +157,12 @@ public class DebugUI extends AbstractBaseUI {
     public void update() {
         actualTime = (long)((System.currentTimeMillis() - startTime) / 1000f);
 
+        //// FIXME: 07/05/16 Longs here are not nessesary, refactor variables type to Integer
         labelRightTime.setText(Long.toString(actualTime));
         labelRightPoints.setText(Integer.toString(heroPoints));
         labelRightLevel.setText(Long.toString(gameLevel));
+        labelLeftHP.setText(Long.toString(heroHP));
+        labelLeftHP.setText(Long.toString(heroSP));
 
 //        labelFrames.setText(Float.toString(Gdx.graphics.getFramesPerSecond()));
 //        labelDelta.setText(Float.toString(Gdx.graphics.getDeltaTime()));
@@ -181,6 +175,25 @@ public class DebugUI extends AbstractBaseUI {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
+
+
+
+    public void updateHP(int actualHealthPoints) {
+        heroHP = actualHealthPoints;
+    }
+
+    public void updateSP(int actualShieldPoints) {
+        heroSP = actualShieldPoints;
+    }
+
+    public void updateHeroPoints(int heroPoints) {
+        this.heroPoints = heroPoints;
+    }
+
+    public void updateLevel(int gameLevel) {
+        this.gameLevel = gameLevel;
+    }
+
 
 
     public Stage getStage() {

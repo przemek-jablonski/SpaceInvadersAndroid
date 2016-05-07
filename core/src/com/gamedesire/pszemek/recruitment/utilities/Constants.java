@@ -39,4 +39,5 @@ public class Constants {
 
     public static final float RATEOFFIRE_RANDOM_BINARY = MathUtils.random(0f, 1f);
 
+    public static final int BASE_POINTS_FOR_ENEMY = 50;
 }
