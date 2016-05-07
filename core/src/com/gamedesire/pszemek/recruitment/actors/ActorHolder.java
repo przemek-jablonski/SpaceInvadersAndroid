@@ -55,7 +55,13 @@ public class ActorHolder {
     ParticleEffect exploParticle;
 
 
+    private int heroPoints;
+
+
     public ActorHolder(TouchProcessor touchProcessor) {
+
+        heroPoints = 0;
+
         this.touchProcessor = touchProcessor;
 
         actors = new DelayedRemovalArray<SpaceInvadersActor>();
@@ -202,6 +208,120 @@ public class ActorHolder {
     }
 
 
+    public void spawnLevel() {
+        ++actualLevel;
+    }
+
+    public void spawnLevel1(){
+        ++actualLevel;
+//        int enemiesInWave = 2;
+//        for (int i=0; i < enemiesInWave; ++i)
+////            actors.add(
+////                    new EnemyActor(
+////                            (AssetRouting.getEnemy001Texture().getWidth()/1.75f) + ((Constants.PREF_WIDTH / 5) * i),
+////                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+////                            Constants.VECTOR_DIRECTION_DOWN
+////                    ));
+//            actors.add(
+//                    new EnemyActor(
+//                            (Constants.PREF_WIDTH / enemiesInWave + 1) * (i + 1) - AssetRouting.getEnemy001Texture().getHeight() / 1.5f,
+//                            0 +Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+//                            Constants.VECTOR_DIRECTION_DOWN
+//                    ));
+        int enemiesInWave = 1;
+        for (int i=0; i<enemiesInWave; ++i)
+            actors.add(
+                    new EnemyActor(
+                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * 0 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+        enemiesInWave = 2;
+        for (int i=0; i<enemiesInWave; ++i)
+            actors.add(
+                    new EnemyActor(
+                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * 2 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+        enemiesInWave = 3;
+        for (int i=0; i<enemiesInWave; ++i)
+            actors.add(
+                    new EnemyActor(
+                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * 4 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+        enemiesInWave = 4;
+        for (int i=0; i<enemiesInWave; ++i)
+            actors.add(
+                    new EnemyActor(
+                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * 6 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+        enemiesInWave = 5;
+        for (int i=0; i<enemiesInWave; ++i)
+            actors.add(
+                    new EnemyActor(
+                            (Constants.PREF_WIDTH / (enemiesInWave + 1)) * (i+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * 8 + Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+    }
+
+
+    public void spawnLevel2(){
+        for (int i=0; i < 5; ++i)
+            actors.add(
+                    new EnemyActor(
+                            0 + ((Constants.PREF_WIDTH / 5) * i) + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD + AssetRouting.getEnemy001Texture().getWidth(),
+                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight(),
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+        for (int i=0; i < 5; ++i)
+            actors.add(
+                    new EnemyActor(
+                            0 + ((Constants.PREF_WIDTH / 5) * i) + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD + AssetRouting.getEnemy001Texture().getWidth(),
+                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2.5f,
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+    }
+
+    public void spawnLevel3() {
+        for (int i=0; i < 5; ++i)
+            actors.add(
+                    new EnemyActor(
+                            0 + ((Constants.PREF_WIDTH / 5) * i),
+                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight(),
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+        for (int i=0; i < 5; ++i)
+            actors.add(
+                    new EnemyActor(
+                            0 + ((Constants.PREF_WIDTH / 5) * i),
+                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2.5f,
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+
+        for (int i=0; i < 5; ++i)
+            actors.add(
+                    new EnemyActor(
+                            0 + ((Constants.PREF_WIDTH / 5) * i),
+                            Constants.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 5f,
+                            Constants.VECTOR_DIRECTION_DOWN
+                    ));
+    }
+
+
     /**
      * Performing simple check whether given enemy is requesting for projectile spawn on it's behalf.
      *
@@ -269,6 +389,14 @@ public class ActorHolder {
         for (ParticleEmitter emitter : exploParticle.getEmitters())
                 emitter.setPosition(actor.getActorPosition().x, actor.getActorPosition().y);
         exploParticle.start();
+
+        //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
+//        heroPoints += Constants.BASE_POINTS_FOR_ENEMY + BASEPOINTSFORENEMY * actualLevel * 0.25f + hp;
+        heroPoints += 100;
+
+        System.err.println("HERO POINTS SHOULD BE ADDED HERE (val:" + heroPoints + ")");
+
+
         return actors.removeValue(actor, false);
     }
 
@@ -307,4 +435,11 @@ public class ActorHolder {
         return (HeroActor)actors.get(0);
     }
 
+    public int getHeroPoints() {
+        return heroPoints;
+    }
+
+    public short getActualLevel() {
+        return actualLevel;
+    }
 }

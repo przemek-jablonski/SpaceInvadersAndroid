@@ -96,11 +96,11 @@ public class TouchProcessorMobile extends TouchProcessor {
 //        System.err.print("dir: " + differenceVector + "\n");
 
         controlledActor.setDirection(differenceVector);
-        System.err.println("touchpos: " + screenVector);
+//        System.err.println("touchpos: " + screenVector);
 
         Vector3 worldCoordinates = screen.getCamera().unproject(new Vector3(screenX,screenY,0));
 //        worldCoordinates = new Vector3(worldCoordinates.x, worldCoordinates.y, 0);
-        System.err.println("touchpos, projected at: " + worldCoordinates.x + "," + worldCoordinates.y);
+//        System.err.println("touchpos, projected at: " + worldCoordinates.x + "," + worldCoordinates.y);
 
         Vector2 stackCoordinates = new Vector2(screenX, screenY);
 //        screen.

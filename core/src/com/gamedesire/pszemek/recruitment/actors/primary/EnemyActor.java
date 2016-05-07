@@ -16,6 +16,7 @@ public class EnemyActor extends SpaceInvadersActor implements IDamageable {
     //todo:   - come up with solution that will pass info to actorholder in order to delete this actor.
     boolean     dead;
     boolean     shoot;
+    boolean     visible;
 
 
     public EnemyActor(Vector2 location, Vector2 direction) {

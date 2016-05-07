@@ -4,17 +4,13 @@ package com.gamedesire.pszemek.recruitment.screens;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gamedesire.pszemek.recruitment.MainGameClass;
@@ -45,7 +41,8 @@ public class SpaceInvadersScreen implements Screen {
     private TextureRegion prevScreen;
     private Texture       prevScreenTex;
 
-    private long          heroPoints;
+    private int          heroPoints;
+    private int         actualLevel;
 
 
 
@@ -57,22 +54,20 @@ public class SpaceInvadersScreen implements Screen {
 
     @Override
     public void show() {
+
         actorHolder.spawnHero();
-        actorHolder.spawnEnemiesTest();
-
-
+        actualLevel = 0;
+//        actorHolder.spawnEnemiesTest();
+        actorHolder.spawnLevel1();
 
         backgroundSprite = new Sprite(new Texture("ui_bg_main_tile.png"));
-        //todo: figure out why this camera shit is not working
-//        camera = new OrthographicCamera();
-//        viewport = new FitViewport(Constants.PREF_WIDTH, Constants.PREF_HEIGHT, camera);
 
-//        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         camera = new OrthographicCamera();
 
         viewport = new ScalingViewport(Scaling.stretch, Constants.PREF_WIDTH, Constants.PREF_HEIGHT, camera);
         viewport.apply();
-        camera.translate(camera.viewportWidth/2,camera.viewportHeight/2);
+        camera.translate(camera.viewportWidth / 2, camera.viewportHeight / 2);
 
 
         Utils.initialize();
@@ -94,10 +89,16 @@ public class SpaceInvadersScreen implements Screen {
     @Override
     public void render(float delta) {
 
+
+
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
+
+        debugUI.updateHeroPoints(actorHolder.getHeroPoints());
+        debugUI.updateLevel(actorHolder.getActualLevel());
 
 
         mainGameClass.getSpriteBatch().begin();

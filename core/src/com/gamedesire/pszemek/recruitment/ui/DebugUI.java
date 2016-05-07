@@ -32,9 +32,9 @@ public class DebugUI extends AbstractBaseUI {
     private long    heroHP = 50;
     private long    heroSP = 0;
 
-    private long    heroPoints = 1234;
+    private int    heroPoints;
     private long    gameTime;
-    private long    gameLevel = 1;
+    private long    gameLevel;
 
 
 //    private Label   labelFrames;
@@ -65,6 +65,15 @@ public class DebugUI extends AbstractBaseUI {
         super(batch);
         viewport = new FitViewport(Constants.PREF_WIDTH, Constants.PREF_HEIGHT);
         stage = new Stage(viewport, batch);
+    }
+
+
+    public void updateHeroPoints(int heroPoints) {
+        this.heroPoints = heroPoints;
+    }
+
+    public void updateLevel(int gameLevel) {
+        this.gameLevel = gameLevel;
     }
 
 
@@ -158,6 +167,8 @@ public class DebugUI extends AbstractBaseUI {
         actualTime = (long)((System.currentTimeMillis() - startTime) / 1000f);
 
         labelRightTime.setText(Long.toString(actualTime));
+        labelRightPoints.setText(Integer.toString(heroPoints));
+        labelRightLevel.setText(Long.toString(gameLevel));
 
 //        labelFrames.setText(Float.toString(Gdx.graphics.getFramesPerSecond()));
 //        labelDelta.setText(Float.toString(Gdx.graphics.getDeltaTime()));
