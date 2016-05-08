@@ -31,19 +31,6 @@ import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
 public class SpaceInvadersScreen implements Screen {
 
 
-    private SpriteBatch spriteBatch;
-
-    private SpaceInvadersUI         spaceInvadersUI;
-//    private OrthographicCamera      camera;
-//    private Viewport                viewport;
-
-    private Sprite          backgroundSprite;
-//    private ShapeRenderer   backgroundGradient;
-
-
-
-
-
     //model:
     private SpaceInvadersSceneModel sceneModel;
 
@@ -54,11 +41,7 @@ public class SpaceInvadersScreen implements Screen {
     private AbstractTouchProcessor  touchProcessor;
 
 
-//    Texture vlt = AssetRouting.getVignetteLTTexture();
-//    Texture vlb = AssetRouting.getVignetteLBTexture();
-//    Texture vrt = AssetRouting.getVignetteRTTexture();
-//    Texture vrb = AssetRouting.getVignetteRBTexture();
-
+    private SpriteBatch spriteBatch;
 
 
     public SpaceInvadersScreen(MainGameClass game) {
@@ -73,27 +56,8 @@ public class SpaceInvadersScreen implements Screen {
 
     @Override
     public void show() {
-
         sceneModel.create();
 
-
-        //cameras and stuff
-//        camera = new OrthographicCamera();
-//        viewport = new ScalingViewport(Scaling.stretch, Const.PREF_WIDTH, Const.PREF_HEIGHT, camera);
-//        viewport.apply();
-//        camera.translate(camera.viewportWidth / 2, camera.viewportHeight / 2);
-
-        //background assets
-//        backgroundGradient = new ShapeRenderer();
-//        backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
-        backgroundSprite = AssetRouting.getBackgroundSprite();
-
-
-        //ui
-        spaceInvadersUI = new SpaceInvadersUI(spriteBatch);
-        spaceInvadersUI.create();
-
-        //touchprocessor
         touchProcessor.registerCamera(sceneRenderer.getCamera());
         touchProcessor.registerControlledActor(sceneModel.getActorHolder().getHero());
         Gdx.input.setInputProcessor(touchProcessor);
@@ -103,31 +67,9 @@ public class SpaceInvadersScreen implements Screen {
 
     @Override
     public void render(float deltaTime) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        camera.update();
         sceneModel.update(deltaTime);
-
-        spriteBatch.begin();
-        setRenderBackground();
-
-        spriteBatch.setProjectionMatrix(spaceInvadersUI.getStage().getCamera().combined);
-
-//        sceneModel.getActorHolder().renderAll(spriteBatch);
-
         sceneRenderer.render(deltaTime);
-
-        //vignettes:
-//        Color col = spriteBatch.getColor();
-//        spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
-//        spriteBatch.draw(vlb, 0f, 0f, vlb.getWidth(), vlb.getHeight());
-//        spriteBatch.draw(vlt, 0f, Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
-//        spriteBatch.draw(vrt, Gdx.graphics.getWidth() - vrt.getWidth(), Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
-//        spriteBatch.draw(vrb, Gdx.graphics.getWidth() - vrt.getWidth(), 0f, vlt.getWidth(), vlt.getHeight());
-//        spriteBatch.setColor(col);
-
-        spriteBatch.end();
 
 
         //// TODO: 08/05/16 maybe UI must be rendered OUT OF SPRITE BATCH BOUNDARIES (after end)?
@@ -135,9 +77,7 @@ public class SpaceInvadersScreen implements Screen {
 //        spaceInvadersUI.updateLevel(actorHolder.getActualLevel());
 //        spaceInvadersUI.updateHP(actorHolder.getHero().getActualHealthPoints());
 //        spaceInvadersUI.updateSP(actorHolder.getHero().getActualShieldPoints());
-        spaceInvadersUI.update();
-        spaceInvadersUI.render();
-        spaceInvadersUI.getStage().draw();
+
     }
 
     private void setRenderBackground() {
@@ -157,7 +97,7 @@ public class SpaceInvadersScreen implements Screen {
 //                Utils.getColorFrom255(80, 0, 40, 1));
 //        backgroundGradient.end();
 
-        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Scaling;
@@ -29,10 +30,12 @@ public class SpaceInvadersScreenRenderer implements Disposable{
     private Camera              camera;
     private Viewport            viewport;
 
-    Texture vlt = AssetRouting.getVignetteLTTexture();
-    Texture vlb = AssetRouting.getVignetteLBTexture();
-    Texture vrt = AssetRouting.getVignetteRTTexture();
-    Texture vrb = AssetRouting.getVignetteRBTexture();
+    private Texture vignetteLeftTop = AssetRouting.getVignetteLTTexture();
+    private Texture vignetteLeftBottom = AssetRouting.getVignetteLBTexture();
+    private Texture vignetteRightTop = AssetRouting.getVignetteRTTexture();
+    private Texture vignetteRightBottom = AssetRouting.getVignetteRBTexture();
+
+    private Sprite backgroundSprite;
 
 
     public SpaceInvadersScreenRenderer(SpriteBatch spriteBatch, ActorHolder actorHolder) {
@@ -41,7 +44,9 @@ public class SpaceInvadersScreenRenderer implements Disposable{
         create();
     }
 
+
     protected void create() {
+        spriteBatch.enableBlending();
         sceneUI = new SpaceInvadersUI(spriteBatch);
         sceneUI.create();
 
@@ -52,16 +57,32 @@ public class SpaceInvadersScreenRenderer implements Disposable{
         ((OrthographicCamera) camera).translate(
                 camera.viewportWidth / 2,
                 camera.viewportHeight / 2);
+
+        vignetteLeftTop = AssetRouting.getVignetteLTTexture();
+        vignetteLeftBottom = AssetRouting.getVignetteLBTexture();
+        vignetteRightTop = AssetRouting.getVignetteRTTexture();
+        vignetteRightBottom = AssetRouting.getVignetteRBTexture();
+        backgroundSprite = AssetRouting.getBackgroundSprite();
+
     }
 
+
     public void render(float deltaTime) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+//        updateUI();
+
+        spriteBatch.begin();
+
+        spriteBatch.setProjectionMatrix(sceneUI.getStage().getCamera().combined);
+
         camera.update();
 
+        renderLayerBackgroundSprite();
 //        sceneModel.getActorHolder().renderAll(spriteBatch);
-        actorHolder.renderAll(spriteBatch);
+        renderLayerAllActors();
         renderLayerVignettes();
-//        Gdx.gl.glClearColor(1, 0, 0, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //        spriteBatch.end();
 //        spriteBatch.begin();
 //        spriteBatch.setProjectionMatrix(sceneUI.getStage().getCamera().combined);
@@ -69,17 +90,34 @@ public class SpaceInvadersScreenRenderer implements Disposable{
 //        updateUI();
 //        renderUI();
 //
-//        spriteBatch.end();
 
+
+        spriteBatch.end();
+
+
+        sceneUI.update();
+        sceneUI.render();
+        sceneUI.getStage().draw();
+
+
+    }
+
+
+    private void renderLayerBackgroundSprite() {
+        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    private void renderLayerAllActors() {
+        actorHolder.renderAll(spriteBatch);
     }
 
     private void renderLayerVignettes() {
         Color col = spriteBatch.getColor();
         spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
-        spriteBatch.draw(vlb, 0f, 0f, vlb.getWidth(), vlb.getHeight());
-        spriteBatch.draw(vlt, 0f, Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
-        spriteBatch.draw(vrt, Gdx.graphics.getWidth() - vrt.getWidth(), Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
-        spriteBatch.draw(vrb, Gdx.graphics.getWidth() - vrt.getWidth(), 0f, vlt.getWidth(), vlt.getHeight());
+        spriteBatch.draw(vignetteLeftBottom, 0f, 0f, vignetteLeftBottom.getWidth(), vignetteLeftBottom.getHeight());
+        spriteBatch.draw(vignetteLeftTop, 0f, Gdx.graphics.getHeight() - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteRightTop, Gdx.graphics.getWidth() - vignetteRightTop.getWidth(), Gdx.graphics.getHeight() - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteRightBottom, Gdx.graphics.getWidth() - vignetteRightTop.getWidth(), 0f, vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
         spriteBatch.setColor(col);
     }
 
@@ -102,14 +140,6 @@ public class SpaceInvadersScreenRenderer implements Disposable{
 
     public Camera getCamera() {
         return camera;
-    }
-
-    public Viewport getViewport() {
-        return viewport;
-    }
-
-    public SpriteBatch getSpriteBatch() {
-        return spriteBatch;
     }
 
     @Override

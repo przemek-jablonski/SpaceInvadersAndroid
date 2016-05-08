@@ -161,16 +161,12 @@ public class SpaceInvadersUI extends AbstractBaseUI {
         labelLeftHP.setText(Long.toString(heroHP));
         labelLeftHP.setText(Long.toString(heroSP));
 
-//        labelFrames.setText(Float.toString(Gdx.graphics.getFramesPerSecond()));
-//        labelDelta.setText(Float.toString(Gdx.graphics.getDeltaTime()));
-//        labelTimer.setText(Float.toString(actualTime));
     }
 
 
     @Override
     public void render() {
         stage.act(Gdx.graphics.getDeltaTime());
-//        stage.draw();
     }
 
 
