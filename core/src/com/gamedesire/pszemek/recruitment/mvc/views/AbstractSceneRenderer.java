@@ -15,14 +15,22 @@ public abstract class AbstractSceneRenderer implements Disposable {
     protected Viewport      viewport;
 
 
+    public AbstractSceneRenderer(SpriteBatch spriteBatch) {
+        this.spriteBatch = spriteBatch;
+    }
+
+
     protected abstract void create();
 
     public abstract void render(float deltaTime);
 
     public abstract void resize(int width, int height);
 
+    public final Camera getCamera() { return camera; }
+
     @Override
     public void dispose() {
         spriteBatch.dispose();
     }
+
 }

@@ -39,7 +39,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
 
     public SpaceInvadersSceneRenderer(SpriteBatch spriteBatch, ActorHolder actorHolder) {
-        this.spriteBatch = spriteBatch;
+        super(spriteBatch);
         this.actorHolder = actorHolder;
         create();
     }
@@ -126,10 +126,6 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         sceneUI.update();
         sceneUI.render();
         sceneUI.getStage().draw();
-    }
-
-    public Camera getCamera() {
-        return camera;
     }
 
     @Override

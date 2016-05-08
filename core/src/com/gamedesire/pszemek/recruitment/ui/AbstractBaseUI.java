@@ -11,8 +11,8 @@ import com.gamedesire.pszemek.recruitment.utilities.Const;
  */
 public abstract class AbstractBaseUI {
 
-    private Viewport viewport;
-    private Stage stage;
+    protected Viewport viewport;
+    protected Stage stage;
 
 
 

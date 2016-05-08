@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
+import com.gamedesire.pszemek.recruitment.mvc.models.AbstractSceneModel;
 import com.gamedesire.pszemek.recruitment.mvc.models.SpaceInvadersSceneModel;
 
 /**
@@ -12,13 +13,12 @@ import com.gamedesire.pszemek.recruitment.mvc.models.SpaceInvadersSceneModel;
 public abstract class AbstractTouchProcessor implements InputProcessor {
 
 
-    protected SpaceInvadersSceneModel registeredModel;
-//    protected ActorHolder         actorHolder;
+    protected AbstractSceneModel    registeredModel;
     protected SpaceInvadersActor    controlledActor;
     protected Camera                camera;
     protected boolean               touchPressedDown = false;
 
-    public void registerModel(SpaceInvadersSceneModel model) {
+    public void registerModel(AbstractSceneModel model) {
         registeredModel = model;
     }
 

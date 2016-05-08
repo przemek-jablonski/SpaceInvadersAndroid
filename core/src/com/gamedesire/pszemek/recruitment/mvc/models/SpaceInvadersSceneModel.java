@@ -11,7 +11,6 @@ import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
  */
 public class SpaceInvadersSceneModel extends AbstractSceneModel {
 
-//    private ActorHolder actorHolder;
 
     private long        startTimeMillis;
     private long        gameTimeMillis;
@@ -20,12 +19,11 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
     private int         actualLevel;
     private int         heroPoints;
     private boolean     levelCleared;
-    private boolean     touchRequest;
+//    private boolean     touchRequest;
 
 
     public SpaceInvadersSceneModel() {
-        actorHolder = new ActorHolder();
-        touchRequest = false;
+        super();
     }
 
     @Override
@@ -35,6 +33,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
         actualLevel = 0;
         heroPoints = 0;
         actorHolder.spawnHero();
+        touchRequest = false;
     }
 
     @Override
@@ -51,31 +50,16 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
             actorHolder.spawnProjectile(actorHolder.getHero(), ActorType.HERO);
         }
 
-        if (actorHolder.getActors().size <= 1)
-
         //// TODO: 08/05/16  it seems that level progression is not working anymore - investigate
         if (actorHolder.getActors().size <= 1) {
             ++actualLevel;
             actorHolder.spawnLevel(actualLevel);
         }
     }
-
+    
 
     @Override
     public void dispose() {
         super.dispose();
-    }
-
-
-    public void switchTouchRequest() {
-        touchRequest = (!touchRequest);
-    }
-
-    public boolean getTouchRequest() {
-        return touchRequest;
-    }
-
-    public ActorHolder getActorHolder() {
-        return actorHolder;
     }
 }

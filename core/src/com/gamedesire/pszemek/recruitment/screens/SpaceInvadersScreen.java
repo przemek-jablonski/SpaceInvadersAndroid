@@ -5,11 +5,14 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.gamedesire.pszemek.recruitment.MainGameClass;
+import com.gamedesire.pszemek.recruitment.mvc.models.AbstractSceneModel;
 import com.gamedesire.pszemek.recruitment.mvc.models.SpaceInvadersSceneModel;
+import com.gamedesire.pszemek.recruitment.mvc.views.AbstractSceneRenderer;
 import com.gamedesire.pszemek.recruitment.mvc.views.SpaceInvadersSceneRenderer;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.AbstractTouchProcessor;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorDesktop;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorMobile;
+import com.gamedesire.pszemek.recruitment.ui.AbstractBaseUI;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -18,20 +21,21 @@ public class SpaceInvadersScreen implements Screen {
 
 
     //model:
-    private SpaceInvadersSceneModel sceneModel;
+    private AbstractSceneModel      sceneModel;
 
     //view:
-    private SpaceInvadersSceneRenderer sceneRenderer;
+    private AbstractSceneRenderer   sceneRenderer;
+
+    //view ui:
+    private AbstractBaseUI          sceneUI;
 
     //controller:
     private AbstractTouchProcessor  touchProcessor;
 
 
-//    private SpriteBatch spriteBatch;
 
 
     public SpaceInvadersScreen(MainGameClass game) {
-//        spriteBatch = game.getSpriteBatch();
 
         sceneModel = new SpaceInvadersSceneModel();
         sceneRenderer = new SpaceInvadersSceneRenderer(game.getSpriteBatch(), sceneModel.getActorHolder());

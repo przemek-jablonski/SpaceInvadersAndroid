@@ -19,26 +19,8 @@ import com.gamedesire.pszemek.recruitment.utilities.Const;
  */
 public class SpaceInvadersUI extends AbstractBaseUI {
 
-    private Viewport viewport;
-    private Stage   stage;
-
-    //// FIXME: 06/05/16 store this in some logic (model) class
-    private long    actualTime;
-    private long    startTime;
-
-    private long    heroHP = 50;
-    private long    heroSP = 0;
-
-    private int    heroPoints;
-    private long    gameTime;
-    private long    gameLevel;
-
-
-//    private Label   labelFrames;
-//    private Label   labelDelta;
-//    private Label   labelTimer;
-
-
+//    private Viewport viewport;
+//    private Stage   stage;
     private Label   labelLeftHPText;
     private Label   labelLeftSPText;
     private Label   labelLeftHP;
@@ -57,11 +39,22 @@ public class SpaceInvadersUI extends AbstractBaseUI {
     private LabelStyle labelStyle;
 
 
+    //// FIXME: 06/05/16 store this in some logic (model) class
+    private long    actualTime;
+    private long    startTime;
+
+    private long    heroHP = 50;
+    private long    heroSP = 0;
+
+    private int    heroPoints;
+    private long    gameLevel;
+
+
 
     public SpaceInvadersUI(SpriteBatch batch) {
         super(batch);
-        viewport = new FitViewport(Const.PREF_WIDTH, Const.PREF_HEIGHT);
-        stage = new Stage(viewport, batch);
+//        viewport = new FitViewport(Const.PREF_WIDTH, Const.PREF_HEIGHT);
+//        stage = new Stage(viewport, batch);
     }
 
 

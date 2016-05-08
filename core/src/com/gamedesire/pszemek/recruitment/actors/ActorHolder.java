@@ -354,14 +354,6 @@ public class ActorHolder implements Disposable{
         return (HeroActor)actors.get(0);
     }
 
-//    public boolean isLevelCleared() {
-//        return levelCleared;
-//    }
-//
-//    public void setLevelCleared(boolean value) {
-//        levelCleared = value;
-//    }
-
     public DelayedRemovalArray<SpaceInvadersActor> getActors() {
         return actors;
     }
