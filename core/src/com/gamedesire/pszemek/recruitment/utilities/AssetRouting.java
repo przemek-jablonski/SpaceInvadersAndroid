@@ -3,6 +3,8 @@ package com.gamedesire.pszemek.recruitment.utilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
@@ -25,10 +27,13 @@ public class AssetRouting {
     private static final String UI_LOGO_GANYMEDE = "ui_logo_ganymede";
     private static final String UI_LOGO_INVADERS = "ui_logo_invaders";
 
+    public static final String PARTICLE_EXPLOSION_ONDEATH = "particle_explosion_ondeath.p";
+
     private static final String PNG = ".png";
     private static final String JPG = ".jpg";
     private static final String OGG = ".ogg";
     private static final String MP3 = ".mp3";
+    private static final String PARTICLE = ".p";
 
 
 

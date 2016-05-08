@@ -74,14 +74,14 @@ public abstract class EnemyActor extends SpaceInvadersActor implements IDamageab
 
 
         }
-        System.err.println("DAMAGE=> dmg: " + damageDealt + ", remaining: " + actualHealthPoints);
+//        System.err.println("DAMAGE=> dmg: " + damageDealt + ", remaining: " + actualHealthPoints);
 
         return actualHealthPoints;
     }
 
     @Override
     public void onDeath() {
-        System.err.println("DEATH, hp: " + actualHealthPoints + ", sp: " + actualShieldPoints);
+//        System.err.println("DEATH, hp: " + actualHealthPoints + ", sp: " + actualShieldPoints);
         dead = true;
     }
 

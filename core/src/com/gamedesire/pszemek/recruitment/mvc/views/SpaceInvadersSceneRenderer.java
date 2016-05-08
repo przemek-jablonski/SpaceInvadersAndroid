@@ -5,8 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
@@ -14,6 +19,7 @@ import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
  * Created by Ciemek on 08/05/16.
@@ -28,12 +34,18 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 //    private Camera              camera;
 //    private Viewport            viewport;
 
-    private Texture vignetteLeftTop = AssetRouting.getVignetteLTTexture();
-    private Texture vignetteLeftBottom = AssetRouting.getVignetteLBTexture();
-    private Texture vignetteRightTop = AssetRouting.getVignetteRTTexture();
-    private Texture vignetteRightBottom = AssetRouting.getVignetteRBTexture();
+    private Texture             vignetteLeftTop;
+    private Texture             vignetteLeftBottom;
+    private Texture             vignetteRightTop;
+    private Texture             vignetteRightBottom;
 
-    private Sprite backgroundSprite;
+    private Sprite              backgroundSprite;
+    private ShapeRenderer       backgroundGradient;
+
+    private ParticleEffect      particleExplosionOnDeath;
+    private ParticleEffectPool  particleExplosionOnDeathPool;
+    private ParticleEffectPool.PooledEffect particleExplosionOnDeathPooled;
+    private Array<ParticleEffectPool.PooledEffect> particleExplosionOnDeathArray;
 
 
     public SpaceInvadersSceneRenderer(SpriteBatch spriteBatch, ActorHolder actorHolder) {
@@ -60,67 +72,76 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         vignetteLeftBottom = AssetRouting.getVignetteLBTexture();
         vignetteRightTop = AssetRouting.getVignetteRTTexture();
         vignetteRightBottom = AssetRouting.getVignetteRBTexture();
-        backgroundSprite = AssetRouting.getBackgroundSprite();
 
+        backgroundSprite = AssetRouting.getBackgroundSprite();
+        backgroundGradient = new ShapeRenderer();
+
+        particleExplosionOnDeath = new ParticleEffect();
+        particleExplosionOnDeath.load(Gdx.files.internal(
+                        AssetRouting.PARTICLE_EXPLOSION_ONDEATH),
+                Gdx.files.internal(""));
+        particleExplosionOnDeath.scaleEffect(2.80f);
+        particleExplosionOnDeathPool = new ParticleEffectPool(particleExplosionOnDeath, 2, 10);
+        particleExplosionOnDeathArray = new Array<ParticleEffectPool.PooledEffect>();
     }
 
     @Override
     public void render(float deltaTime) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        updateUI();
+
+        renderLayerBackgroundGradient();
 
         spriteBatch.begin();
-
         spriteBatch.setProjectionMatrix(sceneUI.getStage().getCamera().combined);
 
         camera.update();
 
-        renderLayerBackgroundGradient();
+
         renderLayerBackgroundSprite();
-//        renderLayerAllActors();
         renderLayerActors();
         renderLayerProjectiles();
         renderLayerHero();
+        updateLayerExplosionParticles();
+        renderLayerExplosionParticles(deltaTime);
         renderLayerVignettes();
+
 
         spriteBatch.end();
 
-//
-//        sceneUI.update();
-//        sceneUI.render(deltaTime);
-//        sceneUI.getStage().draw();
     }
+
 
 
     private void renderLayerBackgroundSprite() {
+        Color col = spriteBatch.getColor();
+        spriteBatch.setColor(col.r, col.g, col.b, 0.9f);
         spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.setColor(col);
     }
 
     private void renderLayerBackgroundGradient() {
-        //      todo: figure out why setting projection matrix destroys gradient (???)
-//        backgroundGradient.setProjectionMatrix(camera.combined);
-//
-//        mainGameClass.getSpriteBatch().setProjectionMatrix(camera.combined);
-//        backgroundGradient.begin(ShapeRenderer.ShapeType.Filled);
-//        backgroundGradient.rect(
-//                0,
-//                0,
-//                Gdx.graphics.getWidth(),
-//                Gdx.graphics.getHeight(),
-//                Utils.getColorFrom255(200, 0, 150, 1),
-//                Utils.getColorFrom255(60, 0, 40, 1),
-//                Utils.getColorFrom255(100, 0, 100, 1),
-//                Utils.getColorFrom255(80, 0, 40, 1));
-//        backgroundGradient.end();
 
-//        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        backgroundGradient.setProjectionMatrix(camera.combined);
+
+        backgroundGradient.begin(ShapeRenderer.ShapeType.Filled);
+        backgroundGradient.rect(
+                0,
+                0,
+                Gdx.graphics.getWidth(),
+                Gdx.graphics.getHeight(),
+                Utils.getColorFrom255(0, 0, 0, 0.4f),
+                Utils.getColorFrom255(1, 0, 0, 0.4f),
+                Utils.getColorFrom255(0, 0, 1, 0.4f),
+                Utils.getColorFrom255(0, 1, 0, 0.4f));
+                backgroundGradient.end();
+
+
+
+//        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, camera.viewportWidth, camera.viewportHeight);
     }
 
-//    private void renderLayerAllActors() {
-//        actorHolder.renderAll(spriteBatch);
-//    }
 
     private void renderLayerActors() {
         for (int a = 1; a < actorHolder.getActors().size; ++a) {
@@ -139,6 +160,45 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
     private void renderLayerHero() {
 //        actorHolder.getHero().render(spriteBatch);
         renderActor(actorHolder.getHero());
+    }
+
+    private void updateLayerExplosionParticles() {
+        if(actorHolder.enemyDeathOnHit) {
+            actorHolder.enemyDeathOnHit = false;
+            particleExplosionOnDeathPooled = particleExplosionOnDeathPool.obtain();
+            for (ParticleEmitter emitter : particleExplosionOnDeathPooled.getEmitters()){
+                emitter.setPosition(
+                        actorHolder.enemyDeathOnHitLocation.x,
+                        actorHolder.enemyDeathOnHitLocation.y);
+            }
+
+            particleExplosionOnDeathArray.add(particleExplosionOnDeathPooled);
+
+//            particleExplosionOnDeathPooled.getEmitters()
+//            particleExplosionOnDeathPooled.setPosition(
+//                    actorHolder.enemyDeathOnHitLocation.x,
+//                    actorHolder.enemyDeathOnHitLocation.y);
+
+//            particleExplosionOnDeathArray.add(particleExplosionOnDeathPool.obtain());
+//            particleExplosionOnDeathArray.get(particleExplosionOnDeathArray.size-1)
+//                    .setPosition(
+//                            actorHolder.enemyDeathOnHitLocation.x,
+//                            actorHolder.enemyDeathOnHitLocation.y);
+
+//            particleExplosionOnDeathArray.get(particleExplosionOnDeathArray.size-1).start();
+        }
+    }
+
+    private void renderLayerExplosionParticles(float deltaTime) {
+        for (int i = 0; i < particleExplosionOnDeathArray.size; i++) {
+            particleExplosionOnDeathPooled  = particleExplosionOnDeathArray.get(i);
+            particleExplosionOnDeathPooled.draw(spriteBatch, Gdx.graphics.getDeltaTime());
+
+            if (particleExplosionOnDeathPooled.isComplete()) {
+                particleExplosionOnDeathArray.removeIndex(i);
+                particleExplosionOnDeathPooled.free();
+            }
+        }
     }
 
 

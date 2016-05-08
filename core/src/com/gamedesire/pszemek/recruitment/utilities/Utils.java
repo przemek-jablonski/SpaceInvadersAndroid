@@ -40,8 +40,8 @@ public class Utils {
 //        return SCREEN_HEIGHT/2;
 //    }
 
-    //todo: fix this, it's not good i guess
-    public static Color getColorFrom255(int red, int green, int blue, int alpha) {
+    //todo: not lerping properly, need fix
+    public static Color getColorFrom255(int red, int green, int blue, float alpha) {
         return new Color(MathUtils.lerp(0, 255, red), MathUtils.lerp(0, 255, green), MathUtils.lerp(0, 255, blue), MathUtils.lerp(0, 1, alpha));
     }
 

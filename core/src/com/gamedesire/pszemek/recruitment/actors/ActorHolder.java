@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Disposable;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.EnemyActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ProjectileActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor001;
@@ -34,27 +36,22 @@ import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
  */
 public class ActorHolder implements Disposable{
 
-    //todo: check if after optimisation, it is possible to change arrays to simpler lists
     DelayedRemovalArray<SpaceInvadersActor> actors;
     DelayedRemovalArray<ProjectileActor>    projectiles;
-
     long            currentTimeMillis;
 
-    //dev only, refactor!:
-    ParticleEffect exploParticle;
+    //// TODO: 08/05/16 refactor it to observer pattern!
+    public boolean enemyDeathOnHit;
+    public Vector2 enemyDeathOnHitLocation;
 
-//    private  boolean levelCleared = true;
-
-//    private int heroPoints;
 
 
     public ActorHolder() {
         actors = new DelayedRemovalArray<SpaceInvadersActor>();
         projectiles = new DelayedRemovalArray<ProjectileActor>();
 
-        exploParticle = new ParticleEffect();
-        exploParticle.load(Gdx.files.internal("particle_explosion_alllayers.p"), Gdx.files.internal(""));
-        exploParticle.scaleEffect(2.75f);
+        enemyDeathOnHit = false;
+        enemyDeathOnHitLocation = Vector2.Zero;
     }
 
 
@@ -164,14 +161,18 @@ public class ActorHolder implements Disposable{
      * @param actor Actor to dispose
      * @return true if disposal action(s) were executed properly.
      */
+    //// TODO: 08/05/16 cause of disposal!
     private boolean disposeActor(SpaceInvadersActor actor) {
         if (actor instanceof ProjectileActor)
             return projectiles.removeValue((ProjectileActor) actor, false);
-        if (actor instanceof EnemyActor001) {
-            for (ParticleEmitter emitter : exploParticle.getEmitters())
-                emitter.setPosition(actor.getActorPosition().x, actor.getActorPosition().y);
+        if (actor instanceof EnemyActor) {
+//            for (ParticleEmitter emitter : exploParticle.getEmitters())
+//                emitter.setPosition(actor.getActorPosition().x, actor.getActorPosition().y);
+//
+//            exploParticle.start();
 
-            exploParticle.start();
+            enemyDeathOnHit = true;
+            enemyDeathOnHitLocation = actor.getActorPosition();
 
             //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
 //            heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
