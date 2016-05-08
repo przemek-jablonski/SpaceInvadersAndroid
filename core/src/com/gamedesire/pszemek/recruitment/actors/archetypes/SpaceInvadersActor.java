@@ -14,7 +14,6 @@ import com.gamedesire.pszemek.recruitment.utilities.Utils;
  */
 public abstract class SpaceInvadersActor {
 
-    private   int       actorId;
     protected Sprite    actorSprite;
     protected float     velocityValue;
     protected float     directionX;
@@ -46,7 +45,6 @@ public abstract class SpaceInvadersActor {
         rateOfFireIntervalMillis = 500;
         lastFiredMillis = System.currentTimeMillis();
         actorSprite.setCenter(location.x, location.y);
-        System.err.println("new actor created => pos: " + getActorPosition() + ", dir:" + getActorDirection());
         create();
     }
 

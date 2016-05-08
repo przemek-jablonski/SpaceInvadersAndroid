@@ -19,6 +19,7 @@ public class AssetRouting {
     private static final String ENEMY_ASSET_003 = "game_character_enemy_003";
     private static final String ENEMY_ASSET_004 = "game_character_enemy_004";
     private static final String PROJECTILE_ROCKET = "game_fx_projectile_rocket_001";
+    private static final String PROJECTILE_BOLT = "game_fx_projectile_bolt_001";
     private static final String VIGNETTE_LB = "vignette_001_leftbottom";
     private static final String VIGNETTE_LT = "vignette_001_lefttop";
     private static final String VIGNETTE_RT = "vignette_001_righttop";
@@ -28,6 +29,10 @@ public class AssetRouting {
     private static final String UI_LOGO_INVADERS = "ui_logo_invaders";
 
     public static final String PARTICLE_EXPLOSION_ONDEATH = "particle_explosion_ondeath.p";
+    public static final String PARTICLE_EXPLOSION_ONDEATH_ENEMY002 = "particle_explosion_ondeath_enemy002.p";
+    public static final String PARTICLE_PROJECTILE_BOLT = "particle_projectile_bolt_background.p";
+    public static final String PARTICLE_PROJECTILE_BOLT_HIT = "particle_projectile_bolt_hit.p";
+    public static final String PARTICLE_SLIDINGSTARS = "particles_slidingstars_background.p";
 
     private static final String PNG = ".png";
     private static final String JPG = ".jpg";
@@ -52,6 +57,8 @@ public class AssetRouting {
 
     public static final Sprite getProjectileRocketSprite() {return new Sprite(getProjectileRocketTexture());}
 
+    public static final Sprite getProjectileBoltSprite() {return new Sprite(getProjectileBoltTexture());}
+
 
     //texture accessors:
     public static final Texture getHeroTexture() {return new Texture(getAssetFullLocation(HERO_ASSET, PNG));}
@@ -67,6 +74,8 @@ public class AssetRouting {
     public static final Texture getEnemy004Texture() {return new Texture(getAssetFullLocation(ENEMY_ASSET_004, PNG));}
 
     public static final Texture getProjectileRocketTexture() {return new Texture(getAssetFullLocation(PROJECTILE_ROCKET, PNG));}
+
+    public static final Texture getProjectileBoltTexture() {return new Texture(getAssetFullLocation(PROJECTILE_BOLT, PNG));}
 
     public static final Texture getVignetteLBTexture() {return new Texture(getAssetFullLocation(VIGNETTE_LB, PNG));}
 

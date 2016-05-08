@@ -21,11 +21,9 @@ public class EnemyActor002 extends EnemyActor{
         this(new Vector2(locationX, locationY), directionVector);
     }
 
-    public EnemyActor002(float locationX, float locationY, float directionX, float directionY) {
-        this(locationX, locationY, new Vector2(directionX, directionY));
+    public EnemyActor002(float locationX, float locationY, Vector2 directionVector, int velocity) {
+        super(AssetRouting.getEnemy002Sprite(), locationX, locationY, directionVector, velocity);
     }
-
-
 
     @Override
     public void create() {

@@ -1,10 +1,6 @@
 package com.gamedesire.pszemek.recruitment.actors;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -15,9 +11,10 @@ import com.gamedesire.pszemek.recruitment.actors.archetypes.EnemyActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ProjectileActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor001;
+import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor002;
 import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
+import com.gamedesire.pszemek.recruitment.actors.projectiles.BoltProjectileActor;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.RocketProjectileActor;
-import com.gamedesire.pszemek.recruitment.mvc.controllers.AbstractTouchProcessor;
 import com.gamedesire.pszemek.recruitment.utilities.Const;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 
@@ -67,19 +64,20 @@ public class ActorHolder implements Disposable{
 
             if(checkActorOutOfScreen(actor))
                 if (disposeActor(actor)) {
-                    System.err.println("ACTOR (actor) DISPOSED / OUT OF SCREEN, pos: " + actor.getActorPosition());
+//                    System.err.println("ACTOR (actor) DISPOSED / OUT OF SCREEN, pos: " + actor.getActorPosition());
                 }
 
             //spawn projectile, if applicable
-            if (actor instanceof EnemyActor001) {
-                if (checkEnemySpawnProjectile((EnemyActor001) actor)) {
+            if (actor instanceof EnemyActor) {
+                if (checkEnemySpawnProjectile((EnemyActor) actor)) {
                     spawnProjectile(actor, ActorType.ENEMY);
                 }
 
             //check if actor is dead
-            if (((EnemyActor001)actor).isDead())
+            if (((EnemyActor)actor).isDead())
                 if (disposeActor(actor))
-                    System.err.println("ACTOR (actor) DEAD, pos: " + actor.getActorPosition());
+//                    System.err.println("ACTOR (actor) DEAD, pos: " + actor.getActorPosition());
+                System.out.print("");
             }
 
         }
@@ -92,7 +90,7 @@ public class ActorHolder implements Disposable{
             //check if is out of screen
             if(checkActorOutOfScreen(projectile))
                 if (disposeActor(projectile)) {
-                    System.err.println("ACTOR (projectile) DISPOSED/ OUT OF SCREEN, pos: " + projectile.getActorPosition() + ", act size: " + actors.size);
+//                    System.err.println("ACTOR (projectile) DISPOSED/ OUT OF SCREEN, pos: " + projectile.getActorPosition() + ", act size: " + actors.size);
                 }
 
             //check for collisions
@@ -111,7 +109,7 @@ public class ActorHolder implements Disposable{
      */
     //todo: make this method not only for enemy, but for player as well (make 'boolean shoot' part of SpaceInvActor, not only EnemyActor001)
     //todo: check time here?
-    public boolean checkEnemySpawnProjectile(EnemyActor001 enemy) {
+    public boolean checkEnemySpawnProjectile(EnemyActor enemy) {
         if (enemy.isShoot()) {
             enemy.setShot();
             return true;
@@ -126,14 +124,17 @@ public class ActorHolder implements Disposable{
      * @param actor Actor, which requested projectile spawn (needed for position fetch)
      * @param actorType ActorType, passed as projectile constructor parameter.
      */
-    //todo: this random shit should be here - players rate of fire shouldn't be affected
     public void spawnProjectile(SpaceInvadersActor actor, ActorType actorType) {
-        if (currentTimeMillis - actor.getLastFiredMillis() > actor.getRateOfFireIntervalMillis() * MathUtils.random(0.8f, 1.5f)) {
+        if (System.currentTimeMillis() - actor.getLastFiredMillis() > actor.getRateOfFireIntervalMillis() * MathUtils.random(0.8f, 1.5f)) {
             if (actorType == ActorType.HERO)
                 projectiles.add(new RocketProjectileActor(actor.getActorPosition(), ActorType.HERO));
-            else
-                projectiles.add(new RocketProjectileActor(actor.getActorPosition(), Const.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
-            actor.setLastFiredMillis(currentTimeMillis);
+            else {
+                if (actor instanceof EnemyActor002)
+                    projectiles.add(new BoltProjectileActor(actor.getActorPosition(), Const.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
+                else
+                    projectiles.add(new RocketProjectileActor(actor.getActorPosition(), Const.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
+            }
+            actor.setLastFiredMillis(System.currentTimeMillis());
         }
 
     }
@@ -145,12 +146,15 @@ public class ActorHolder implements Disposable{
      * @return boolean - if Actor is out of bounds or not
      */
     private boolean checkActorOutOfScreen(SpaceInvadersActor actor) {
-
-        if (actor.getActorPosition().y < -actor.getBoundingRectangle().getHeight())
+        if (actor.getActorPosition().y < -actor.getBoundingRectangle().getHeight()) {
+            System.err.println("actor OUT OF SCREEN, pos: " + actor.getActorPosition() +", y less than rectangle height: " + -actor.getBoundingRectangle().getHeight());
             return true;
+        }
 
-        if (actor instanceof ProjectileActor && actor.getActorPosition().y > Gdx.graphics.getHeight() + actor.getBoundingRectangle().getHeight())
+        if (actor instanceof ProjectileActor && actor.getActorPosition().y > Const.CAMERA_HEIGHT + actor.getBoundingRectangle().getHeight()/2) {
+            System.err.println("projectile OUT OF SCREEN, pos: " + actor.getActorPosition() +", y more than gdx.height: " + Const.CAMERA_HEIGHT + ", rect height/2: " + actor.getBoundingRectangle().getHeight()/2);
             return true;
+        }
 
         return false;
     }
@@ -166,14 +170,8 @@ public class ActorHolder implements Disposable{
         if (actor instanceof ProjectileActor)
             return projectiles.removeValue((ProjectileActor) actor, false);
         if (actor instanceof EnemyActor) {
-//            for (ParticleEmitter emitter : exploParticle.getEmitters())
-//                emitter.setPosition(actor.getActorPosition().x, actor.getActorPosition().y);
-//
-//            exploParticle.start();
-
             enemyDeathOnHit = true;
             enemyDeathOnHitLocation = actor.getActorPosition();
-
             //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
 //            heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
 
@@ -185,15 +183,14 @@ public class ActorHolder implements Disposable{
 
     private boolean checkProjectileHit(ProjectileActor projectile) {
         for (SpaceInvadersActor actor : actors)
-            if ((actor instanceof EnemyActor001 && projectile.getActorType() == ActorType.HERO) ||
+            if ((actor instanceof EnemyActor && projectile.getActorType() == ActorType.HERO) ||
                     (actor instanceof HeroActor && projectile.getActorType() == ActorType.ENEMY)) {
                 if (checkCollision(actor, projectile))
-                    //todo: actors need to have their indexes inside them, so this STUPID LOOP can be thrashed out.
                     for (SpaceInvadersActor actorInList : actors) {
                         if (actorInList.equals(actor)) {
                             //todo: move away this shit to projectileCollided().
-                            if (actor instanceof EnemyActor001)
-                                ((EnemyActor001) actor).onHit(projectile.getDamageValue());
+                            if (actor instanceof EnemyActor)
+                                ((EnemyActor) actor).onHit(projectile.getDamageValue());
                             else if (actor instanceof HeroActor)
                                 ((HeroActor) actor).onHit(projectile.getDamageValue());
                             projectiles.removeValue(projectile, false);
@@ -213,7 +210,7 @@ public class ActorHolder implements Disposable{
     }
 
     public HeroActor spawnHero() {
-        actors.add(new HeroActor(Const.PREF_HEIGHT / 5f, Const.PREF_WIDTH / 2f, 0f, 0f));
+        actors.add(new HeroActor(Const.CAMERA_HEIGHT / 5f, Const.CAMERA_WIDTH / 2f, 0f, 0f));
         return (HeroActor)actors.get(0);
     }
 
@@ -281,15 +278,22 @@ public class ActorHolder implements Disposable{
             waveHeight += MathUtils.random(0f, 0.5f);
             spawnEnemyWave(MathUtils.clamp(MathUtils.random(0,3) + MathUtils.random(1, 4), 1, 5), waveHeight);
         }
-
     }
 
     private void spawnEnemyWave(int enemyCount, int heightLine) {
-        for (int e=0; e<enemyCount; ++e)
+            actors.add(
+                    new EnemyActor002(
+                            (Const.CAMERA_WIDTH / (enemyCount + 1)),
+                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Const.VECTOR_DIRECTION_DOWN,
+                            Const.VELOCITY_VALUE_ENEMY_001
+                    ));
+
+        for (int e=1; e<enemyCount; ++e)
             actors.add(
                     new EnemyActor001(
-                            (Const.PREF_WIDTH / (enemyCount + 1)) * (e+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
                             Const.VECTOR_DIRECTION_DOWN
                     ));
     }

@@ -15,6 +15,7 @@ import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorDesktop;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorMobile;
 import com.gamedesire.pszemek.recruitment.ui.AbstractBaseUI;
 import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
+import com.gamedesire.pszemek.recruitment.utilities.Const;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -62,6 +63,8 @@ public class SpaceInvadersScreen implements Screen {
         touchProcessor.registerCamera(sceneRenderer.getCamera());
         touchProcessor.registerControlledActor(sceneModel.getActorHolder().getHero());
         Gdx.input.setInputProcessor(touchProcessor);
+
+        Const.updateCameraData(sceneRenderer.getCamera().viewportWidth, sceneRenderer.getCamera().viewportHeight);
     }
 
 
@@ -76,8 +79,7 @@ public class SpaceInvadersScreen implements Screen {
                 ((SpaceInvadersSceneModel) sceneModel).getGameTimeSecs(),
                 ((SpaceInvadersSceneModel) sceneModel).getHeroPoints(),
                 ((SpaceInvadersSceneModel) sceneModel).getActualLevel(),
-                sceneModel.getActorHolder().getHero().getActualHealthPoints(),
-                sceneModel.getActorHolder().getHero().getActualShieldPoints());
+                sceneModel.getActorHolder().getHero().getActualHealthPoints());
 
         sceneUI.render(deltaTime);
     }

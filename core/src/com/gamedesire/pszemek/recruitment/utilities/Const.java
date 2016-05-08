@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Const {
 
-    public static final int PREF_WIDTH = 540;
-    public static final int PREF_HEIGHT = 960;
+    public static int CAMERA_WIDTH = 540;
+    public static int CAMERA_HEIGHT = 960;
 
     public static final Vector2 VECTOR_DIRECTION_DOWN = new Vector2(0, -1);
     public static final Vector2 VECTOR_DIRECTION_DOWN_RIGHTBOTTOM = new Vector2(1, -1);
@@ -27,6 +27,7 @@ public class Const {
     public static final int VELOCITY_VALUE_ENEMY_003 = 90;
     public static final int VELOCITY_VALUE_ENEMY_004 = 130;
     public static final int VELOCITY_VALUE_PROJECTILE_ROCKET = 400;
+    public static final int VELOCITY_VALUE_PROJECTILE_BOLT = 300;
 
     public static final int RATEOFFIRE_INTERVAL_PLAYER_BASE = 400;
     public static final int RATEOFFIRE_INTERVAL_ENEMY001 = 3250;
@@ -60,6 +61,11 @@ public class Const {
     public static final int SP_AMOUNT_ENEMY003 = 10;
     public static final int SP_AMOUNT_ENEMY004 = 24;
 
+
+    public static void updateCameraData(float width, float height) {
+        CAMERA_WIDTH = (int)width;
+        CAMERA_HEIGHT = (int)height;
+    }
 
 
 }

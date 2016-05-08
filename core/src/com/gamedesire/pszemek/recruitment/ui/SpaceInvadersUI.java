@@ -23,9 +23,7 @@ public class SpaceInvadersUI extends AbstractBaseUI {
     private LabelStyle labelStyle;
 
     private Label   labelLeftHPText;
-    private Label   labelLeftSPText;
     private Label   labelLeftHP;
-    private Label   labelLeftSP;
     private Label   labelRightPointsText;
     private Label   labelRightTimeText;
     private Label   labelRightLevelText;
@@ -37,7 +35,6 @@ public class SpaceInvadersUI extends AbstractBaseUI {
 
     private long   actualTime;
     private int    heroHP;
-    private int    heroSP;
     private int    heroPoints;
     private int    gameLevel;
 
@@ -84,15 +81,9 @@ public class SpaceInvadersUI extends AbstractBaseUI {
 
         labelLeftHPText = new Label("HP:", labelStyle);
         labelLeftHP = new Label(Long.toString(heroHP), labelStyle);
-        labelLeftSPText = new Label("SP:", labelStyle);
-        labelLeftSP = new Label(Long.toString(heroSP), labelStyle);
 
         leftTable.add(labelLeftHPText).left().padRight(10f);
         leftTable.add(labelLeftHP).left();
-        leftTable.row();
-
-        leftTable.add(labelLeftSPText).left().padRight(10f);
-        leftTable.add(labelLeftSP).left();
         leftTable.row();
 
 
@@ -122,7 +113,6 @@ public class SpaceInvadersUI extends AbstractBaseUI {
         bottomTableCompanyLogo.add(imageBottomGameLogo).left();
         bottomTableInvadersLogo.add(imageBottomCompanyLogo).right();
 
-
         stage.addActor(leftTable);
         stage.addActor(rightTable);
         stage.addActor(bottomTableCompanyLogo);
@@ -132,10 +122,9 @@ public class SpaceInvadersUI extends AbstractBaseUI {
     }
 
 
-    public void updateUIData(long gameTimeSecs, int heroPoints, int gameLevel, int actualHP, int actualSP) {
+    public void updateUIData(long gameTimeSecs, int heroPoints, int gameLevel, int actualHP) {
         actualTime = gameTimeSecs;
         heroHP = actualHP;
-        heroSP = actualSP;
         this.heroPoints = heroPoints;
         this.gameLevel = gameLevel;
         update();
@@ -148,7 +137,6 @@ public class SpaceInvadersUI extends AbstractBaseUI {
         labelRightPoints.setText(Integer.toString(heroPoints));
         labelRightLevel.setText(Integer.toString(gameLevel));
         labelLeftHP.setText(Integer.toString(heroHP));
-        labelLeftHP.setText(Integer.toString(heroSP));
     }
 
 

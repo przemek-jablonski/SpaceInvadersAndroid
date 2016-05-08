@@ -18,7 +18,7 @@ public abstract class AbstractBaseUI implements Disposable{
 
 
     public AbstractBaseUI(SpriteBatch spriteBatch) {
-        viewport = new FitViewport(Const.PREF_WIDTH, Const.PREF_HEIGHT);
+        viewport = new FitViewport(Const.CAMERA_WIDTH, Const.CAMERA_HEIGHT);
         stage = new Stage(viewport, spriteBatch);
     }
 

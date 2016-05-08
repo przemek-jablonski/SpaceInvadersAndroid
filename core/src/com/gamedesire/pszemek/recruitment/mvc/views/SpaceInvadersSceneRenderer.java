@@ -42,10 +42,15 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
     private Sprite              backgroundSprite;
     private ShapeRenderer       backgroundGradient;
 
-    private ParticleEffect      particleExplosionOnDeath;
     private ParticleEffectPool  particleExplosionOnDeathPool;
     private ParticleEffectPool.PooledEffect particleExplosionOnDeathPooled;
     private Array<ParticleEffectPool.PooledEffect> particleExplosionOnDeathArray;
+
+    private ParticleEffectPool  particleProjectileBoltPool;
+    private ParticleEffectPool.PooledEffect particleProjectileBoltPooled;
+    private Array<ParticleEffectPool.PooledEffect> particleProjectileBoltArray;
+
+
 
 
     public SpaceInvadersSceneRenderer(SpriteBatch spriteBatch, ActorHolder actorHolder) {
@@ -62,7 +67,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
 
         camera = new OrthographicCamera();
-        viewport = new ScalingViewport(Scaling.stretch, Const.PREF_WIDTH, Const.PREF_HEIGHT, camera);
+        viewport = new ScalingViewport(Scaling.stretch, Const.CAMERA_WIDTH, Const.CAMERA_HEIGHT, camera);
         viewport.apply();
         ((OrthographicCamera) camera).translate(
                 camera.viewportWidth / 2,
@@ -76,13 +81,9 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         backgroundSprite = AssetRouting.getBackgroundSprite();
         backgroundGradient = new ShapeRenderer();
 
-        particleExplosionOnDeath = new ParticleEffect();
-        particleExplosionOnDeath.load(Gdx.files.internal(
-                        AssetRouting.PARTICLE_EXPLOSION_ONDEATH),
-                Gdx.files.internal(""));
-        particleExplosionOnDeath.scaleEffect(2.80f);
-        particleExplosionOnDeathPool = new ParticleEffectPool(particleExplosionOnDeath, 2, 10);
-        particleExplosionOnDeathArray = new Array<ParticleEffectPool.PooledEffect>();
+
+        createParticlePoolExplosionOnDeath();
+        createParticlePoolProjectileBolt();
     }
 
     @Override
@@ -105,11 +106,12 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         renderLayerHero();
         updateLayerExplosionParticles();
         renderLayerExplosionParticles(deltaTime);
+//        updateLayerProjectileBoltParticles();
+//        renderLayerProjectileBoltParticles(deltaTime);
         renderLayerVignettes();
 
 
         spriteBatch.end();
-
     }
 
 
@@ -117,48 +119,41 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
     private void renderLayerBackgroundSprite() {
         Color col = spriteBatch.getColor();
         spriteBatch.setColor(col.r, col.g, col.b, 0.9f);
-        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Const.CAMERA_WIDTH, Const.CAMERA_HEIGHT);
         spriteBatch.setColor(col);
     }
 
     private void renderLayerBackgroundGradient() {
 
         backgroundGradient.setProjectionMatrix(camera.combined);
-
         backgroundGradient.begin(ShapeRenderer.ShapeType.Filled);
         backgroundGradient.rect(
                 0,
                 0,
-                Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight(),
+                Const.CAMERA_WIDTH,
+                Const.CAMERA_HEIGHT,
                 Utils.getColorFrom255(0, 0, 0, 0.4f),
                 Utils.getColorFrom255(1, 0, 0, 0.4f),
                 Utils.getColorFrom255(0, 0, 1, 0.4f),
                 Utils.getColorFrom255(0, 1, 0, 0.4f));
                 backgroundGradient.end();
 
-
-
-//        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, camera.viewportWidth, camera.viewportHeight);
-    }
+  }
 
 
     private void renderLayerActors() {
-        for (int a = 1; a < actorHolder.getActors().size; ++a) {
-//            actorHolder.getActors().get(a).render(spriteBatch);
+        for (int a = 1; a < actorHolder.getActors().size; ++a)
             renderActor(actorHolder.getActors().get(a));
-        }
+
     }
 
     private void renderLayerProjectiles() {
-        for (int p = 1; p < actorHolder.getProjectiles().size; ++p) {
-//            actorHolder.getProjectiles().get(p).render(spriteBatch);
+        for (int p = 1; p < actorHolder.getProjectiles().size; ++p)
             renderActor(actorHolder.getProjectiles().get(p));
-        }
+
     }
 
     private void renderLayerHero() {
-//        actorHolder.getHero().render(spriteBatch);
         renderActor(actorHolder.getHero());
     }
 
@@ -173,19 +168,6 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
             }
 
             particleExplosionOnDeathArray.add(particleExplosionOnDeathPooled);
-
-//            particleExplosionOnDeathPooled.getEmitters()
-//            particleExplosionOnDeathPooled.setPosition(
-//                    actorHolder.enemyDeathOnHitLocation.x,
-//                    actorHolder.enemyDeathOnHitLocation.y);
-
-//            particleExplosionOnDeathArray.add(particleExplosionOnDeathPool.obtain());
-//            particleExplosionOnDeathArray.get(particleExplosionOnDeathArray.size-1)
-//                    .setPosition(
-//                            actorHolder.enemyDeathOnHitLocation.x,
-//                            actorHolder.enemyDeathOnHitLocation.y);
-
-//            particleExplosionOnDeathArray.get(particleExplosionOnDeathArray.size-1).start();
         }
     }
 
@@ -201,15 +183,60 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         }
     }
 
+    private void updateLayerProjectileBoltParticles() {
+        if(actorHolder.enemyDeathOnHit) {
+            actorHolder.enemyDeathOnHit = false;
+            particleExplosionOnDeathPooled = particleExplosionOnDeathPool.obtain();
+            for (ParticleEmitter emitter : particleExplosionOnDeathPooled.getEmitters()){
+                emitter.setPosition(
+                        actorHolder.enemyDeathOnHitLocation.x,
+                        actorHolder.enemyDeathOnHitLocation.y);
+            }
+
+            particleExplosionOnDeathArray.add(particleExplosionOnDeathPooled);
+        }
+    }
+
+    private void renderLayerProjectileBoltParticles(float deltaTime) {
+        for (int i = 0; i < particleProjectileBoltArray.size; i++) {
+            particleProjectileBoltPooled  = particleProjectileBoltArray.get(i);
+            particleProjectileBoltPooled.draw(spriteBatch, Gdx.graphics.getDeltaTime());
+
+            if (particleProjectileBoltPooled.isComplete()) {
+                particleProjectileBoltArray.removeIndex(i);
+                particleProjectileBoltPooled.free();
+            }
+        }
+    }
+
 
     private void renderLayerVignettes() {
         Color col = spriteBatch.getColor();
         spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
-        spriteBatch.draw(vignetteLeftBottom, 0f, 0f, vignetteLeftBottom.getWidth(), vignetteLeftBottom.getHeight());
-        spriteBatch.draw(vignetteLeftTop, 0f, Gdx.graphics.getHeight() - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
-        spriteBatch.draw(vignetteRightTop, Gdx.graphics.getWidth() - vignetteRightTop.getWidth(), Gdx.graphics.getHeight() - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
-        spriteBatch.draw(vignetteRightBottom, Gdx.graphics.getWidth() - vignetteRightTop.getWidth(), 0f, vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteLeftBottom, 0f, 0f, Const.CAMERA_WIDTH, vignetteLeftBottom.getHeight());
+        spriteBatch.draw(vignetteLeftTop, 0f, Const.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteRightTop, Const.CAMERA_WIDTH  - vignetteRightTop.getWidth(), Const.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteRightBottom, Const.CAMERA_WIDTH - vignetteRightTop.getWidth(), 0f, vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
         spriteBatch.setColor(col);
+    }
+
+    private void createParticlePoolExplosionOnDeath() {
+        ParticleEffect particleExplosionOnDeath = new ParticleEffect();
+        particleExplosionOnDeath.load(
+                Gdx.files.internal(AssetRouting.PARTICLE_EXPLOSION_ONDEATH),
+                Gdx.files.internal(""));
+        particleExplosionOnDeath.scaleEffect(3f);
+        particleExplosionOnDeathPool = new ParticleEffectPool(particleExplosionOnDeath, 2, 10);
+        particleExplosionOnDeathArray = new Array<ParticleEffectPool.PooledEffect>();
+    }
+
+    private void createParticlePoolProjectileBolt() {
+        ParticleEffect particleProjectileBolt = new ParticleEffect();
+        particleProjectileBolt.load(
+                Gdx.files.internal(AssetRouting.PARTICLE_PROJECTILE_BOLT),
+                Gdx.files.internal(""));
+        particleProjectileBoltPool = new ParticleEffectPool(particleProjectileBolt, 15, 30);
+        particleProjectileBoltArray = new Array<ParticleEffectPool.PooledEffect>();
     }
 
     private void renderActor(SpaceInvadersActor actor) {
@@ -225,18 +252,6 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         viewport.update(width, height);
     }
 
-    private void updateUI() {
-//        sceneUI.updateHeroPoints(actorHolder.getHeroPoints());
-//        sceneUI.updateLevel(actorHolder.getActualLevel());
-//        sceneUI.updateHP(actorHolder.getHero().getActualHealthPoints());
-//        sceneUI.updateSP(actorHolder.getHero().getActualShieldPoints());
-    }
-
-    private void renderUI(float deltaTime) {
-        sceneUI.update();
-        sceneUI.render(deltaTime);
-        sceneUI.getStage().draw();
-    }
 
     @Override
     public void dispose() {

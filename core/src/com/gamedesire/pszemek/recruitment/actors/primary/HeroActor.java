@@ -42,8 +42,8 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
     @Override
     public void onSpawn() {
         System.err.println("HERO SPAWNED");
-        maxHealthPoints = 45;
-        maxShieldPoints = 10;
+        maxHealthPoints = 50;
+        maxShieldPoints = 0;
         actualHealthPoints = maxHealthPoints;
         actualShieldPoints = maxShieldPoints;
     }

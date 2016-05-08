@@ -19,31 +19,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Utils {
 
-    //todo: this all is kinda stupid, consider throwing out to a bin
-//    private static int SCREEN_WIDTH;
-//    private static int SCREEN_HEIGHT;
 
 
-    //todo: converter from libgdx screen coordinate system to actual good coordinates
-
-
-//    public static void initialize() {
-//        SCREEN_WIDTH = Gdx.graphics.getWidth();
-//        SCREEN_HEIGHT = Gdx.graphics.getHeight();
-//    }
-//
-//    public static int getScreenCenterWidth() {
-//        return SCREEN_WIDTH/2;
-//    }
-//
-//    public static int getScreenCenterHeight() {
-//        return SCREEN_HEIGHT/2;
-//    }
-
-    //todo: not lerping properly, need fix
-    public static Color getColorFrom255(int red, int green, int blue, float alpha) {
-        return new Color(MathUtils.lerp(0, 255, red), MathUtils.lerp(0, 255, green), MathUtils.lerp(0, 255, blue), MathUtils.lerp(0, 1, alpha));
-    }
 
     public static Vector2 getCenterPosition(Sprite sprite){
         return new Vector2(sprite.getX() + (sprite.getWidth()/2), sprite.getY() + (sprite.getHeight()/2));
@@ -71,6 +48,11 @@ public class Utils {
 //        Vector2 vec = new Vector2(x/maxVal, y/maxVal);
 //        System.err.println("VEC: " + vec);
 //        return vec;
+    }
+
+    //todo: not lerping properly, need fix
+    public static Color getColorFrom255(int red, int green, int blue, float alpha) {
+        return new Color(MathUtils.lerp(0, 255, red), MathUtils.lerp(0, 255, green), MathUtils.lerp(0, 255, blue), MathUtils.lerp(0, 1, alpha));
     }
 
     //this transformation doesn't make any sense, but works in a game

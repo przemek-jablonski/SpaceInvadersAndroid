@@ -27,6 +27,10 @@ public abstract class EnemyActor extends SpaceInvadersActor implements IDamageab
         this(actorSprite, new Vector2(locationX, locationY), directionVector);
     }
 
+    public EnemyActor(Sprite actorSprite, float locationX, float locationY, Vector2 directionVector, int velocity) {
+        this(actorSprite, new Vector2(locationX, locationY), directionVector);
+        setVelocity(velocity);
+    }
 
     @Override
     public void create() {
@@ -83,6 +87,10 @@ public abstract class EnemyActor extends SpaceInvadersActor implements IDamageab
     public void onDeath() {
 //        System.err.println("DEATH, hp: " + actualHealthPoints + ", sp: " + actualShieldPoints);
         dead = true;
+    }
+
+    public void setVelocity(int velocityValue) {
+        this.velocityValue = velocityValue;
     }
 
 
