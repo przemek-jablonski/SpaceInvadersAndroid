@@ -45,7 +45,6 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
                 deltaTime,
                 currentTimeMillis);
 
-
         if (touchRequest) {
             actorHolder.spawnProjectile(actorHolder.getHero(), ActorType.HERO);
         }
@@ -56,7 +55,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
             actorHolder.spawnLevel(actualLevel);
         }
     }
-    
+
 
     @Override
     public void dispose() {

@@ -13,6 +13,7 @@ import com.gamedesire.pszemek.recruitment.mvc.controllers.AbstractTouchProcessor
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorDesktop;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorMobile;
 import com.gamedesire.pszemek.recruitment.ui.AbstractBaseUI;
+import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -37,8 +38,16 @@ public class SpaceInvadersScreen implements Screen {
 
     public SpaceInvadersScreen(MainGameClass game) {
 
+        //model instantiation:
         sceneModel = new SpaceInvadersSceneModel();
+
+        //view instantiation:
         sceneRenderer = new SpaceInvadersSceneRenderer(game.getSpriteBatch(), sceneModel.getActorHolder());
+
+        //view ui instantiation:
+        sceneUI = new SpaceInvadersUI(game.getSpriteBatch());
+
+        //controller instantiation:
         instantiateInputProcessor();
         touchProcessor.registerModel(sceneModel);
     }
@@ -47,6 +56,8 @@ public class SpaceInvadersScreen implements Screen {
     @Override
     public void show() {
         sceneModel.create();
+        sceneUI.create();
+
         touchProcessor.registerCamera(sceneRenderer.getCamera());
         touchProcessor.registerControlledActor(sceneModel.getActorHolder().getHero());
         Gdx.input.setInputProcessor(touchProcessor);
@@ -58,6 +69,10 @@ public class SpaceInvadersScreen implements Screen {
     public void render(float deltaTime) {
         sceneModel.update(deltaTime);
         sceneRenderer.render(deltaTime);
+
+//        sceneUI.update();
+//        sceneUI.render(deltaTime);
+//        sceneUI.getStage().draw();
     }
 
     private void setRenderBackground() {

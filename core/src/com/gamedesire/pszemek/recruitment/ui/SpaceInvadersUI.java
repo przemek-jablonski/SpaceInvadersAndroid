@@ -19,8 +19,6 @@ import com.gamedesire.pszemek.recruitment.utilities.Const;
  */
 public class SpaceInvadersUI extends AbstractBaseUI {
 
-//    private Viewport viewport;
-//    private Stage   stage;
     private Label   labelLeftHPText;
     private Label   labelLeftSPText;
     private Label   labelLeftHP;
@@ -53,8 +51,6 @@ public class SpaceInvadersUI extends AbstractBaseUI {
 
     public SpaceInvadersUI(SpriteBatch batch) {
         super(batch);
-//        viewport = new FitViewport(Const.PREF_WIDTH, Const.PREF_HEIGHT);
-//        stage = new Stage(viewport, batch);
     }
 
 
@@ -158,8 +154,8 @@ public class SpaceInvadersUI extends AbstractBaseUI {
 
 
     @Override
-    public void render() {
-        stage.act(Gdx.graphics.getDeltaTime());
+    public void render(float deltaTime) {
+        stage.act(deltaTime);
     }
 
 
@@ -180,13 +176,4 @@ public class SpaceInvadersUI extends AbstractBaseUI {
         this.gameLevel = gameLevel;
     }
 
-
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public Viewport getViewport() {
-        return viewport;
-    }
 }

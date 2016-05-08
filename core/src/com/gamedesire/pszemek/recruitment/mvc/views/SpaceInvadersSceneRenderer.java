@@ -87,7 +87,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
 
         sceneUI.update();
-        sceneUI.render();
+        sceneUI.render(deltaTime);
         sceneUI.getStage().draw();
     }
 
@@ -122,9 +122,9 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         sceneUI.updateSP(actorHolder.getHero().getActualShieldPoints());
     }
 
-    private void renderUI() {
+    private void renderUI(float deltaTime) {
         sceneUI.update();
-        sceneUI.render();
+        sceneUI.render(deltaTime);
         sceneUI.getStage().draw();
     }
 
