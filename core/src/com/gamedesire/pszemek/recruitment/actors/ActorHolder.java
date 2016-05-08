@@ -14,7 +14,7 @@ import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor001;
 import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.RocketProjectileActor;
-import com.gamedesire.pszemek.recruitment.input.TouchProcessor;
+import com.gamedesire.pszemek.recruitment.mvc.controllers.AbstractTouchProcessor;
 import com.gamedesire.pszemek.recruitment.utilities.Const;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 
@@ -37,35 +37,29 @@ public class ActorHolder {
     DelayedRemovalArray<SpaceInvadersActor> actors;
     DelayedRemovalArray<ProjectileActor>    projectiles;
 
-    TouchProcessor  touchProcessor;
-    short           actualLevel;
-    short           remainingActorsInWave;
     long            currentTimeMillis;
-    float           randomnessFactor;
 
-    Texture vlt = AssetRouting.getVignetteLTTexture();
-    Texture vlb = AssetRouting.getVignetteLBTexture();
-    Texture vrt = AssetRouting.getVignetteRTTexture();
-    Texture vrb = AssetRouting.getVignetteRBTexture();
+
+
 
     //dev only, refactor!:
     ParticleEffect exploParticle;
 
-    public boolean levelCleared = true;
+    private  boolean levelCleared = true;
 
-    private int heroPoints;
+//    private int heroPoints;
 
 
-    public ActorHolder(TouchProcessor touchProcessor) {
+    public ActorHolder() {
 
-        heroPoints = 0;
-
-        this.touchProcessor = touchProcessor;
+//        heroPoints = 0;
+//
+//        this.touchProcessor = touchProcessor;
 
         actors = new DelayedRemovalArray<SpaceInvadersActor>();
         projectiles = new DelayedRemovalArray<ProjectileActor>();
-        actualLevel = 0;
-        remainingActorsInWave = 0;
+//        actualLevel = 0;
+//        remainingActorsInWave = 0;
 
         exploParticle = new ParticleEffect();
         exploParticle.load(Gdx.files.internal("particle_explosion_alllayers.p"), Gdx.files.internal(""));
@@ -73,16 +67,18 @@ public class ActorHolder {
     }
 
 
-    public void updateAll() {
-        currentTimeMillis = System.currentTimeMillis();
-        randomnessFactor = MathUtils.random(0.7f, 1.3f);
+    public void updateAll(float deltaTime, long currentTimeMillis) {
+        this.currentTimeMillis = currentTimeMillis;
+//        currentTimeMillis = System.currentTimeMillis();
+//        randomnessFactor = MathUtils.random(0.7f, 1.3f);
         actors.begin();
         projectiles.begin();
 
         //todo: move it to another method?
-        if(touchProcessor.isTouchPressedDown())
-            spawnProjectile(getHero(), ActorType.HERO);
+//        if(touchProcessor.isTouchPressedDown())
+//            spawnProjectile(getHero(), ActorType.HERO);
 
+        //todo: as event
         if (actors.size <= 1)
             if (!levelCleared)
                 levelCleared = true;
@@ -146,16 +142,6 @@ public class ActorHolder {
         exploParticle.draw(spriteBatch);
         if(exploParticle.isComplete())
             exploParticle.reset();
-
-        Color col = spriteBatch.getColor();
-        spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
-
-        spriteBatch.draw(vlb, 0f, 0f, vlb.getWidth(), vlb.getHeight());
-        spriteBatch.draw(vlt, 0f, Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
-        spriteBatch.draw(vrt, Gdx.graphics.getWidth() - vrt.getWidth(), Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
-        spriteBatch.draw(vrb, Gdx.graphics.getWidth() - vrt.getWidth(), 0f, vlt.getWidth(), vlt.getHeight());
-
-        spriteBatch.setColor(col);
     }
 
     /**
@@ -199,7 +185,7 @@ public class ActorHolder {
 
 
     public void spawnEnemiesTest() {
-        ++actualLevel;
+//        ++actualLevel;
 
         for (int i=0; i < 30; ++i)
             actors.add(
@@ -213,9 +199,8 @@ public class ActorHolder {
     }
 
 
-    public void spawnLevel() {
-        ++actualLevel;
-        System.err.println("SPAWNING: SPAWNLEVEL / actual level: " + actualLevel);
+    public void spawnLevel(int actualLevel) {
+//        ++actualLevel;
         if (actualLevel == 1) {
             spawnLevel1();
             return;
@@ -242,27 +227,23 @@ public class ActorHolder {
     }
 
     public void spawnLevel1(){
-        System.err.println("SPAWNING: SPAWNLEVEL 1/ actual level: " + actualLevel);
         spawnEnemyWave(2, 1);
         spawnEnemyWave(3, 2);
     }
 
     public void spawnLevel2(){
-        System.err.println("SPAWNING: SPAWNLEVEL 2/ actual level: " + actualLevel);
         spawnEnemyWave(1, 1);
         spawnEnemyWave(3, 2);
         spawnEnemyWave(4, 3);
     }
 
     public void spawnLevel3() {
-        System.err.println("SPAWNING: SPAWNLEVEL 3/ actual level: " + actualLevel);
         spawnEnemyWave(1, 1); //todo: here should be spawned enemy002
         spawnEnemyWave(3, 2);
         spawnEnemyWave(5, 3); //todo: here as well (in the middle)
     }
 
     public void spawnLevel4() {
-        System.err.println("SPAWNING: SPAWNLEVEL 4/ actual level: " + actualLevel);
         spawnEnemyWave(2, 1);
         spawnEnemyWave(2, 2);
         spawnEnemyWave(3, 3); //todo: here on the sides
@@ -272,7 +253,6 @@ public class ActorHolder {
 
 
     public void spawnLevel5() {
-        System.err.println("SPAWNING: SPAWNLEVEL 5/ actual level: " + actualLevel);
         spawnEnemyWave(4, 1);
         spawnEnemyWave(3, 2); //todo: all enemies002
         spawnEnemyWave(3, 3); //todo: 002 + 003 in the middle
@@ -327,7 +307,7 @@ public class ActorHolder {
      * @param actorType ActorType, passed as projectile constructor parameter.
      */
     //todo: this random shit should be here - players rate of fire shouldn't be affected
-    private void spawnProjectile(SpaceInvadersActor actor, ActorType actorType) {
+    public void spawnProjectile(SpaceInvadersActor actor, ActorType actorType) {
         if (currentTimeMillis - actor.getLastFiredMillis() > actor.getRateOfFireIntervalMillis() * MathUtils.random(0.8f, 1.5f)) {
             if (actorType == ActorType.HERO)
                 projectiles.add(new RocketProjectileActor(actor.getActorPosition(), ActorType.HERO));
@@ -373,7 +353,7 @@ public class ActorHolder {
             exploParticle.start();
 
             //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
-            heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
+//            heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
 
 //            ((EnemyActor001) actor).getSprite().setAlpha(0f);
 //            ((EnemyActor001) actor).getSprite().setColor(1f, 1f, 1f, 0.5f);
@@ -422,15 +402,16 @@ public class ActorHolder {
         return (HeroActor)actors.get(0);
     }
 
-    public int getHeroPoints() {
-        return heroPoints;
-    }
-
-    public short getActualLevel() {
-        return actualLevel;
-    }
 
     public int getActualActorsSize() {
         return actors.size;
+    }
+
+    public boolean isLevelCleared() {
+        return levelCleared;
+    }
+
+    public void setLevelCleared(boolean value) {
+        levelCleared = value;
     }
 }

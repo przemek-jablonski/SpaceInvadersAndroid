@@ -1,21 +1,26 @@
-package com.gamedesire.pszemek.recruitment.input;
+package com.gamedesire.pszemek.recruitment.mvc.controllers;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 
 /**
  * Created by Ciemek on 29/04/16.
  */
-public class TouchProcessorDesktop extends TouchProcessor {
+public class TouchProcessorDesktop extends AbstractTouchProcessor {
 
     //todo: basically everything here, except for constructor ofc.
 
+    @Override
+    public void registerControlledActor(SpaceInvadersActor actor) {
+
+    }
 
     @Override
-    public void attachActorSpawner(ActorHolder actorHolder) {
-        this.actorHolder = actorHolder;
-        controlledActor = this.actorHolder.getHero();
+    public void registerCamera(Camera camera) {
+
     }
+
 
     @Override
     public boolean keyDown(int keycode) {

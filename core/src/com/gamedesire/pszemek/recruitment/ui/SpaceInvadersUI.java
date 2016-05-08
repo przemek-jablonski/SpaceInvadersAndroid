@@ -170,7 +170,7 @@ public class SpaceInvadersUI extends AbstractBaseUI {
     @Override
     public void render() {
         stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
+//        stage.draw();
     }
 
 
