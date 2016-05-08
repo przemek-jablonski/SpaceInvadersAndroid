@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.Disposable;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ProjectileActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
@@ -31,7 +32,7 @@ import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
  * referencing all existing actors inside a scene and performing modifications on them as well ( {@link #disposeActor(SpaceInvadersActor)},
  * {@link #renderAll(SpriteBatch)}, {@link #renderAll(SpriteBatch)}) etc.
  */
-public class ActorHolder {
+public class ActorHolder implements Disposable{
 
     //todo: check if after optimisation, it is possible to change arrays to simpler lists
     DelayedRemovalArray<SpaceInvadersActor> actors;
@@ -39,27 +40,17 @@ public class ActorHolder {
 
     long            currentTimeMillis;
 
-
-
-
     //dev only, refactor!:
     ParticleEffect exploParticle;
 
-    private  boolean levelCleared = true;
+//    private  boolean levelCleared = true;
 
 //    private int heroPoints;
 
 
     public ActorHolder() {
-
-//        heroPoints = 0;
-//
-//        this.touchProcessor = touchProcessor;
-
         actors = new DelayedRemovalArray<SpaceInvadersActor>();
         projectiles = new DelayedRemovalArray<ProjectileActor>();
-//        actualLevel = 0;
-//        remainingActorsInWave = 0;
 
         exploParticle = new ParticleEffect();
         exploParticle.load(Gdx.files.internal("particle_explosion_alllayers.p"), Gdx.files.internal(""));
@@ -69,19 +60,8 @@ public class ActorHolder {
 
     public void updateAll(float deltaTime, long currentTimeMillis) {
         this.currentTimeMillis = currentTimeMillis;
-//        currentTimeMillis = System.currentTimeMillis();
-//        randomnessFactor = MathUtils.random(0.7f, 1.3f);
         actors.begin();
         projectiles.begin();
-
-        //todo: move it to another method?
-//        if(touchProcessor.isTouchPressedDown())
-//            spawnProjectile(getHero(), ActorType.HERO);
-
-        //todo: as event
-        if (actors.size <= 1)
-            if (!levelCleared)
-                levelCleared = true;
 
 
         //iterating over actors
@@ -124,7 +104,6 @@ public class ActorHolder {
 
         projectiles.end();
         actors.end();
-
     }
 
     /**
@@ -177,27 +156,10 @@ public class ActorHolder {
         actors.get(0).render(spriteBatch);
     }
 
-
     public HeroActor spawnHero() {
         actors.add(new HeroActor(Const.PREF_HEIGHT / 5f, Const.PREF_WIDTH / 2f, 0f, 0f));
         return (HeroActor)actors.get(0);
     }
-
-
-    public void spawnEnemiesTest() {
-//        ++actualLevel;
-
-        for (int i=0; i < 30; ++i)
-            actors.add(
-                    new EnemyActor001(
-                            MathUtils.random(Const.SPAWN_MARGIN_HORIZONTAL_STANDARD + AssetRouting.getEnemy001Texture().getWidth() / 2, Const.PREF_WIDTH - AssetRouting.getEnemy001Texture().getWidth() / 2 - Const.SPAWN_MARGIN_HORIZONTAL_STANDARD),
-                            MathUtils.random((float) (Const.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() / 2), Const.PREF_HEIGHT * 2f),
-                            Const.VECTOR_DIRECTION_DOWN
-                    ));
-
-
-    }
-
 
     public void spawnLevel(int actualLevel) {
 //        ++actualLevel;
@@ -223,7 +185,6 @@ public class ActorHolder {
         }
 
         spawnLevelProcedural(actualLevel);
-
     }
 
     public void spawnLevel1(){
@@ -251,7 +212,6 @@ public class ActorHolder {
         spawnEnemyWave(5, 5); //todo: here as well (in the middle)
     }
 
-
     public void spawnLevel5() {
         spawnEnemyWave(4, 1);
         spawnEnemyWave(3, 2); //todo: all enemies002
@@ -270,7 +230,6 @@ public class ActorHolder {
 
     }
 
-
     private void spawnEnemyWave(int enemyCount, int heightLine) {
         for (int e=0; e<enemyCount; ++e)
             actors.add(
@@ -280,7 +239,6 @@ public class ActorHolder {
                             Const.VECTOR_DIRECTION_DOWN
                     ));
     }
-
 
     /**
      * Performing simple check whether given enemy is requesting for projectile spawn on it's behalf.
@@ -297,7 +255,6 @@ public class ActorHolder {
         }
         return false;
     }
-
 
     /**
      * Spawning projectile on screen.
@@ -318,7 +275,6 @@ public class ActorHolder {
 
     }
 
-
     /**
      * Checks whether actor is inside bounds of a screen.
      *
@@ -335,7 +291,6 @@ public class ActorHolder {
 
         return false;
     }
-
 
     /**
      * Performs disposal of given actor (removal and dereferencial / setting invisibility)
@@ -367,7 +322,6 @@ public class ActorHolder {
         return false;
     }
 
-
     private boolean checkProjectileHit(ProjectileActor projectile) {
         for (SpaceInvadersActor actor : actors)
             if ((actor instanceof EnemyActor001 && projectile.getActorType() == ActorType.HERO) || (actor instanceof HeroActor && projectile.getActorType() == ActorType.ENEMY)) {
@@ -389,7 +343,6 @@ public class ActorHolder {
         return false;
     }
 
-
     private boolean checkCollision(SpaceInvadersActor actor1, SpaceInvadersActor actor2) {
         if (actor1.getBoundingRectangle().contains(actor2.getBoundingRectangle())
                 ||actor1.getBoundingRectangle().overlaps(actor2.getBoundingRectangle()))
@@ -397,21 +350,27 @@ public class ActorHolder {
         return false;
     }
 
-
     public HeroActor getHero() {
         return (HeroActor)actors.get(0);
     }
 
+//    public boolean isLevelCleared() {
+//        return levelCleared;
+//    }
+//
+//    public void setLevelCleared(boolean value) {
+//        levelCleared = value;
+//    }
 
-    public int getActualActorsSize() {
-        return actors.size;
+    public DelayedRemovalArray<SpaceInvadersActor> getActors() {
+        return actors;
     }
 
-    public boolean isLevelCleared() {
-        return levelCleared;
-    }
-
-    public void setLevelCleared(boolean value) {
-        levelCleared = value;
+    @Override
+    public void dispose() {
+        actors.clear();
+        actors = null;
+        projectiles.clear();
+        projectiles = null;
     }
 }

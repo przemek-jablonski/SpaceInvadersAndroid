@@ -9,7 +9,7 @@ import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 /**
  * Created by Ciemek on 08/05/16.
  */
-public class SpaceInvadersSceneModel implements Disposable{
+public class SpaceInvadersSceneModel implements Disposable {
 
     private ActorHolder actorHolder;
 
@@ -20,9 +20,7 @@ public class SpaceInvadersSceneModel implements Disposable{
     private int         actualLevel;
     private int         heroPoints;
     private boolean     levelCleared;
-
-
-    private boolean touchRequest;
+    private boolean     touchRequest;
 
 
     public SpaceInvadersSceneModel() {
@@ -42,29 +40,28 @@ public class SpaceInvadersSceneModel implements Disposable{
         currentTimeMillis = System.currentTimeMillis();
         tickRandomnessFactor = MathUtils.random(0.7f, 1.3f);
 
-        actorHolder.updateAll(deltaTime, currentTimeMillis);
+        actorHolder.updateAll(
+                deltaTime,
+                currentTimeMillis);
 
-//        if(!debugTestOne) {
-//            actorHolder.spawnLevel3();
-//            debugTestOne = true;
-//        }
 
         if (touchRequest) {
             actorHolder.spawnProjectile(actorHolder.getHero(), ActorType.HERO);
         }
 
+        if (actorHolder.getActors().size <= 1)
+
         //// TODO: 08/05/16  it seems that level progression is not working anymore - investigate
-        if (actorHolder.isLevelCleared()) {
+        if (actorHolder.getActors().size <= 1) {
             ++actualLevel;
             actorHolder.spawnLevel(actualLevel);
-            actorHolder.setLevelCleared(false);
         }
     }
 
 
     @Override
     public void dispose() {
-
+        actorHolder.dispose();
     }
 
 
