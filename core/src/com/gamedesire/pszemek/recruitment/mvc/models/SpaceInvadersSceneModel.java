@@ -1,9 +1,6 @@
 package com.gamedesire.pszemek.recruitment.mvc.models;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Disposable;
-import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 
 /**
@@ -42,9 +39,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
         gameTimeSecs = (int)((currentTimeMillis - startTimeMillis)/1000f);
         tickRandomnessFactor = MathUtils.random(0.7f, 1.3f);
 
-        actorHolder.updateAll(
-                deltaTime,
-                currentTimeMillis);
+        actorHolder.updateAllActors(currentTimeMillis);
 
         if (touchRequest) {
             actorHolder.spawnProjectile(actorHolder.getHero(), ActorType.HERO);

@@ -58,7 +58,7 @@ public class ActorHolder implements Disposable{
     }
 
 
-    public void updateAll(float deltaTime, long currentTimeMillis) {
+    public void updateAllActors(long currentTimeMillis) {
         this.currentTimeMillis = currentTimeMillis;
         actors.begin();
         projectiles.begin();
@@ -70,7 +70,7 @@ public class ActorHolder implements Disposable{
 
             if(checkActorOutOfScreen(actor))
                 if (disposeActor(actor)) {
-                    System.err.println("ACTOR (actor) DISPOSED, pos: " + actor.getActorPosition());
+                    System.err.println("ACTOR (actor) DISPOSED / OUT OF SCREEN, pos: " + actor.getActorPosition());
                 }
 
             //spawn projectile, if applicable
@@ -95,7 +95,7 @@ public class ActorHolder implements Disposable{
             //check if is out of screen
             if(checkActorOutOfScreen(projectile))
                 if (disposeActor(projectile)) {
-                    System.err.println("ACTOR (projectile) DISPOSED, pos: " + projectile.getActorPosition() + ", act size: " + actors.size);
+                    System.err.println("ACTOR (projectile) DISPOSED/ OUT OF SCREEN, pos: " + projectile.getActorPosition() + ", act size: " + actors.size);
                 }
 
             //check for collisions
@@ -104,140 +104,6 @@ public class ActorHolder implements Disposable{
 
         projectiles.end();
         actors.end();
-    }
-
-    /**
-     * Calling all available renderers.
-     *
-     * @param spriteBatch
-     */
-    //todo: optimise traversal through actors list
-    public void renderAll(SpriteBatch spriteBatch) {
-        renderAllActors(spriteBatch);
-        renderAllProjectiles(spriteBatch);
-        renderHero(spriteBatch);
-
-        exploParticle.update(Gdx.graphics.getDeltaTime());
-        exploParticle.draw(spriteBatch);
-        if(exploParticle.isComplete())
-            exploParticle.reset();
-    }
-
-    /**
-     * Rendering all actors referenced by this class (enemies, obstacles, specials) onto screen.
-     *
-     * @param spriteBatch Rendering batch.
-     */
-    private void renderAllActors(SpriteBatch spriteBatch) {
-        for (int a = 1; a < actors.size; ++a)
-            actors.get(a).render(spriteBatch);
-    }
-
-    /**
-     * Rendering all projectiles referenced by this class (bullets, rockets etc.) onto screen.
-     *
-     * @param spriteBatch Rendering batch.
-     */
-    private void renderAllProjectiles(SpriteBatch spriteBatch) {
-        for (int p = 0; p < projectiles.size; ++p) {
-            if (projectiles.get(p).getActorType() == ActorType.ENEMY)
-                projectiles.get(p).render(spriteBatch);
-            projectiles.get(p).render(spriteBatch);
-        }
-    }
-
-    /**
-     * Rendering hero on screen.
-     *
-     * @param spriteBatch Rendering batch.
-     */
-    private void renderHero(SpriteBatch spriteBatch) {
-        //todo: some exceptions, for example here: if actor here isn't instance of HeroActor
-        actors.get(0).render(spriteBatch);
-    }
-
-    public HeroActor spawnHero() {
-        actors.add(new HeroActor(Const.PREF_HEIGHT / 5f, Const.PREF_WIDTH / 2f, 0f, 0f));
-        return (HeroActor)actors.get(0);
-    }
-
-    public void spawnLevel(int actualLevel) {
-//        ++actualLevel;
-        if (actualLevel == 1) {
-            spawnLevel1();
-            return;
-        }
-        if (actualLevel == 2) {
-            spawnLevel2();
-            return;
-        }
-        if (actualLevel == 3) {
-            spawnLevel3();
-            return;
-        }
-        if (actualLevel == 4) {
-            spawnLevel4();
-            return;
-        }
-        if (actualLevel == 5) {
-            spawnLevel5();
-            return;
-        }
-
-        spawnLevelProcedural(actualLevel);
-    }
-
-    public void spawnLevel1(){
-        spawnEnemyWave(2, 1);
-        spawnEnemyWave(3, 2);
-    }
-
-    public void spawnLevel2(){
-        spawnEnemyWave(1, 1);
-        spawnEnemyWave(3, 2);
-        spawnEnemyWave(4, 3);
-    }
-
-    public void spawnLevel3() {
-        spawnEnemyWave(1, 1); //todo: here should be spawned enemy002
-        spawnEnemyWave(3, 2);
-        spawnEnemyWave(5, 3); //todo: here as well (in the middle)
-    }
-
-    public void spawnLevel4() {
-        spawnEnemyWave(2, 1);
-        spawnEnemyWave(2, 2);
-        spawnEnemyWave(3, 3); //todo: here on the sides
-        spawnEnemyWave(4, 4);
-        spawnEnemyWave(5, 5); //todo: here as well (in the middle)
-    }
-
-    public void spawnLevel5() {
-        spawnEnemyWave(4, 1);
-        spawnEnemyWave(3, 2); //todo: all enemies002
-        spawnEnemyWave(3, 3); //todo: 002 + 003 in the middle
-        spawnEnemyWave(4, 4); //todo: 2x 003
-        spawnEnemyWave(5, 5); //todo: all 001
-    }
-
-    public void spawnLevelProcedural(int levelNumber) {
-        int waveHeight = 0;
-        for (int i=0; i < levelNumber + MathUtils.random(-1, 3); ++i) {
-            waveHeight += i;
-            waveHeight += MathUtils.random(0f, 0.5f);
-            spawnEnemyWave(MathUtils.clamp(MathUtils.random(0,3) + MathUtils.random(1, 4), 1, 5), waveHeight);
-        }
-
-    }
-
-    private void spawnEnemyWave(int enemyCount, int heightLine) {
-        for (int e=0; e<enemyCount; ++e)
-            actors.add(
-                    new EnemyActor001(
-                            (Const.PREF_WIDTH / (enemyCount + 1)) * (e+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Const.VECTOR_DIRECTION_DOWN
-                    ));
     }
 
     /**
@@ -310,12 +176,6 @@ public class ActorHolder implements Disposable{
             //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
 //            heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
 
-//            ((EnemyActor001) actor).getSprite().setAlpha(0f);
-//            ((EnemyActor001) actor).getSprite().setColor(1f, 1f, 1f, 0.5f);
-
-//            actor.setPosition(0, Const.PREF_HEIGHT * 3);
-//            actor.setDirection(0f, 0f);
-
             return actors.removeValue(actor, false);
 
         }
@@ -324,7 +184,8 @@ public class ActorHolder implements Disposable{
 
     private boolean checkProjectileHit(ProjectileActor projectile) {
         for (SpaceInvadersActor actor : actors)
-            if ((actor instanceof EnemyActor001 && projectile.getActorType() == ActorType.HERO) || (actor instanceof HeroActor && projectile.getActorType() == ActorType.ENEMY)) {
+            if ((actor instanceof EnemyActor001 && projectile.getActorType() == ActorType.HERO) ||
+                    (actor instanceof HeroActor && projectile.getActorType() == ActorType.ENEMY)) {
                 if (checkCollision(actor, projectile))
                     //todo: actors need to have their indexes inside them, so this STUPID LOOP can be thrashed out.
                     for (SpaceInvadersActor actorInList : actors) {
@@ -350,13 +211,95 @@ public class ActorHolder implements Disposable{
         return false;
     }
 
+    public HeroActor spawnHero() {
+        actors.add(new HeroActor(Const.PREF_HEIGHT / 5f, Const.PREF_WIDTH / 2f, 0f, 0f));
+        return (HeroActor)actors.get(0);
+    }
+
+    public void spawnLevel(int actualLevel) {
+        if (actualLevel == 1) {
+            spawnLevel1();
+            return;
+        }
+        if (actualLevel == 2) {
+            spawnLevel2();
+            return;
+        }
+        if (actualLevel == 3) {
+            spawnLevel3();
+            return;
+        }
+        if (actualLevel == 4) {
+            spawnLevel4();
+            return;
+        }
+        if (actualLevel == 5) {
+            spawnLevel5();
+            return;
+        }
+        spawnLevelProcedural(actualLevel);
+    }
+
+    public void spawnLevel1(){
+        spawnEnemyWave(2, 1);
+        spawnEnemyWave(3, 2);
+    }
+
+    public void spawnLevel2(){
+        spawnEnemyWave(1, 1);
+        spawnEnemyWave(3, 2);
+        spawnEnemyWave(4, 3);
+    }
+
+    public void spawnLevel3() {
+        spawnEnemyWave(1, 1); //todo: here should be spawned enemy002
+        spawnEnemyWave(3, 2);
+        spawnEnemyWave(5, 3); //todo: here as well (in the middle)
+    }
+
+    public void spawnLevel4() {
+        spawnEnemyWave(2, 1);
+        spawnEnemyWave(2, 2);
+        spawnEnemyWave(3, 3); //todo: here on the sides
+        spawnEnemyWave(4, 4);
+        spawnEnemyWave(5, 5); //todo: here as well (in the middle)
+    }
+
+    public void spawnLevel5() {
+        spawnEnemyWave(4, 1);
+        spawnEnemyWave(3, 2); //todo: all enemies002
+        spawnEnemyWave(3, 3); //todo: 002 + 003 in the middle
+        spawnEnemyWave(4, 4); //todo: 2x 003
+        spawnEnemyWave(5, 5); //todo: all 001
+    }
+
+    public void spawnLevelProcedural(int levelNumber) {
+        int waveHeight = 0;
+        for (int i=0; i < levelNumber + MathUtils.random(-1, 3); ++i) {
+            waveHeight += i;
+            waveHeight += MathUtils.random(0f, 0.5f);
+            spawnEnemyWave(MathUtils.clamp(MathUtils.random(0,3) + MathUtils.random(1, 4), 1, 5), waveHeight);
+        }
+
+    }
+
+    private void spawnEnemyWave(int enemyCount, int heightLine) {
+        for (int e=0; e<enemyCount; ++e)
+            actors.add(
+                    new EnemyActor001(
+                            (Const.PREF_WIDTH / (enemyCount + 1)) * (e+1),
+                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.PREF_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Const.VECTOR_DIRECTION_DOWN
+                    ));
+    }
+
     public HeroActor getHero() {
         return (HeroActor)actors.get(0);
     }
 
-    public DelayedRemovalArray<SpaceInvadersActor> getActors() {
-        return actors;
-    }
+    public DelayedRemovalArray<SpaceInvadersActor> getActors() { return actors; }
+
+    public DelayedRemovalArray<ProjectileActor> getProjectiles() { return projectiles; }
 
     @Override
     public void dispose() {

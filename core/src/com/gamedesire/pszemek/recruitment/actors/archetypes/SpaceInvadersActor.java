@@ -17,10 +17,8 @@ public abstract class SpaceInvadersActor {
     private   int       actorId;
     protected Sprite    actorSprite;
     protected float     velocityValue;
-    protected float     accelerationValue;
     protected float     directionX;
     protected float     directionY;
-    private   Vector2   temporaryMovementVector;
     protected long      rateOfFireIntervalMillis;
     protected long      lastFiredMillis;
 
@@ -59,13 +57,6 @@ public abstract class SpaceInvadersActor {
     public abstract void update();
 
     public abstract void dispose();
-
-    public void render(SpriteBatch batch) {
-
-        //todo: this shit should be in rendering class
-        //fixme: rotating 90 degrees for ENEMY projectiles!
-        batch.draw(actorSprite.getTexture(), actorSprite.getX(), actorSprite.getY());
-    }
 
 
     //accessors: setters:
@@ -128,5 +119,9 @@ public abstract class SpaceInvadersActor {
 
     public int getMaxShieldPoints() {
         return maxShieldPoints;
+    }
+
+    public Sprite getActorSprite() {
+        return actorSprite;
     }
 }

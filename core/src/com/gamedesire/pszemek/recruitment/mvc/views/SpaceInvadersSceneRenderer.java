@@ -1,18 +1,16 @@
 package com.gamedesire.pszemek.recruitment.mvc.views;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 import com.gamedesire.pszemek.recruitment.utilities.Const;
@@ -79,8 +77,12 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
         camera.update();
 
+        renderLayerBackgroundGradient();
         renderLayerBackgroundSprite();
-        renderLayerAllActors();
+//        renderLayerAllActors();
+        renderLayerActors();
+        renderLayerProjectiles();
+        renderLayerHero();
         renderLayerVignettes();
 
         spriteBatch.end();
@@ -116,22 +118,27 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 //        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    private void renderLayerAllActors() {
-        actorHolder.renderAll(spriteBatch);
-    }
+//    private void renderLayerAllActors() {
+//        actorHolder.renderAll(spriteBatch);
+//    }
 
     private void renderLayerActors() {
-//        for (int a = 1; a < actorHolder.getActors().size; ++a) {
-//
-//        }
+        for (int a = 1; a < actorHolder.getActors().size; ++a) {
+//            actorHolder.getActors().get(a).render(spriteBatch);
+            renderActor(actorHolder.getActors().get(a));
+        }
     }
 
     private void renderLayerProjectiles() {
-
+        for (int p = 1; p < actorHolder.getProjectiles().size; ++p) {
+//            actorHolder.getProjectiles().get(p).render(spriteBatch);
+            renderActor(actorHolder.getProjectiles().get(p));
+        }
     }
 
     private void renderLayerHero() {
-
+//        actorHolder.getHero().render(spriteBatch);
+        renderActor(actorHolder.getHero());
     }
 
 
@@ -145,6 +152,12 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         spriteBatch.setColor(col);
     }
 
+    private void renderActor(SpaceInvadersActor actor) {
+        spriteBatch.draw(
+                actor.getActorSprite().getTexture(),
+                actor.getActorSprite().getX(),
+                actor.getActorSprite().getY());
+    }
 
 
     @Override
