@@ -9,9 +9,9 @@ import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 /**
  * Created by Ciemek on 08/05/16.
  */
-public class SpaceInvadersSceneModel implements Disposable {
+public class SpaceInvadersSceneModel extends AbstractSceneModel {
 
-    private ActorHolder actorHolder;
+//    private ActorHolder actorHolder;
 
     private long        startTimeMillis;
     private long        gameTimeMillis;
@@ -28,6 +28,7 @@ public class SpaceInvadersSceneModel implements Disposable {
         touchRequest = false;
     }
 
+    @Override
     public void create() {
         startTimeMillis = System.currentTimeMillis();
         gameTimeMillis = 0;
@@ -36,6 +37,7 @@ public class SpaceInvadersSceneModel implements Disposable {
         actorHolder.spawnHero();
     }
 
+    @Override
     public void update(float deltaTime) {
         currentTimeMillis = System.currentTimeMillis();
         tickRandomnessFactor = MathUtils.random(0.7f, 1.3f);
@@ -61,7 +63,7 @@ public class SpaceInvadersSceneModel implements Disposable {
 
     @Override
     public void dispose() {
-        actorHolder.dispose();
+        super.dispose();
     }
 
 

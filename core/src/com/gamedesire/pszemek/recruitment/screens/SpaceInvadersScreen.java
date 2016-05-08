@@ -4,26 +4,12 @@ package com.gamedesire.pszemek.recruitment.screens;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gamedesire.pszemek.recruitment.MainGameClass;
 import com.gamedesire.pszemek.recruitment.mvc.models.SpaceInvadersSceneModel;
-import com.gamedesire.pszemek.recruitment.mvc.views.SpaceInvadersScreenRenderer;
-import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.mvc.views.SpaceInvadersSceneRenderer;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.AbstractTouchProcessor;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorDesktop;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorMobile;
-import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -35,20 +21,20 @@ public class SpaceInvadersScreen implements Screen {
     private SpaceInvadersSceneModel sceneModel;
 
     //view:
-    private SpaceInvadersScreenRenderer sceneRenderer;
+    private SpaceInvadersSceneRenderer sceneRenderer;
 
     //controller:
     private AbstractTouchProcessor  touchProcessor;
 
 
-    private SpriteBatch spriteBatch;
+//    private SpriteBatch spriteBatch;
 
 
     public SpaceInvadersScreen(MainGameClass game) {
-        spriteBatch = game.getSpriteBatch();
+//        spriteBatch = game.getSpriteBatch();
 
         sceneModel = new SpaceInvadersSceneModel();
-        sceneRenderer = new SpaceInvadersScreenRenderer(spriteBatch, sceneModel.getActorHolder());
+        sceneRenderer = new SpaceInvadersSceneRenderer(game.getSpriteBatch(), sceneModel.getActorHolder());
         instantiateInputProcessor();
         touchProcessor.registerModel(sceneModel);
     }
@@ -57,7 +43,6 @@ public class SpaceInvadersScreen implements Screen {
     @Override
     public void show() {
         sceneModel.create();
-
         touchProcessor.registerCamera(sceneRenderer.getCamera());
         touchProcessor.registerControlledActor(sceneModel.getActorHolder().getHero());
         Gdx.input.setInputProcessor(touchProcessor);
@@ -67,17 +52,8 @@ public class SpaceInvadersScreen implements Screen {
 
     @Override
     public void render(float deltaTime) {
-
         sceneModel.update(deltaTime);
         sceneRenderer.render(deltaTime);
-
-
-        //// TODO: 08/05/16 maybe UI must be rendered OUT OF SPRITE BATCH BOUNDARIES (after end)?
-//        spaceInvadersUI.updateHeroPoints(actorHolder.getHeroPoints());
-//        spaceInvadersUI.updateLevel(actorHolder.getActualLevel());
-//        spaceInvadersUI.updateHP(actorHolder.getHero().getActualHealthPoints());
-//        spaceInvadersUI.updateSP(actorHolder.getHero().getActualShieldPoints());
-
     }
 
     private void setRenderBackground() {

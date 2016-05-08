@@ -20,15 +20,15 @@ import com.gamedesire.pszemek.recruitment.utilities.Const;
 /**
  * Created by Ciemek on 08/05/16.
  */
-public class SpaceInvadersScreenRenderer implements Disposable{
+public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
-    private SpriteBatch         spriteBatch;
+//    private SpriteBatch         spriteBatch;
     private SpaceInvadersUI     sceneUI;
     private ActorHolder         actorHolder;
 
     //// TODO: 08/05/16 CHECK IF THIS SHIT WORKS FOR DIFFERENT DEVICES NOW (konrad?)
-    private Camera              camera;
-    private Viewport            viewport;
+//    private Camera              camera;
+//    private Viewport            viewport;
 
     private Texture vignetteLeftTop = AssetRouting.getVignetteLTTexture();
     private Texture vignetteLeftBottom = AssetRouting.getVignetteLBTexture();
@@ -38,13 +38,13 @@ public class SpaceInvadersScreenRenderer implements Disposable{
     private Sprite backgroundSprite;
 
 
-    public SpaceInvadersScreenRenderer(SpriteBatch spriteBatch, ActorHolder actorHolder) {
+    public SpaceInvadersSceneRenderer(SpriteBatch spriteBatch, ActorHolder actorHolder) {
         this.spriteBatch = spriteBatch;
         this.actorHolder = actorHolder;
         create();
     }
 
-
+    @Override
     protected void create() {
         spriteBatch.enableBlending();
         sceneUI = new SpaceInvadersUI(spriteBatch);
@@ -66,7 +66,7 @@ public class SpaceInvadersScreenRenderer implements Disposable{
 
     }
 
-
+    @Override
     public void render(float deltaTime) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -80,17 +80,8 @@ public class SpaceInvadersScreenRenderer implements Disposable{
         camera.update();
 
         renderLayerBackgroundSprite();
-//        sceneModel.getActorHolder().renderAll(spriteBatch);
         renderLayerAllActors();
         renderLayerVignettes();
-//        spriteBatch.end();
-//        spriteBatch.begin();
-//        spriteBatch.setProjectionMatrix(sceneUI.getStage().getCamera().combined);
-//
-//        updateUI();
-//        renderUI();
-//
-
 
         spriteBatch.end();
 
@@ -98,8 +89,6 @@ public class SpaceInvadersScreenRenderer implements Disposable{
         sceneUI.update();
         sceneUI.render();
         sceneUI.getStage().draw();
-
-
     }
 
 
@@ -121,6 +110,7 @@ public class SpaceInvadersScreenRenderer implements Disposable{
         spriteBatch.setColor(col);
     }
 
+    @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
     }
@@ -144,7 +134,7 @@ public class SpaceInvadersScreenRenderer implements Disposable{
 
     @Override
     public void dispose() {
-//        spriteBatch.dispose();
-//        sceneUI.dispose();
+        super.dispose();
+        sceneUI.dispose();
     }
 }
