@@ -17,10 +17,8 @@ public abstract class SpaceInvadersActor {
     private   int       actorId;
     protected Sprite    actorSprite;
     protected float     velocityValue;
-    protected float     accelerationValue;
     protected float     directionX;
     protected float     directionY;
-    private   Vector2   temporaryMovementVector;
     protected long      rateOfFireIntervalMillis;
     protected long      lastFiredMillis;
 
@@ -60,22 +58,6 @@ public abstract class SpaceInvadersActor {
 
     public abstract void dispose();
 
-    public void render(SpriteBatch batch) {
-
-        //todo: this shit should be in rendering class
-        //fixme: rotating 90 degrees for ENEMY projectiles!
-        batch.draw(actorSprite.getTexture(), actorSprite.getX(), actorSprite.getY());
-    }
-
-
-
-    public void updateVelocityPercentage(int percentage) {
-        velocityValue += velocityValue * (percentage / 100f);
-    }
-
-    public void updateRateOfFireIntervalPercentage(int percentage) {
-        rateOfFireIntervalMillis = (long)(rateOfFireIntervalMillis / (1 + (percentage/100f)));
-    }
 
     //accessors: setters:
     public void setDirection(Vector2 vector) {
@@ -91,10 +73,6 @@ public abstract class SpaceInvadersActor {
         actorSprite.setCenter(x, y);
     }
 
-    public void setLastFiredMillis(long lastFiredMillis) {
-        this.lastFiredMillis = lastFiredMillis;
-    }
-
     public void updatePosition() {
         if (this instanceof HeroActor && !Gdx.input.isTouched()) return;
             setPosition(
@@ -102,11 +80,9 @@ public abstract class SpaceInvadersActor {
                     getActorPosition().y + (directionY * velocityValue) * Gdx.graphics.getDeltaTime());
     }
 
-
-
-
-
-
+    public void setLastFiredMillis(long lastFiredMillis) {
+        this.lastFiredMillis = lastFiredMillis;
+    }
 
     //accessors: getters:
     public Vector2 getActorPosition() {
@@ -145,7 +121,7 @@ public abstract class SpaceInvadersActor {
         return maxShieldPoints;
     }
 
-    public float getVelocityValue() {
-        return velocityValue;
+    public Sprite getActorSprite() {
+        return actorSprite;
     }
 }
