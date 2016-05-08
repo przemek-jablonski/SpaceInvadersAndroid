@@ -5,6 +5,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.gamedesire.pszemek.recruitment.MainGameClass;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.mvc.models.AbstractSceneModel;
 import com.gamedesire.pszemek.recruitment.mvc.models.SpaceInvadersSceneModel;
 import com.gamedesire.pszemek.recruitment.mvc.views.AbstractSceneRenderer;
@@ -70,29 +71,15 @@ public class SpaceInvadersScreen implements Screen {
         sceneModel.update(deltaTime);
         sceneRenderer.render(deltaTime);
 
-//        sceneUI.update();
-//        sceneUI.render(deltaTime);
-//        sceneUI.getStage().draw();
-    }
 
-    private void setRenderBackground() {
-        //      todo: figure out why setting projection matrix destroys gradient (???)
-//        backgroundGradient.setProjectionMatrix(camera.combined);
-//
-//        mainGameClass.getSpriteBatch().setProjectionMatrix(camera.combined);
-//        backgroundGradient.begin(ShapeRenderer.ShapeType.Filled);
-//        backgroundGradient.rect(
-//                0,
-//                0,
-//                Gdx.graphics.getWidth(),
-//                Gdx.graphics.getHeight(),
-//                Utils.getColorFrom255(200, 0, 150, 1),
-//                Utils.getColorFrom255(60, 0, 40, 1),
-//                Utils.getColorFrom255(100, 0, 100, 1),
-//                Utils.getColorFrom255(80, 0, 40, 1));
-//        backgroundGradient.end();
+        ((SpaceInvadersUI) sceneUI).updateUIData(
+                ((SpaceInvadersSceneModel) sceneModel).getGameTimeSecs(),
+                ((SpaceInvadersSceneModel) sceneModel).getHeroPoints(),
+                ((SpaceInvadersSceneModel) sceneModel).getActualLevel(),
+                sceneModel.getActorHolder().getHero().getActualHealthPoints(),
+                sceneModel.getActorHolder().getHero().getActualShieldPoints());
 
-//        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        sceneUI.render(deltaTime);
     }
 
 

@@ -19,33 +19,27 @@ import com.gamedesire.pszemek.recruitment.utilities.Const;
  */
 public class SpaceInvadersUI extends AbstractBaseUI {
 
+
+    private LabelStyle labelStyle;
+
     private Label   labelLeftHPText;
     private Label   labelLeftSPText;
     private Label   labelLeftHP;
     private Label   labelLeftSP;
-
     private Label   labelRightPointsText;
     private Label   labelRightTimeText;
     private Label   labelRightLevelText;
     private Label   labelRightPoints;
     private Label   labelRightTime;
     private Label   labelRightLevel;
-
     private Image   imageBottomGameLogo;
     private Image   imageBottomCompanyLogo;
 
-    private LabelStyle labelStyle;
-
-
-    //// FIXME: 06/05/16 store this in some logic (model) class
-    private long    actualTime;
-    private long    startTime;
-
-    private long    heroHP = 50;
-    private long    heroSP = 0;
-
+    private long   actualTime;
+    private int    heroHP;
+    private int    heroSP;
     private int    heroPoints;
-    private long    gameLevel;
+    private int    gameLevel;
 
 
 
@@ -56,8 +50,6 @@ public class SpaceInvadersUI extends AbstractBaseUI {
 
     @Override
     public void create() {
-        //// FIXME: 06/05/16 this should be done in logic (model) class, not in UI class, come on...
-        startTime = System.currentTimeMillis();
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.getData().setScale(2f);
         labelStyle = new LabelStyle(bitmapFont, new Color(1f, 1f, 1f, 0.45f));
@@ -139,41 +131,31 @@ public class SpaceInvadersUI extends AbstractBaseUI {
         update();
     }
 
+
+    public void updateUIData(long gameTimeSecs, int heroPoints, int gameLevel, int actualHP, int actualSP) {
+        actualTime = gameTimeSecs;
+        heroHP = actualHP;
+        heroSP = actualSP;
+        this.heroPoints = heroPoints;
+        this.gameLevel = gameLevel;
+        update();
+    }
+
+
     @Override
     public void update() {
-        actualTime = (long)((System.currentTimeMillis() - startTime) / 1000f);
-
-        //// FIXME: 07/05/16 Longs here are not nessesary, refactor variables type to Integer
         labelRightTime.setText(Long.toString(actualTime));
         labelRightPoints.setText(Integer.toString(heroPoints));
-        labelRightLevel.setText(Long.toString(gameLevel));
-        labelLeftHP.setText(Long.toString(heroHP));
-        labelLeftHP.setText(Long.toString(heroSP));
-
+        labelRightLevel.setText(Integer.toString(gameLevel));
+        labelLeftHP.setText(Integer.toString(heroHP));
+        labelLeftHP.setText(Integer.toString(heroSP));
     }
 
 
     @Override
     public void render(float deltaTime) {
         stage.act(deltaTime);
-    }
-
-
-
-    public void updateHP(int actualHealthPoints) {
-        heroHP = actualHealthPoints;
-    }
-
-    public void updateSP(int actualShieldPoints) {
-        heroSP = actualShieldPoints;
-    }
-
-    public void updateHeroPoints(int heroPoints) {
-        this.heroPoints = heroPoints;
-    }
-
-    public void updateLevel(int gameLevel) {
-        this.gameLevel = gameLevel;
+        stage.draw();
     }
 
 }

@@ -13,7 +13,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
 
 
     private long        startTimeMillis;
-    private long        gameTimeMillis;
+    private long        gameTimeSecs;
     private long        currentTimeMillis;
     private float       tickRandomnessFactor;
     private int         actualLevel;
@@ -29,7 +29,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
     @Override
     public void create() {
         startTimeMillis = System.currentTimeMillis();
-        gameTimeMillis = 0;
+        gameTimeSecs = 0;
         actualLevel = 0;
         heroPoints = 0;
         actorHolder.spawnHero();
@@ -39,6 +39,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
     @Override
     public void update(float deltaTime) {
         currentTimeMillis = System.currentTimeMillis();
+        gameTimeSecs = (int)((currentTimeMillis - startTimeMillis)/1000f);
         tickRandomnessFactor = MathUtils.random(0.7f, 1.3f);
 
         actorHolder.updateAll(
@@ -61,4 +62,11 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
     public void dispose() {
         super.dispose();
     }
+
+    public int getHeroPoints() { return heroPoints; }
+
+    public int getActualLevel() { return actualLevel; }
+
+    public long getGameTimeSecs() { return gameTimeSecs; }
+
 }

@@ -85,10 +85,10 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
         spriteBatch.end();
 
-
-        sceneUI.update();
-        sceneUI.render(deltaTime);
-        sceneUI.getStage().draw();
+//
+//        sceneUI.update();
+//        sceneUI.render(deltaTime);
+//        sceneUI.getStage().draw();
     }
 
 
@@ -96,9 +96,44 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
+    private void renderLayerBackgroundGradient() {
+        //      todo: figure out why setting projection matrix destroys gradient (???)
+//        backgroundGradient.setProjectionMatrix(camera.combined);
+//
+//        mainGameClass.getSpriteBatch().setProjectionMatrix(camera.combined);
+//        backgroundGradient.begin(ShapeRenderer.ShapeType.Filled);
+//        backgroundGradient.rect(
+//                0,
+//                0,
+//                Gdx.graphics.getWidth(),
+//                Gdx.graphics.getHeight(),
+//                Utils.getColorFrom255(200, 0, 150, 1),
+//                Utils.getColorFrom255(60, 0, 40, 1),
+//                Utils.getColorFrom255(100, 0, 100, 1),
+//                Utils.getColorFrom255(80, 0, 40, 1));
+//        backgroundGradient.end();
+
+//        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
     private void renderLayerAllActors() {
         actorHolder.renderAll(spriteBatch);
     }
+
+    private void renderLayerActors() {
+//        for (int a = 1; a < actorHolder.getActors().size; ++a) {
+//
+//        }
+    }
+
+    private void renderLayerProjectiles() {
+
+    }
+
+    private void renderLayerHero() {
+
+    }
+
 
     private void renderLayerVignettes() {
         Color col = spriteBatch.getColor();
@@ -110,6 +145,8 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         spriteBatch.setColor(col);
     }
 
+
+
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -118,8 +155,8 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
     private void updateUI() {
 //        sceneUI.updateHeroPoints(actorHolder.getHeroPoints());
 //        sceneUI.updateLevel(actorHolder.getActualLevel());
-        sceneUI.updateHP(actorHolder.getHero().getActualHealthPoints());
-        sceneUI.updateSP(actorHolder.getHero().getActualShieldPoints());
+//        sceneUI.updateHP(actorHolder.getHero().getActualHealthPoints());
+//        sceneUI.updateSP(actorHolder.getHero().getActualShieldPoints());
     }
 
     private void renderUI(float deltaTime) {
