@@ -7,13 +7,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Disposable;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.BonusItemActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.EnemyActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ProjectileActor;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
+import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
 import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor001;
 import com.gamedesire.pszemek.recruitment.actors.primary.EnemyActor002;
 import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
+import com.gamedesire.pszemek.recruitment.actors.primary.SpaceDeerActor;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.BoltProjectileActor;
+import com.gamedesire.pszemek.recruitment.actors.projectiles.ProjectileType;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.RocketProjectileActor;
 import com.gamedesire.pszemek.recruitment.utilities.Const;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
@@ -40,6 +44,7 @@ public class ActorHolder implements Disposable{
     //// TODO: 08/05/16 refactor it to observer pattern!
     public boolean enemyDeathOnHit;
     public Vector2 enemyDeathOnHitLocation;
+    private int actualLevel;
 
 
 
@@ -63,37 +68,36 @@ public class ActorHolder implements Disposable{
             actor.update();
 
             if(checkActorOutOfScreen(actor))
-                if (disposeActor(actor)) {
-//                    System.err.println("ACTOR (actor) DISPOSED / OUT OF SCREEN, pos: " + actor.getActorPosition());
-                }
+                disposeActor(actor);
 
-            //spawn projectile, if applicable
+
             if (actor instanceof EnemyActor) {
-                if (checkEnemySpawnProjectile((EnemyActor) actor)) {
+                if (checkEnemySpawnProjectile((EnemyActor) actor))
                     spawnProjectile(actor, ActorType.ENEMY);
-                }
 
-            //check if actor is dead
-            if (((EnemyActor)actor).isDead())
-                if (disposeActor(actor))
-//                    System.err.println("ACTOR (actor) DEAD, pos: " + actor.getActorPosition());
-                System.out.print("");
+
+                if (((EnemyActor)actor).isDead())
+                    disposeActor(actor);
             }
 
+            if (actor instanceof BonusItemActor) {
+                if (actor.getActorPosition().x > Const.CAMERA_WIDTH + Const.SPAWN_MARGIN_HORIZONTAL_STANDARD)
+                    disposeActor(actor);
+                else if (((BonusItemActor)actor).isDead()) {
+                    disposeActor(actor);
+                    getHero().upgradeWeapon();
+                }
+            }
         }
 
-        //iterating over projectiles
         for (ProjectileActor projectile : projectiles) {
-            //update actor
+
             projectile.update();
 
-            //check if is out of screen
             if(checkActorOutOfScreen(projectile))
-                if (disposeActor(projectile)) {
-//                    System.err.println("ACTOR (projectile) DISPOSED/ OUT OF SCREEN, pos: " + projectile.getActorPosition() + ", act size: " + actors.size);
-                }
+                disposeActor(projectile);
 
-            //check for collisions
+
             checkProjectileHit(projectile);
         }
 
@@ -126,12 +130,16 @@ public class ActorHolder implements Disposable{
      */
     public void spawnProjectile(SpaceInvadersActor actor, ActorType actorType) {
         if (System.currentTimeMillis() - actor.getLastFiredMillis() > actor.getRateOfFireIntervalMillis() * MathUtils.random(0.8f, 1.5f)) {
-            if (actorType == ActorType.HERO)
-                projectiles.add(new RocketProjectileActor(actor.getActorPosition(), ActorType.HERO));
+            if (actorType == ActorType.HERO) {
+                if (((HeroActor)actor).getWeaponType() == ProjectileType.ROCKET)
+                    projectiles.add(new RocketProjectileActor(actor.getActorPosition(), ActorType.HERO));
+                else
+                    projectiles.add(new BoltProjectileActor(actor.getActorPosition(), ActorType.HERO));
+            }
             else {
                 if (actor instanceof EnemyActor002)
                     projectiles.add(new BoltProjectileActor(actor.getActorPosition(), Const.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
-                else
+                else if (actor instanceof EnemyActor001)
                     projectiles.add(new RocketProjectileActor(actor.getActorPosition(), Const.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
             }
             actor.setLastFiredMillis(System.currentTimeMillis());
@@ -147,24 +155,19 @@ public class ActorHolder implements Disposable{
      */
     private boolean checkActorOutOfScreen(SpaceInvadersActor actor) {
         if (actor.getActorPosition().y < -actor.getBoundingRectangle().getHeight()) {
-            System.err.println("actor OUT OF SCREEN, pos: " + actor.getActorPosition() +", y less than rectangle height: " + -actor.getBoundingRectangle().getHeight());
+//            System.err.println("actor OUT OF SCREEN, pos: " + actor.getActorPosition() +", y less than rectangle height: " + -actor.getBoundingRectangle().getHeight());
             return true;
         }
 
         if (actor instanceof ProjectileActor && actor.getActorPosition().y > Const.CAMERA_HEIGHT + actor.getBoundingRectangle().getHeight()/2) {
-            System.err.println("projectile OUT OF SCREEN, pos: " + actor.getActorPosition() +", y more than gdx.height: " + Const.CAMERA_HEIGHT + ", rect height/2: " + actor.getBoundingRectangle().getHeight()/2);
+//            System.err.println("projectile OUT OF SCREEN, pos: " + actor.getActorPosition() + ", y more than gdx.height: " + Const.CAMERA_HEIGHT + ", rect height/2: " + actor.getBoundingRectangle().getHeight() / 2);
             return true;
         }
 
         return false;
     }
 
-    /**
-     * Performs disposal of given actor (removal and dereferencial / setting invisibility)
-     *
-     * @param actor Actor to dispose
-     * @return true if disposal action(s) were executed properly.
-     */
+
     //// TODO: 08/05/16 cause of disposal!
     private boolean disposeActor(SpaceInvadersActor actor) {
         if (actor instanceof ProjectileActor)
@@ -176,23 +179,27 @@ public class ActorHolder implements Disposable{
 //            heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
 
             return actors.removeValue(actor, false);
-
         }
-        return false;
+
+
+        return actors.removeValue(actor, false);
     }
 
     private boolean checkProjectileHit(ProjectileActor projectile) {
         for (SpaceInvadersActor actor : actors)
             if ((actor instanceof EnemyActor && projectile.getActorType() == ActorType.HERO) ||
+                    (actor instanceof BonusItemActor && projectile.getActorType() == ActorType.HERO) ||
                     (actor instanceof HeroActor && projectile.getActorType() == ActorType.ENEMY)) {
                 if (checkCollision(actor, projectile))
                     for (SpaceInvadersActor actorInList : actors) {
                         if (actorInList.equals(actor)) {
-                            //todo: move away this shit to projectileCollided().
-                            if (actor instanceof EnemyActor)
-                                ((EnemyActor) actor).onHit(projectile.getDamageValue());
-                            else if (actor instanceof HeroActor)
-                                ((HeroActor) actor).onHit(projectile.getDamageValue());
+
+                            try {
+                                ((IDamageable) actor).onHit(projectile.getDamageValue());
+                            } catch (ClassCastException exception) {
+                                System.err.println("Attempted to damage actor, which is not damageable by default.");
+                            }
+
                             projectiles.removeValue(projectile, false);
                             return true;
                         }
@@ -202,7 +209,7 @@ public class ActorHolder implements Disposable{
         return false;
     }
 
-    private boolean checkCollision(SpaceInvadersActor actor1, SpaceInvadersActor actor2) {
+    public boolean checkCollision(SpaceInvadersActor actor1, SpaceInvadersActor actor2) {
         if (actor1.getBoundingRectangle().contains(actor2.getBoundingRectangle())
                 ||actor1.getBoundingRectangle().overlaps(actor2.getBoundingRectangle()))
             return true;
@@ -215,6 +222,7 @@ public class ActorHolder implements Disposable{
     }
 
     public void spawnLevel(int actualLevel) {
+        this.actualLevel = actualLevel;
         if (actualLevel == 1) {
             spawnLevel1();
             return;
@@ -235,6 +243,7 @@ public class ActorHolder implements Disposable{
             spawnLevel5();
             return;
         }
+
         spawnLevelProcedural(actualLevel);
     }
 
@@ -250,53 +259,112 @@ public class ActorHolder implements Disposable{
     }
 
     public void spawnLevel3() {
-        spawnEnemyWave(1, 1); //todo: here should be spawned enemy002
+        spawnEnemyWaveEnemy002Alone(1, 1);
         spawnEnemyWave(3, 2);
-        spawnEnemyWave(5, 3); //todo: here as well (in the middle)
+        spawnEnemyWave(5, 3);
     }
 
     public void spawnLevel4() {
-        spawnEnemyWave(2, 1);
-        spawnEnemyWave(2, 2);
-        spawnEnemyWave(3, 3); //todo: here on the sides
+        spawnSpaceDeer();
+        spawnEnemyWaveEnemy002Alone(1, 1);
+        spawnEnemyWaveEnemy002All(2, 2);
+        spawnEnemyWave(3, 3);
         spawnEnemyWave(4, 4);
-        spawnEnemyWave(5, 5); //todo: here as well (in the middle)
+        spawnEnemyWave(5, 5);
     }
 
     public void spawnLevel5() {
-        spawnEnemyWave(4, 1);
-        spawnEnemyWave(3, 2); //todo: all enemies002
-        spawnEnemyWave(3, 3); //todo: 002 + 003 in the middle
-        spawnEnemyWave(4, 4); //todo: 2x 003
-        spawnEnemyWave(5, 5); //todo: all 001
+        spawnEnemyWave(1, 1);
+        spawnEnemyWave(1, 2);
+        spawnEnemyWave(1, 3);
+        spawnEnemyWaveEnemy002Sides(4, 4);
+        spawnEnemyWaveEnemy002All(5, 5);
     }
 
     public void spawnLevelProcedural(int levelNumber) {
         int waveHeight = 0;
         for (int i=0; i < levelNumber + MathUtils.random(-1, 3); ++i) {
             waveHeight += i;
-            waveHeight += MathUtils.random(0f, 0.5f);
+            waveHeight += MathUtils.random(0f, 0.15f);
             spawnEnemyWave(MathUtils.clamp(MathUtils.random(0,3) + MathUtils.random(1, 4), 1, 5), waveHeight);
         }
     }
 
     private void spawnEnemyWave(int enemyCount, int heightLine) {
+        for (int e=0; e<enemyCount; ++e) {
+            if (actualLevel > 5 && MathUtils.randomBoolean(MathUtils.clamp(actualLevel * 8f, 0f, 100f)/100f)) {
+                actors.add(
+                        new EnemyActor002(
+                                (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                                Const.VECTOR_DIRECTION_DOWN,
+                                (int)(Const.VELOCITY_VALUE_ENEMY_002 * MathUtils.random(0.65f, 0.89f))
+                        ));
+            } else {
+                actors.add(
+                        new EnemyActor001(
+                                (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                                Const.VECTOR_DIRECTION_DOWN,
+                                (int)(Const.VELOCITY_VALUE_ENEMY_001 * MathUtils.random(0.85f, 1.05f))
+                        ));
+            }
+        }
+    }
+
+    private void spawnEnemyWaveEnemy002Alone(int enemyCount, int heightLine) {
+        actors.add(
+                new EnemyActor002(
+                        Const.CAMERA_WIDTH / 2f,
+                        AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                        Const.VECTOR_DIRECTION_DOWN,
+                        Const.VELOCITY_VALUE_ENEMY_001
+                ));
+    }
+
+    private void spawnEnemyWaveEnemy002All(int enemyCount, int heightLine) {
+        for (int e=0; e<enemyCount; ++e) {
             actors.add(
                     new EnemyActor002(
-                            (Const.CAMERA_WIDTH / (enemyCount + 1)),
+                            (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
                             AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
                             Const.VECTOR_DIRECTION_DOWN,
                             Const.VELOCITY_VALUE_ENEMY_001
                     ));
-
-        for (int e=1; e<enemyCount; ++e)
-            actors.add(
-                    new EnemyActor001(
-                            (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e+1),
-                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Const.VECTOR_DIRECTION_DOWN
-                    ));
+        }
     }
+
+    private void spawnEnemyWaveEnemy002Sides(int enemyCount, int heightLine) {
+        for (int e=0; e<enemyCount; ++e)
+            if (e==0 || e == enemyCount -1) {
+                actors.add(
+                        new EnemyActor002(
+                                (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                                Const.VECTOR_DIRECTION_DOWN,
+                                Const.VELOCITY_VALUE_ENEMY_001
+                        ));
+            } else {
+                actors.add(
+                        new EnemyActor001(
+                                (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                                Const.VECTOR_DIRECTION_DOWN
+                        ));
+            }
+    }
+
+
+    private void spawnSpaceDeer() {
+        actors.add(
+                new SpaceDeerActor(
+                        -Const.SPAWN_MARGIN_HORIZONTAL_STANDARD,
+                        Const.CAMERA_HEIGHT * MathUtils.random(0.3f, 0.6f),
+                        Const.VECTOR_DIRECTION_RIGHT)
+        );
+    }
+
+
 
     public HeroActor getHero() {
         return (HeroActor)actors.get(0);

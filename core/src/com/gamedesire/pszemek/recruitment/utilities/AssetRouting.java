@@ -55,6 +55,8 @@ public class AssetRouting {
 
     public static final Sprite getEnemy004Sprite() {return new Sprite(getEnemy004Texture());}
 
+    public static final Sprite getSpaceDeerSprite() {return new Sprite(getSpaceDeerTexture());}
+
     public static final Sprite getProjectileRocketSprite() {return new Sprite(getProjectileRocketTexture());}
 
     public static final Sprite getProjectileBoltSprite() {return new Sprite(getProjectileBoltTexture());}
@@ -72,6 +74,8 @@ public class AssetRouting {
     public static final Texture getEnemy003Texture() {return new Texture(getAssetFullLocation(ENEMY_ASSET_003, PNG));}
 
     public static final Texture getEnemy004Texture() {return new Texture(getAssetFullLocation(ENEMY_ASSET_004, PNG));}
+
+    public static final Texture getSpaceDeerTexture() {return new Texture(getAssetFullLocation(SPACE_DEER, PNG));}
 
     public static final Texture getProjectileRocketTexture() {return new Texture(getAssetFullLocation(PROJECTILE_ROCKET, PNG));}
 

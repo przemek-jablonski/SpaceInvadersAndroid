@@ -26,13 +26,8 @@ import com.gamedesire.pszemek.recruitment.utilities.Utils;
  */
 public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
-//    private SpriteBatch         spriteBatch;
     private SpaceInvadersUI     sceneUI;
     private ActorHolder         actorHolder;
-
-    //// TODO: 08/05/16 CHECK IF THIS SHIT WORKS FOR DIFFERENT DEVICES NOW (konrad?)
-//    private Camera              camera;
-//    private Viewport            viewport;
 
     private Texture             vignetteLeftTop;
     private Texture             vignetteLeftBottom;
@@ -186,7 +181,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
     private void updateLayerProjectileBoltParticles() {
         if(actorHolder.enemyDeathOnHit) {
             actorHolder.enemyDeathOnHit = false;
-            particleExplosionOnDeathPooled = particleExplosionOnDeathPool.obtain();
+            particleExplosionOnDeathPooled = particleProjectileBoltPool.obtain();
             for (ParticleEmitter emitter : particleExplosionOnDeathPooled.getEmitters()){
                 emitter.setPosition(
                         actorHolder.enemyDeathOnHitLocation.x,

@@ -19,10 +19,6 @@ public abstract class EnemyActor extends SpaceInvadersActor implements IDamageab
         super(actorSprite, location, directionVector);
     }
 
-    public EnemyActor(Sprite actorSprite, float locationX, float locationY, float directionX, float directionY) {
-        this(actorSprite, locationX, locationY, new Vector2(directionX, directionY));
-    }
-
     public EnemyActor(Sprite actorSprite, float locationX, float locationY, Vector2 directionVector) {
         this(actorSprite, new Vector2(locationX, locationY), directionVector);
     }
@@ -75,10 +71,7 @@ public abstract class EnemyActor extends SpaceInvadersActor implements IDamageab
             actualShieldPoints = 0;
             if(actualHealthPoints <= 0)
                 actualHealthPoints = 0;
-
-
         }
-//        System.err.println("DAMAGE=> dmg: " + damageDealt + ", remaining: " + actualHealthPoints);
 
         return actualHealthPoints;
     }

@@ -2,6 +2,10 @@ package com.gamedesire.pszemek.recruitment.mvc.models;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.BonusItemActor;
+import com.gamedesire.pszemek.recruitment.actors.archetypes.EnemyActor;
+import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
+import com.gamedesire.pszemek.recruitment.utilities.Const;
 
 /**
  * Created by Ciemek on 08/05/16.
@@ -12,11 +16,13 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
     private long        startTimeMillis;
     private long        gameTimeSecs;
     private long        currentTimeMillis;
+    private long        lastHPRegeneration;
     private float       tickRandomnessFactor;
     private int         actualLevel;
     private int         heroPoints;
-    private boolean     levelCleared;
-//    private boolean     touchRequest;
+    private boolean     gameOver;
+
+    private HeroActor   heroActor;
 
 
     public SpaceInvadersSceneModel() {
@@ -26,10 +32,12 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
     @Override
     public void create() {
         startTimeMillis = System.currentTimeMillis();
+        lastHPRegeneration = startTimeMillis;
         gameTimeSecs = 0;
         actualLevel = 0;
         heroPoints = 0;
-        actorHolder.spawnHero();
+        heroActor = actorHolder.spawnHero();
+        gameOver = false;
         touchRequest = false;
     }
 
@@ -41,15 +49,22 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
 
         actorHolder.updateAllActors(currentTimeMillis);
 
+        if (currentTimeMillis - lastHPRegeneration > Const.HP_REGEN_PLAYER_MILLIS) {
+            actorHolder.getHero().updateHealthAdd(1);
+            lastHPRegeneration = currentTimeMillis;
+        }
+
         if (touchRequest) {
             actorHolder.spawnProjectile(actorHolder.getHero(), ActorType.HERO);
         }
 
         //// TODO: 08/05/16  it seems that level progression is not working anymore - investigate
         if (actorHolder.getActors().size <= 1) {
-            ++actualLevel;
-            actorHolder.spawnLevel(actualLevel);
+            updateOnNextLevel();
         }
+
+        checkHeroColliding();
+
     }
 
 
@@ -57,6 +72,34 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
     public void dispose() {
         super.dispose();
     }
+
+    private void updateOnNextLevel() {
+        ++actualLevel;
+        actorHolder.spawnLevel(actualLevel);
+        actorHolder.getHero().updateHealthPercentage(50);
+        for (int a = 1; a < actorHolder.getActors().size; a++) {
+            actorHolder.getActors().get(a).updateVelocity(18 * actualLevel);
+            actorHolder.getActors().get(a).updateRateOfFireInterval(6 * actualLevel);
+        }
+    }
+
+    private void checkHeroColliding() {
+        for (int a = 1; a < actorHolder.getActors().size; a++) {
+
+            if (actorHolder.checkCollision(heroActor, actorHolder.getActors().get(a))) {
+                if (actorHolder.getActors().get(a) instanceof BonusItemActor) {
+                    heroActor.upgradeWeapon();
+                    ((BonusItemActor)actorHolder.getActors().get(a)).setDead();
+                }
+                else {
+                    heroActor.updateHealthAdd(-1);
+                }
+
+            }
+        }
+
+    }
+
 
     public int getHeroPoints() { return heroPoints; }
 

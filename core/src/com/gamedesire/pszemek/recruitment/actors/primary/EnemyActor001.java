@@ -19,6 +19,10 @@ public class EnemyActor001 extends EnemyActor {
         this(new Vector2(locationX, locationY), direction);
     }
 
+    public EnemyActor001(float locationX, float locationY, Vector2 directionVector, int velocity) {
+        super(AssetRouting.getEnemy001Sprite(), locationX, locationY, directionVector, velocity);
+    }
+
 
 
     @Override

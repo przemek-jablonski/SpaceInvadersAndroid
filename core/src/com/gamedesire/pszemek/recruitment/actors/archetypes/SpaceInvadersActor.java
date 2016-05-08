@@ -82,6 +82,14 @@ public abstract class SpaceInvadersActor {
         this.lastFiredMillis = lastFiredMillis;
     }
 
+    public void updateVelocity(int percentage) {
+        velocityValue *= 1f + (percentage / 100f);
+    }
+
+    public void updateRateOfFireInterval(int percentage) {
+        rateOfFireIntervalMillis /= 1f + (percentage / 100f);
+    }
+
     //accessors: getters:
     public Vector2 getActorPosition() {
         return Utils.getCenterPosition(actorSprite);
