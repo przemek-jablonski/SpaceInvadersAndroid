@@ -12,6 +12,7 @@ import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 public class SpaceInvadersSceneModel implements Disposable{
 
     private ActorHolder actorHolder;
+
     private long        startTimeMillis;
     private long        gameTimeMillis;
     private long        currentTimeMillis;
@@ -24,24 +25,24 @@ public class SpaceInvadersSceneModel implements Disposable{
     private boolean touchRequest;
 
 
-    public SpaceInvadersSceneModel(ActorHolder actorHolder) {
-        this.actorHolder = actorHolder;
+    public SpaceInvadersSceneModel() {
+        actorHolder = new ActorHolder();
         touchRequest = false;
-        create();
     }
 
-    protected void create() {
+    public void create() {
         startTimeMillis = System.currentTimeMillis();
         gameTimeMillis = 0;
         actualLevel = 0;
         heroPoints = 0;
+        actorHolder.spawnHero();
     }
 
     public void update(float deltaTime) {
-        gameTimeMillis = System.currentTimeMillis();
+        currentTimeMillis = System.currentTimeMillis();
         tickRandomnessFactor = MathUtils.random(0.7f, 1.3f);
 
-        actorHolder.updateAll(deltaTime, gameTimeMillis);
+        actorHolder.updateAll(deltaTime, currentTimeMillis);
 
 //        if(!debugTestOne) {
 //            actorHolder.spawnLevel3();
@@ -58,10 +59,6 @@ public class SpaceInvadersSceneModel implements Disposable{
             actorHolder.spawnLevel(actualLevel);
             actorHolder.setLevelCleared(false);
         }
-
-
-
-
     }
 
 
@@ -79,4 +76,7 @@ public class SpaceInvadersSceneModel implements Disposable{
         return touchRequest;
     }
 
+    public ActorHolder getActorHolder() {
+        return actorHolder;
+    }
 }

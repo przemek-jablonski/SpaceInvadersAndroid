@@ -31,7 +31,7 @@ import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
  */
 public class SpaceInvadersScreen implements Screen {
 
-    ActorHolder actorHolder;
+//    private ActorHolder actorHolder;
 
     private SpriteBatch spriteBatch;
 
@@ -41,7 +41,7 @@ public class SpaceInvadersScreen implements Screen {
     private OrthographicCamera      camera;
 
     private Sprite          backgroundSprite;
-    private ShapeRenderer   backgroundGradient;
+//    private ShapeRenderer   backgroundGradient;
 
 
     //view:
@@ -59,11 +59,12 @@ public class SpaceInvadersScreen implements Screen {
 
 
     public SpaceInvadersScreen(MainGameClass game) {
-        actorHolder = new ActorHolder();
+//        actorHolder = new ActorHolder();
         spriteBatch = game.getSpriteBatch();
 
-        sceneRenderer = new SpaceInvadersScreenRenderer(spriteBatch, actorHolder);
-        sceneModel = new SpaceInvadersSceneModel(actorHolder);
+
+        sceneModel = new SpaceInvadersSceneModel();
+        sceneRenderer = new SpaceInvadersScreenRenderer(spriteBatch, sceneModel.getActorHolder());
         instantiateInputProcessor();
         touchProcessor.registerModel(sceneModel);
     }
@@ -72,25 +73,29 @@ public class SpaceInvadersScreen implements Screen {
     @Override
     public void show() {
 
-        actorHolder.spawnHero();
+//        actorHolder.spawnHero();
+        sceneModel.create();
 
-        backgroundSprite = new Sprite(new Texture("ui_bg_main_tile.png"));
 
-
+        //cameras and stuff
         camera = new OrthographicCamera();
-
         viewport = new ScalingViewport(Scaling.stretch, Const.PREF_WIDTH, Const.PREF_HEIGHT, camera);
         viewport.apply();
         camera.translate(camera.viewportWidth / 2, camera.viewportHeight / 2);
 
-        backgroundGradient = new ShapeRenderer();
-        backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
+        //background assets
+//        backgroundGradient = new ShapeRenderer();
+//        backgroundSprite.setPosition(10, Gdx.graphics.getHeight() - backgroundSprite.getHeight() - 10);
+        backgroundSprite = AssetRouting.getBackgroundSprite();
+
+
+        //ui
         spaceInvadersUI = new SpaceInvadersUI(spriteBatch);
         spaceInvadersUI.create();
 
-
+        //touchprocessor
         touchProcessor.registerCamera(camera);
-        touchProcessor.registerControlledActor(actorHolder.getHero());
+        touchProcessor.registerControlledActor(sceneModel.getActorHolder().getHero());
         Gdx.input.setInputProcessor(touchProcessor);
 
     }
@@ -108,12 +113,6 @@ public class SpaceInvadersScreen implements Screen {
 
         camera.update();
 
-//        spaceInvadersUI.updateHeroPoints(actorHolder.getHeroPoints());
-//        spaceInvadersUI.updateLevel(actorHolder.getActualLevel());
-//        spaceInvadersUI.updateHP(actorHolder.getHero().getActualHealthPoints());
-//        spaceInvadersUI.updateSP(actorHolder.getHero().getActualShieldPoints());
-
-
         spriteBatch.begin();
         setRenderBackground();
 
@@ -123,16 +122,14 @@ public class SpaceInvadersScreen implements Screen {
 
         sceneModel.update(delta);
 
-        actorHolder.renderAll(spriteBatch);
+        sceneModel.getActorHolder().renderAll(spriteBatch);
 
         Color col = spriteBatch.getColor();
         spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
-
         spriteBatch.draw(vlb, 0f, 0f, vlb.getWidth(), vlb.getHeight());
         spriteBatch.draw(vlt, 0f, Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
         spriteBatch.draw(vrt, Gdx.graphics.getWidth() - vrt.getWidth(), Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
         spriteBatch.draw(vrb, Gdx.graphics.getWidth() - vrt.getWidth(), 0f, vlt.getWidth(), vlt.getHeight());
-
         spriteBatch.setColor(col);
 
 
@@ -140,6 +137,11 @@ public class SpaceInvadersScreen implements Screen {
         spriteBatch.end();
 
 
+        //// TODO: 08/05/16 maybe UI must be rendered OUT OF SPRITE BATCH BOUNDARIES (after end)?
+//        spaceInvadersUI.updateHeroPoints(actorHolder.getHeroPoints());
+//        spaceInvadersUI.updateLevel(actorHolder.getActualLevel());
+//        spaceInvadersUI.updateHP(actorHolder.getHero().getActualHealthPoints());
+//        spaceInvadersUI.updateSP(actorHolder.getHero().getActualShieldPoints());
         spaceInvadersUI.update();
         spaceInvadersUI.render();
         spaceInvadersUI.getStage().draw();
@@ -198,13 +200,5 @@ public class SpaceInvadersScreen implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-    public Viewport getViewport() {
-        return viewport;
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
     }
 }
