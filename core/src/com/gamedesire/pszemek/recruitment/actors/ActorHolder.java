@@ -1,6 +1,5 @@
 package com.gamedesire.pszemek.recruitment.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -19,9 +18,8 @@ import com.gamedesire.pszemek.recruitment.actors.primary.SpaceDeerActor;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.BoltProjectileActor;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.ProjectileType;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.RocketProjectileActor;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
-import com.gamedesire.pszemek.recruitment.utilities.DisposalCauseEnum;
 
 
 /**
@@ -83,7 +81,7 @@ public class ActorHolder implements Disposable{
             }
 
             if (actor instanceof BonusItemActor) {
-                if (actor.getActorPosition().x > Const.CAMERA_WIDTH + Const.SPAWN_MARGIN_HORIZONTAL_STANDARD)
+                if (actor.getActorPosition().x > Constants.CAMERA_WIDTH + Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD)
                     disposeActor(actor, false);
                 else if (((BonusItemActor)actor).isDead()) {
                     disposeActor(actor, false);
@@ -138,9 +136,9 @@ public class ActorHolder implements Disposable{
             }
             else {
                 if (actor instanceof EnemyActor002)
-                    projectiles.add(new BoltProjectileActor(actor.getActorPosition(), Const.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
+                    projectiles.add(new BoltProjectileActor(actor.getActorPosition(), Constants.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
                 else if (actor instanceof EnemyActor001)
-                    projectiles.add(new RocketProjectileActor(actor.getActorPosition(), Const.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
+                    projectiles.add(new RocketProjectileActor(actor.getActorPosition(), Constants.VECTOR_DIRECTION_DOWN, ActorType.ENEMY));
             }
             actor.setLastFiredMillis(System.currentTimeMillis());
         }
@@ -160,8 +158,8 @@ public class ActorHolder implements Disposable{
             return true;
         }
 
-        if (actor instanceof ProjectileActor && actor.getActorPosition().y > Const.CAMERA_HEIGHT + actor.getBoundingRectangle().getHeight()/2) {
-//            System.err.println("projectile OUT OF SCREEN, pos: " + actor.getActorPosition() + ", y more than gdx.height: " + Const.CAMERA_HEIGHT + ", rect height/2: " + actor.getBoundingRectangle().getHeight() / 2);
+        if (actor instanceof ProjectileActor && actor.getActorPosition().y > Constants.CAMERA_HEIGHT + actor.getBoundingRectangle().getHeight()/2) {
+//            System.err.println("projectile OUT OF SCREEN, pos: " + actor.getActorPosition() + ", y more than gdx.height: " + Constants.CAMERA_HEIGHT + ", rect height/2: " + actor.getBoundingRectangle().getHeight() / 2);
             return true;
         }
 
@@ -179,7 +177,7 @@ public class ActorHolder implements Disposable{
             enemyDeathOnHitLocation = actor.getActorPosition();
             //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
             if (!isOutOfBorders)
-                heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints();
+                heroPoints += Constants.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints();
 
             return actors.removeValue(actor, false);
         }
@@ -223,7 +221,7 @@ public class ActorHolder implements Disposable{
     }
 
     public HeroActor spawnHero() {
-        actors.add(new HeroActor(Const.CAMERA_HEIGHT / 5f, Const.CAMERA_WIDTH / 2f, 0f, 0f));
+        actors.add(new HeroActor(Constants.CAMERA_HEIGHT / 5f, Constants.CAMERA_WIDTH / 2f, 0f, 0f));
         return (HeroActor)actors.get(0);
     }
 
@@ -301,18 +299,18 @@ public class ActorHolder implements Disposable{
             if (actualLevel > 5 && MathUtils.randomBoolean(MathUtils.clamp(actualLevel * 7f, 0f, 100f)/100f)) {
                 actors.add(
                         new EnemyActor002(
-                                (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
-                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                                Const.VECTOR_DIRECTION_DOWN,
-                                (int)(Const.VELOCITY_VALUE_ENEMY_002 * (MathUtils.random(0.65f, 0.75f))
+                                (Constants.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Constants.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                                Constants.VECTOR_DIRECTION_DOWN,
+                                (int)(Constants.VELOCITY_VALUE_ENEMY_002 * (MathUtils.random(0.65f, 0.75f))
                         )));
             } else {
                 actors.add(
                         new EnemyActor001(
-                                (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
-                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                                Const.VECTOR_DIRECTION_DOWN,
-                                (int)(Const.VELOCITY_VALUE_ENEMY_001 * MathUtils.random(0.85f, 1.05f))
+                                (Constants.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Constants.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                                Constants.VECTOR_DIRECTION_DOWN,
+                                (int)(Constants.VELOCITY_VALUE_ENEMY_001 * MathUtils.random(0.85f, 1.05f))
                         ));
             }
         }
@@ -321,10 +319,10 @@ public class ActorHolder implements Disposable{
     private void spawnEnemyWaveEnemy002Alone(int enemyCount, int heightLine) {
         actors.add(
                 new EnemyActor002(
-                        Const.CAMERA_WIDTH / 2f,
-                        AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                        Const.VECTOR_DIRECTION_DOWN,
-                        Const.VELOCITY_VALUE_ENEMY_001
+                        Constants.CAMERA_WIDTH / 2f,
+                        AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Constants.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                        Constants.VECTOR_DIRECTION_DOWN,
+                        Constants.VELOCITY_VALUE_ENEMY_001
                 ));
     }
 
@@ -332,10 +330,10 @@ public class ActorHolder implements Disposable{
         for (int e=0; e<enemyCount; ++e) {
             actors.add(
                     new EnemyActor002(
-                            (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
-                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                            Const.VECTOR_DIRECTION_DOWN,
-                            Const.VELOCITY_VALUE_ENEMY_001
+                            (Constants.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                            AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Constants.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                            Constants.VECTOR_DIRECTION_DOWN,
+                            Constants.VELOCITY_VALUE_ENEMY_001
                     ));
         }
     }
@@ -345,17 +343,17 @@ public class ActorHolder implements Disposable{
             if (e==0 || e == enemyCount -1) {
                 actors.add(
                         new EnemyActor002(
-                                (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
-                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                                Const.VECTOR_DIRECTION_DOWN,
-                                Const.VELOCITY_VALUE_ENEMY_001
+                                (Constants.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Constants.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                                Constants.VECTOR_DIRECTION_DOWN,
+                                Constants.VELOCITY_VALUE_ENEMY_001
                         ));
             } else {
                 actors.add(
                         new EnemyActor001(
-                                (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
-                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
-                                Const.VECTOR_DIRECTION_DOWN
+                                (Constants.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
+                                AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Constants.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
+                                Constants.VECTOR_DIRECTION_DOWN
                         ));
             }
     }
@@ -364,9 +362,9 @@ public class ActorHolder implements Disposable{
     private void spawnSpaceDeer() {
         actors.add(
                 new SpaceDeerActor(
-                        -Const.SPAWN_MARGIN_HORIZONTAL_STANDARD,
-                        Const.CAMERA_HEIGHT * MathUtils.random(0.3f, 0.6f),
-                        Const.VECTOR_DIRECTION_RIGHT)
+                        -Constants.SPAWN_MARGIN_HORIZONTAL_STANDARD,
+                        Constants.CAMERA_HEIGHT * MathUtils.random(0.3f, 0.6f),
+                        Constants.VECTOR_DIRECTION_RIGHT)
         );
     }
 

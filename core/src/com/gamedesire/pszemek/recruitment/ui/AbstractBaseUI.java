@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 06/05/16.
@@ -18,7 +18,7 @@ public abstract class AbstractBaseUI implements Disposable{
 
 
     public AbstractBaseUI(SpriteBatch spriteBatch) {
-        viewport = new FitViewport(Const.CAMERA_WIDTH, Const.CAMERA_HEIGHT);
+        viewport = new FitViewport(Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
         stage = new Stage(viewport, spriteBatch);
     }
 

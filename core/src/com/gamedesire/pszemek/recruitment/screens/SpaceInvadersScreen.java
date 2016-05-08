@@ -5,7 +5,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.gamedesire.pszemek.recruitment.MainGameClass;
-import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.mvc.models.AbstractSceneModel;
 import com.gamedesire.pszemek.recruitment.mvc.models.SpaceInvadersSceneModel;
 import com.gamedesire.pszemek.recruitment.mvc.views.AbstractSceneRenderer;
@@ -15,7 +14,7 @@ import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorDesktop;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorMobile;
 import com.gamedesire.pszemek.recruitment.ui.AbstractBaseUI;
 import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -64,7 +63,7 @@ public class SpaceInvadersScreen implements Screen {
         touchProcessor.registerControlledActor(sceneModel.getActorHolder().getHero());
         Gdx.input.setInputProcessor(touchProcessor);
 
-        Const.updateCameraData(sceneRenderer.getCamera().viewportWidth, sceneRenderer.getCamera().viewportHeight);
+        Constants.updateCameraData(sceneRenderer.getCamera().viewportWidth, sceneRenderer.getCamera().viewportHeight);
     }
 
 

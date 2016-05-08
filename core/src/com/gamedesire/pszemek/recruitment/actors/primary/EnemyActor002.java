@@ -1,10 +1,9 @@
 package com.gamedesire.pszemek.recruitment.actors.primary;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.EnemyActor;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 07/05/16.
@@ -28,8 +27,8 @@ public class EnemyActor002 extends EnemyActor{
     @Override
     public void create() {
         super.create();
-        velocityValue = Const.VELOCITY_VALUE_ENEMY_002;
-        rateOfFireIntervalMillis = (long)(Const.RATEOFFIRE_INTERVAL_ENEMY002 * Const.RATEOFFIRE_RANDOM_OFFSET_HIGH_EASY);
+        velocityValue = Constants.VELOCITY_VALUE_ENEMY_002;
+        rateOfFireIntervalMillis = (long)(Constants.RATEOFFIRE_INTERVAL_ENEMY002 * Constants.RATEOFFIRE_RANDOM_OFFSET_HIGH_EASY);
     }
 
     @Override
@@ -47,8 +46,8 @@ public class EnemyActor002 extends EnemyActor{
     @Override
     public void onSpawn() {
         super.onSpawn();
-        maxHealthPoints = Const.HP_AMOUNT_ENEMY002;
-        maxShieldPoints = Const.SP_AMOUNT_ENEMY002;
+        maxHealthPoints = Constants.HP_AMOUNT_ENEMY002;
+        maxShieldPoints = Constants.SP_AMOUNT_ENEMY002;
         actualHealthPoints = maxHealthPoints;
         actualShieldPoints = maxShieldPoints;
     }

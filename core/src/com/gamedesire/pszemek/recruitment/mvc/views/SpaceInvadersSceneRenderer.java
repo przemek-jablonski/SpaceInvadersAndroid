@@ -19,7 +19,7 @@ import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
@@ -67,7 +67,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
 
         camera = new OrthographicCamera();
-        viewport = new ScalingViewport(Scaling.stretch, Const.CAMERA_WIDTH, Const.CAMERA_HEIGHT, camera);
+        viewport = new ScalingViewport(Scaling.stretch, Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT, camera);
         viewport.apply();
         ((OrthographicCamera) camera).translate(
                 camera.viewportWidth / 2,
@@ -122,7 +122,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
     private void renderLayerBackgroundSprite() {
         Color col = spriteBatch.getColor();
         spriteBatch.setColor(col.r, col.g, col.b, 0.9f);
-        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Const.CAMERA_WIDTH, Const.CAMERA_HEIGHT);
+        spriteBatch.draw(backgroundSprite.getTexture(), 0f, 0f, Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
         spriteBatch.setColor(col);
     }
 
@@ -133,8 +133,8 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         backgroundGradient.rect(
                 0,
                 0,
-                Const.CAMERA_WIDTH,
-                Const.CAMERA_HEIGHT,
+                Constants.CAMERA_WIDTH,
+                Constants.CAMERA_HEIGHT,
                 Utils.getColorFrom255(0, 0, 0, 0.4f),
                 Utils.getColorFrom255(1, 0, 0, 0.4f),
                 Utils.getColorFrom255(0, 0, 1, 0.4f),
@@ -216,10 +216,10 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
     private void renderLayerVignettes() {
         Color col = spriteBatch.getColor();
         spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
-        spriteBatch.draw(vignetteLeftBottom, 0f, 0f, Const.CAMERA_WIDTH, vignetteLeftBottom.getHeight());
-        spriteBatch.draw(vignetteLeftTop, 0f, Const.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
-        spriteBatch.draw(vignetteRightTop, Const.CAMERA_WIDTH - vignetteRightTop.getWidth(), Const.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
-        spriteBatch.draw(vignetteRightBottom, Const.CAMERA_WIDTH - vignetteRightTop.getWidth(), 0f, vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteLeftBottom, 0f, 0f, Constants.CAMERA_WIDTH, vignetteLeftBottom.getHeight());
+        spriteBatch.draw(vignetteLeftTop, 0f, Constants.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteRightTop, Constants.CAMERA_WIDTH - vignetteRightTop.getWidth(), Constants.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteRightBottom, Constants.CAMERA_WIDTH - vignetteRightTop.getWidth(), 0f, vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
         spriteBatch.setColor(col);
     }
 

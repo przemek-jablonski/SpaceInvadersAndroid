@@ -1,18 +1,13 @@
 package com.gamedesire.pszemek.recruitment.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -67,7 +62,6 @@ public class SpaceInvadersUI extends AbstractBaseUI {
 //        bottomTableCompanyLogo.setDebug(true);
 //        bottomTableInvadersLogo.setDebug(true);
 
-        //// FIXME: 06/05/16 USAGE OF PIXELS INSTEAD OF GETTING CONSTANTS.GETCAMERA.GETWIDTH * 0.05f
         leftTable.pad(15f);
         rightTable.pad(15f);
         bottomTableCompanyLogo.pad(4f);

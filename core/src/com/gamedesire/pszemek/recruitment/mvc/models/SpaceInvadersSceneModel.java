@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.BonusItemActor;
 import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 08/05/16.
@@ -47,7 +47,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
 
         actorHolder.updateAllActors(currentTimeMillis);
 
-        if (currentTimeMillis - lastHPRegeneration > Const.HP_REGEN_PLAYER_MILLIS) {
+        if (currentTimeMillis - lastHPRegeneration > Constants.HP_REGEN_PLAYER_MILLIS) {
             actorHolder.getHero().updateHealthAdd(1);
             lastHPRegeneration = currentTimeMillis;
         }

@@ -1,13 +1,12 @@
 package com.gamedesire.pszemek.recruitment.actors.primary;
 
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.SpaceInvadersActor;
 import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.ProjectileType;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
-import com.gamedesire.pszemek.recruitment.utilities.Const;
+import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 30/04/16.
@@ -29,8 +28,8 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
 
     @Override
     public void create() {
-        rateOfFireIntervalMillis = Const.RATEOFFIRE_INTERVAL_PLAYER_BASE;
-        velocityValue = Const.VELOCITY_VALUE_PLAYER;
+        rateOfFireIntervalMillis = Constants.RATEOFFIRE_INTERVAL_PLAYER_BASE;
+        velocityValue = Constants.VELOCITY_VALUE_PLAYER;
         onSpawn();
     }
 
@@ -51,7 +50,7 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
     @Override
     public void onSpawn() {
         System.err.println("HERO SPAWNED");
-        maxHealthPoints = Const.HP_AMOUNT_PLAYER;
+        maxHealthPoints = Constants.HP_AMOUNT_PLAYER;
         maxShieldPoints = 0;
         actualHealthPoints = maxHealthPoints;
         actualShieldPoints = maxShieldPoints;
@@ -108,7 +107,7 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
         if (weaponType == ProjectileType.ROCKET)
             weaponType = ProjectileType.BOLT;
         else
-            rateOfFireIntervalMillis /= Const.PLAYER_RATEOFFIRE_UPGRADE_PERCENT;
+            rateOfFireIntervalMillis /= Constants.PLAYER_RATEOFFIRE_UPGRADE_PERCENT;
     }
 
     public ProjectileType getWeaponType() {

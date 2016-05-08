@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Ciemek on 30/04/16.
  */
-public class Const {
+public class Constants {
 
     public static int CAMERA_WIDTH = 540;
     public static int CAMERA_HEIGHT = 960;
