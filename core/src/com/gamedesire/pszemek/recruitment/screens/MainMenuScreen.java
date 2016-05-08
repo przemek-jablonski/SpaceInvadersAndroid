@@ -1,13 +1,24 @@
 package com.gamedesire.pszemek.recruitment.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.gamedesire.pszemek.recruitment.ui.AbstractBaseUI;
+import com.gamedesire.pszemek.recruitment.ui.MainMenuUI;
 
 /**
  * Created by Ciemek on 01/05/16.
  */
 public class MainMenuScreen implements Screen {
+
+    private AbstractBaseUI  sceneUI;
+
+    public MainMenuScreen(Game game) {
+        sceneUI = new MainMenuUI(game.get)
+    }
+
     @Override
     public void show() {
+
 
     }
 

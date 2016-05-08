@@ -49,7 +49,7 @@ public class SpaceInvadersUI extends AbstractBaseUI {
     public void create() {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.getData().setScale(2f);
-        labelStyle = new LabelStyle(bitmapFont, new Color(1f, 1f, 1f, 0.45f));
+        labelStyle = new LabelStyle(bitmapFont, new Color(1f, 1f, 1f, 0.60f));
 
 
         Table leftTable = new Table();

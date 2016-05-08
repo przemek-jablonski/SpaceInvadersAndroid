@@ -22,7 +22,10 @@ public class BoltProjectileActor extends ProjectileActor {
 
     @Override
     public void create() {
-        velocityValue = Const.VELOCITY_VALUE_PROJECTILE_BOLT;
+        if (getActorType() == ActorType.HERO)
+            velocityValue = Const.VELOCITY_VALUE_PROJECTILE_BOLT_PLAYER;
+        else
+            velocityValue = Const.VELOCITY_VALUE_PROJECTILE_BOLT;
         damageValue = 15;
     }
 

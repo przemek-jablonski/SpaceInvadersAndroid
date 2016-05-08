@@ -21,6 +21,7 @@ import com.gamedesire.pszemek.recruitment.actors.projectiles.ProjectileType;
 import com.gamedesire.pszemek.recruitment.actors.projectiles.RocketProjectileActor;
 import com.gamedesire.pszemek.recruitment.utilities.Const;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
+import com.gamedesire.pszemek.recruitment.utilities.DisposalCauseEnum;
 
 
 /**
@@ -41,10 +42,13 @@ public class ActorHolder implements Disposable{
     DelayedRemovalArray<ProjectileActor>    projectiles;
     long            currentTimeMillis;
 
+
+    private int         actualLevel;
+    private int         heroPoints;
     //// TODO: 08/05/16 refactor it to observer pattern!
-    public boolean enemyDeathOnHit;
-    public Vector2 enemyDeathOnHitLocation;
-    private int actualLevel;
+    public boolean      enemyDeathOnHit;
+    public Vector2      enemyDeathOnHitLocation;
+
 
 
 
@@ -62,41 +66,37 @@ public class ActorHolder implements Disposable{
         actors.begin();
         projectiles.begin();
 
-
         //iterating over actors
         for (SpaceInvadersActor actor : actors) {
             actor.update();
 
             if(checkActorOutOfScreen(actor))
-                disposeActor(actor);
+                disposeActor(actor, true);
 
 
             if (actor instanceof EnemyActor) {
                 if (checkEnemySpawnProjectile((EnemyActor) actor))
                     spawnProjectile(actor, ActorType.ENEMY);
 
-
                 if (((EnemyActor)actor).isDead())
-                    disposeActor(actor);
+                    disposeActor(actor, false);
             }
 
             if (actor instanceof BonusItemActor) {
                 if (actor.getActorPosition().x > Const.CAMERA_WIDTH + Const.SPAWN_MARGIN_HORIZONTAL_STANDARD)
-                    disposeActor(actor);
+                    disposeActor(actor, false);
                 else if (((BonusItemActor)actor).isDead()) {
-                    disposeActor(actor);
+                    disposeActor(actor, false);
                     getHero().upgradeWeapon();
                 }
             }
         }
 
         for (ProjectileActor projectile : projectiles) {
-
             projectile.update();
 
             if(checkActorOutOfScreen(projectile))
-                disposeActor(projectile);
-
+                disposeActor(projectile, true);
 
             checkProjectileHit(projectile);
         }
@@ -155,7 +155,8 @@ public class ActorHolder implements Disposable{
      */
     private boolean checkActorOutOfScreen(SpaceInvadersActor actor) {
         if (actor.getActorPosition().y < -actor.getBoundingRectangle().getHeight()) {
-//            System.err.println("actor OUT OF SCREEN, pos: " + actor.getActorPosition() +", y less than rectangle height: " + -actor.getBoundingRectangle().getHeight());
+            if (actor instanceof EnemyActor)
+                cutHealthForOutOfBorders();
             return true;
         }
 
@@ -169,20 +170,25 @@ public class ActorHolder implements Disposable{
 
 
     //// TODO: 08/05/16 cause of disposal!
-    private boolean disposeActor(SpaceInvadersActor actor) {
+    private boolean disposeActor(SpaceInvadersActor actor, boolean isOutOfBorders) {
+
         if (actor instanceof ProjectileActor)
             return projectiles.removeValue((ProjectileActor) actor, false);
         if (actor instanceof EnemyActor) {
             enemyDeathOnHit = true;
             enemyDeathOnHitLocation = actor.getActorPosition();
             //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
-//            heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints() + actor.getMaxShieldPoints();
+            if (!isOutOfBorders)
+                heroPoints += Const.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints();
 
             return actors.removeValue(actor, false);
         }
 
-
         return actors.removeValue(actor, false);
+    }
+
+    private void cutHealthForOutOfBorders() {
+        getHero().updateHealthAdd(-20);
     }
 
     private boolean checkProjectileHit(ProjectileActor projectile) {
@@ -285,21 +291,21 @@ public class ActorHolder implements Disposable{
         int waveHeight = 0;
         for (int i=0; i < levelNumber + MathUtils.random(-1, 3); ++i) {
             waveHeight += i;
-            waveHeight += MathUtils.random(0f, 0.15f);
+            waveHeight += MathUtils.random(0f, 0.05f);
             spawnEnemyWave(MathUtils.clamp(MathUtils.random(0,3) + MathUtils.random(1, 4), 1, 5), waveHeight);
         }
     }
 
     private void spawnEnemyWave(int enemyCount, int heightLine) {
         for (int e=0; e<enemyCount; ++e) {
-            if (actualLevel > 5 && MathUtils.randomBoolean(MathUtils.clamp(actualLevel * 8f, 0f, 100f)/100f)) {
+            if (actualLevel > 5 && MathUtils.randomBoolean(MathUtils.clamp(actualLevel * 7f, 0f, 100f)/100f)) {
                 actors.add(
                         new EnemyActor002(
                                 (Const.CAMERA_WIDTH / (enemyCount + 1)) * (e + 1),
                                 AssetRouting.getEnemy001Texture().getHeight() * (heightLine * 2) + Const.CAMERA_HEIGHT + AssetRouting.getEnemy001Texture().getHeight() * 2,
                                 Const.VECTOR_DIRECTION_DOWN,
-                                (int)(Const.VELOCITY_VALUE_ENEMY_002 * MathUtils.random(0.65f, 0.89f))
-                        ));
+                                (int)(Const.VELOCITY_VALUE_ENEMY_002 * (MathUtils.random(0.65f, 0.75f))
+                        )));
             } else {
                 actors.add(
                         new EnemyActor001(
@@ -368,6 +374,10 @@ public class ActorHolder implements Disposable{
 
     public HeroActor getHero() {
         return (HeroActor)actors.get(0);
+    }
+
+    public int getHeroPoints() {
+        return heroPoints;
     }
 
     public DelayedRemovalArray<SpaceInvadersActor> getActors() { return actors; }

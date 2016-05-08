@@ -2,6 +2,7 @@ package com.gamedesire.pszemek.recruitment;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gamedesire.pszemek.recruitment.screens.MainMenuScreen;
 import com.gamedesire.pszemek.recruitment.screens.SpaceInvadersScreen;
 
 public class MainGameClass extends Game {
@@ -13,7 +14,8 @@ public class MainGameClass extends Game {
 	@Override
 	public void create () {
 		spriteBatch = new SpriteBatch();
-		setScreen(new SpaceInvadersScreen(this));
+        setScreen(new MainMenuScreen(this));
+//		setScreen(new SpaceInvadersScreen(this));
 	}
 
 	@Override

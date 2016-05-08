@@ -99,6 +99,10 @@ public class HeroActor extends SpaceInvadersActor implements IDamageable{
             actualHealthPoints += value;
     }
 
+    public void updateRateOfFirePercent(int percentage) {
+        rateOfFireIntervalMillis /= (1f + (percentage/100f));
+    }
+
     public void upgradeWeapon() {
         System.err.println("UPGRADING WEAPON");
         if (weaponType == ProjectileType.ROCKET)

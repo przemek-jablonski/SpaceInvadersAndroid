@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -28,6 +29,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
     private SpaceInvadersUI     sceneUI;
     private ActorHolder         actorHolder;
+    public int                  actualLevel;
 
     private Texture             vignetteLeftTop;
     private Texture             vignetteLeftBottom;
@@ -45,12 +47,15 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
     private ParticleEffectPool.PooledEffect particleProjectileBoltPooled;
     private Array<ParticleEffectPool.PooledEffect> particleProjectileBoltArray;
 
+    private ParticleEffect      slidingStarsBackground1;
+    private ParticleEffect      slidingStarsBackground2;
 
 
 
     public SpaceInvadersSceneRenderer(SpriteBatch spriteBatch, ActorHolder actorHolder) {
         super(spriteBatch);
         this.actorHolder = actorHolder;
+        actualLevel = 0;
         create();
     }
 
@@ -79,6 +84,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
         createParticlePoolExplosionOnDeath();
         createParticlePoolProjectileBolt();
+        createParticleSlidingStars();
     }
 
     @Override
@@ -96,6 +102,8 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
 
 
         renderLayerBackgroundSprite();
+        renderParticleSlidingStars();
+
         renderLayerActors();
         renderLayerProjectiles();
         renderLayerHero();
@@ -210,7 +218,7 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
         spriteBatch.draw(vignetteLeftBottom, 0f, 0f, Const.CAMERA_WIDTH, vignetteLeftBottom.getHeight());
         spriteBatch.draw(vignetteLeftTop, 0f, Const.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
-        spriteBatch.draw(vignetteRightTop, Const.CAMERA_WIDTH  - vignetteRightTop.getWidth(), Const.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
+        spriteBatch.draw(vignetteRightTop, Const.CAMERA_WIDTH - vignetteRightTop.getWidth(), Const.CAMERA_HEIGHT - vignetteLeftTop.getHeight(), vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
         spriteBatch.draw(vignetteRightBottom, Const.CAMERA_WIDTH - vignetteRightTop.getWidth(), 0f, vignetteLeftTop.getWidth(), vignetteLeftTop.getHeight());
         spriteBatch.setColor(col);
     }
@@ -234,11 +242,42 @@ public class SpaceInvadersSceneRenderer extends AbstractSceneRenderer {
         particleProjectileBoltArray = new Array<ParticleEffectPool.PooledEffect>();
     }
 
+    private void createParticleSlidingStars() {
+        slidingStarsBackground1 = new ParticleEffect();
+        slidingStarsBackground1.load(
+                Gdx.files.internal(AssetRouting.PARTICLE_SLIDINGSTARS),
+                Gdx.files.internal(""));
+        slidingStarsBackground1.setPosition(0f, 0f);
+        slidingStarsBackground2 = new ParticleEffect(slidingStarsBackground1);
+
+        for (ParticleEmitter emitter : slidingStarsBackground1.getEmitters())
+            emitter.setContinuous(true);
+
+        for (ParticleEmitter emitter : slidingStarsBackground2.getEmitters())
+            emitter.setContinuous(true);
+
+
+        slidingStarsBackground1.start();
+        slidingStarsBackground2.start();
+    }
+
+    private void renderParticleSlidingStars() {
+        slidingStarsBackground1.draw(spriteBatch, Gdx.graphics.getDeltaTime() * MathUtils.clamp(actualLevel * 0.20f, 1f, 100f));
+        slidingStarsBackground2.draw(spriteBatch, Gdx.graphics.getDeltaTime() * MathUtils.clamp(actualLevel * 0.34f, 1f, 100f));
+        if(slidingStarsBackground1.isComplete()) slidingStarsBackground1.reset();
+        if(slidingStarsBackground2.isComplete()) slidingStarsBackground2.reset();
+
+    }
+
     private void renderActor(SpaceInvadersActor actor) {
         spriteBatch.draw(
                 actor.getActorSprite().getTexture(),
                 actor.getActorSprite().getX(),
                 actor.getActorSprite().getY());
+    }
+
+    public void updateLevel(int actualLevel) {
+        this.actualLevel = actualLevel;
     }
 
 

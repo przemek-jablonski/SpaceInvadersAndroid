@@ -74,7 +74,6 @@ public class SpaceInvadersScreen implements Screen {
         sceneModel.update(deltaTime);
         sceneRenderer.render(deltaTime);
 
-
         ((SpaceInvadersUI) sceneUI).updateUIData(
                 ((SpaceInvadersSceneModel) sceneModel).getGameTimeSecs(),
                 ((SpaceInvadersSceneModel) sceneModel).getHeroPoints(),
@@ -82,6 +81,7 @@ public class SpaceInvadersScreen implements Screen {
                 sceneModel.getActorHolder().getHero().getActualHealthPoints());
 
         sceneUI.render(deltaTime);
+        ((SpaceInvadersSceneRenderer) sceneRenderer).updateLevel(((SpaceInvadersSceneModel) sceneModel).getActualLevel());
     }
 
 

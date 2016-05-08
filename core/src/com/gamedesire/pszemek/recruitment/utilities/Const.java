@@ -28,10 +28,11 @@ public class Const {
     public static final int     VELOCITY_VALUE_ENEMY_003 = 90;
     public static final int     VELOCITY_VALUE_ENEMY_004 = 130;
     public static final int     VELOCITY_VALUE_PROJECTILE_ROCKET = 400;
-    public static final int     VELOCITY_VALUE_PROJECTILE_BOLT = 300;
+    public static final int     VELOCITY_VALUE_PROJECTILE_BOLT = 275;
+    public static final int     VELOCITY_VALUE_PROJECTILE_BOLT_PLAYER = 450;
     public static final int     VELOCITY_VALUE_SPACE_DEER = 100;
 
-    public static final int     RATEOFFIRE_INTERVAL_PLAYER_BASE = 400;
+    public static final int     RATEOFFIRE_INTERVAL_PLAYER_BASE = 300;
     public static final int     RATEOFFIRE_INTERVAL_ENEMY001 = 3250;
     public static final int     RATEOFFIRE_INTERVAL_ENEMY002 = 2750;
     public static final int     RATEOFFIRE_INTERVAL_ENEMY003 = 1250;
@@ -44,14 +45,14 @@ public class Const {
     public static final float   RATEOFFIRE_RANDOM_OFFSET_HIGH = MathUtils.random(0.70f, 1.60f);
     public static final float   RATEOFFIRE_RANDOM_OFFSET_LOW_EASY = MathUtils.random(0.95f, 1.15f);
     public static final float   RATEOFFIRE_RANDOM_OFFSET_STANDARD_EASY = MathUtils.random(0.90f, 1.50f);
-    public static final float   RATEOFFIRE_RANDOM_OFFSET_HIGH_EASY = MathUtils.random(0.85f, 1.80f);
+    public static final float   RATEOFFIRE_RANDOM_OFFSET_HIGH_EASY = MathUtils.random(0.89f, 2.12f);
 
     public static final float   RATEOFFIRE_RANDOM_BINARY = MathUtils.random(0f, 1f);
 
     public static final int     BASE_POINTS_FOR_ENEMY = 50;
 
     public static final int     HP_AMOUNT_PLAYER = 100;
-    public static final float   HP_REGEN_PLAYER_INSECONDS = 3.5f;
+    public static final float   HP_REGEN_PLAYER_INSECONDS = 2.5f;
     public static final int     HP_REGEN_PLAYER_MILLIS = (int)(HP_REGEN_PLAYER_INSECONDS * 1000);
     public static final float   PLAYER_RATEOFFIRE_UPGRADE_PERCENT = 0.33f;
 

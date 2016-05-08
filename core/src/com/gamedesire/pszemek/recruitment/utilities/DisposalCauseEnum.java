@@ -5,5 +5,7 @@ package com.gamedesire.pszemek.recruitment.utilities;
  */
 public enum DisposalCauseEnum {
     OUT_OF_BORDERS,
-    KILLED
+    OUT_OF_BORDERS_DOWN,
+    KILLED,
+    NOT_APPLICABLE
 }

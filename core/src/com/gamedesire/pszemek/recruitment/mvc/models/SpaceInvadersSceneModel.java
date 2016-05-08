@@ -3,7 +3,6 @@ package com.gamedesire.pszemek.recruitment.mvc.models;
 import com.badlogic.gdx.math.MathUtils;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.BonusItemActor;
-import com.gamedesire.pszemek.recruitment.actors.archetypes.EnemyActor;
 import com.gamedesire.pszemek.recruitment.actors.primary.HeroActor;
 import com.gamedesire.pszemek.recruitment.utilities.Const;
 
@@ -21,7 +20,6 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
     private int         actualLevel;
     private int         heroPoints;
     private boolean     gameOver;
-
     private HeroActor   heroActor;
 
 
@@ -64,7 +62,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
         }
 
         checkHeroColliding();
-
+        heroPoints = actorHolder.getHeroPoints();
     }
 
 
@@ -78,9 +76,10 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
         actorHolder.spawnLevel(actualLevel);
         actorHolder.getHero().updateHealthPercentage(50);
         for (int a = 1; a < actorHolder.getActors().size; a++) {
-            actorHolder.getActors().get(a).updateVelocity(18 * actualLevel);
+            actorHolder.getActors().get(a).updateVelocity(19 * actualLevel);
             actorHolder.getActors().get(a).updateRateOfFireInterval(6 * actualLevel);
         }
+        actorHolder.getHero().updateRateOfFireInterval(2 * actualLevel);
     }
 
     private void checkHeroColliding() {
@@ -92,7 +91,7 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
                     ((BonusItemActor)actorHolder.getActors().get(a)).setDead();
                 }
                 else {
-                    heroActor.updateHealthAdd(-1);
+                    heroActor.updateHealthAdd(-2);
                 }
 
             }
