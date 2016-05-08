@@ -20,7 +20,6 @@ import com.gamedesire.pszemek.recruitment.mvc.models.SpaceInvadersSceneModel;
 import com.gamedesire.pszemek.recruitment.mvc.views.SpaceInvadersScreenRenderer;
 import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
 import com.gamedesire.pszemek.recruitment.utilities.Const;
-import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.AbstractTouchProcessor;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorDesktop;
 import com.gamedesire.pszemek.recruitment.mvc.controllers.TouchProcessorMobile;
@@ -31,37 +30,39 @@ import com.gamedesire.pszemek.recruitment.ui.SpaceInvadersUI;
  */
 public class SpaceInvadersScreen implements Screen {
 
-//    private ActorHolder actorHolder;
 
     private SpriteBatch spriteBatch;
 
-    private AbstractTouchProcessor  touchProcessor;
-    private Viewport                viewport;
     private SpaceInvadersUI         spaceInvadersUI;
-    private OrthographicCamera      camera;
+//    private OrthographicCamera      camera;
+//    private Viewport                viewport;
 
     private Sprite          backgroundSprite;
 //    private ShapeRenderer   backgroundGradient;
 
 
-    //view:
-    private SpaceInvadersScreenRenderer sceneRenderer;
+
+
 
     //model:
     private SpaceInvadersSceneModel sceneModel;
 
+    //view:
+    private SpaceInvadersScreenRenderer sceneRenderer;
 
-    Texture vlt = AssetRouting.getVignetteLTTexture();
-    Texture vlb = AssetRouting.getVignetteLBTexture();
-    Texture vrt = AssetRouting.getVignetteRTTexture();
-    Texture vrb = AssetRouting.getVignetteRBTexture();
+    //controller:
+    private AbstractTouchProcessor  touchProcessor;
+
+
+//    Texture vlt = AssetRouting.getVignetteLTTexture();
+//    Texture vlb = AssetRouting.getVignetteLBTexture();
+//    Texture vrt = AssetRouting.getVignetteRTTexture();
+//    Texture vrb = AssetRouting.getVignetteRBTexture();
 
 
 
     public SpaceInvadersScreen(MainGameClass game) {
-//        actorHolder = new ActorHolder();
         spriteBatch = game.getSpriteBatch();
-
 
         sceneModel = new SpaceInvadersSceneModel();
         sceneRenderer = new SpaceInvadersScreenRenderer(spriteBatch, sceneModel.getActorHolder());
@@ -73,15 +74,14 @@ public class SpaceInvadersScreen implements Screen {
     @Override
     public void show() {
 
-//        actorHolder.spawnHero();
         sceneModel.create();
 
 
         //cameras and stuff
-        camera = new OrthographicCamera();
-        viewport = new ScalingViewport(Scaling.stretch, Const.PREF_WIDTH, Const.PREF_HEIGHT, camera);
-        viewport.apply();
-        camera.translate(camera.viewportWidth / 2, camera.viewportHeight / 2);
+//        camera = new OrthographicCamera();
+//        viewport = new ScalingViewport(Scaling.stretch, Const.PREF_WIDTH, Const.PREF_HEIGHT, camera);
+//        viewport.apply();
+//        camera.translate(camera.viewportWidth / 2, camera.viewportHeight / 2);
 
         //background assets
 //        backgroundGradient = new ShapeRenderer();
@@ -94,46 +94,39 @@ public class SpaceInvadersScreen implements Screen {
         spaceInvadersUI.create();
 
         //touchprocessor
-        touchProcessor.registerCamera(camera);
+        touchProcessor.registerCamera(sceneRenderer.getCamera());
         touchProcessor.registerControlledActor(sceneModel.getActorHolder().getHero());
         Gdx.input.setInputProcessor(touchProcessor);
-
     }
 
 
 
     @Override
-    public void render(float delta) {
-//        if (actorHolder.getActualActorsSize() <= 1) {
-//            actorHolder.spawnLevel();
-//        }
-
+    public void render(float deltaTime) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
+//        camera.update();
+        sceneModel.update(deltaTime);
 
         spriteBatch.begin();
         setRenderBackground();
 
         spriteBatch.setProjectionMatrix(spaceInvadersUI.getStage().getCamera().combined);
 
-//        actorHolder.updateAll();
+//        sceneModel.getActorHolder().renderAll(spriteBatch);
 
-        sceneModel.update(delta);
+        sceneRenderer.render(deltaTime);
 
-        sceneModel.getActorHolder().renderAll(spriteBatch);
+        //vignettes:
+//        Color col = spriteBatch.getColor();
+//        spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
+//        spriteBatch.draw(vlb, 0f, 0f, vlb.getWidth(), vlb.getHeight());
+//        spriteBatch.draw(vlt, 0f, Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
+//        spriteBatch.draw(vrt, Gdx.graphics.getWidth() - vrt.getWidth(), Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
+//        spriteBatch.draw(vrb, Gdx.graphics.getWidth() - vrt.getWidth(), 0f, vlt.getWidth(), vlt.getHeight());
+//        spriteBatch.setColor(col);
 
-        Color col = spriteBatch.getColor();
-        spriteBatch.setColor(new Color(0f, 0f, 0f, 0.5f));
-        spriteBatch.draw(vlb, 0f, 0f, vlb.getWidth(), vlb.getHeight());
-        spriteBatch.draw(vlt, 0f, Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
-        spriteBatch.draw(vrt, Gdx.graphics.getWidth() - vrt.getWidth(), Gdx.graphics.getHeight() - vlt.getHeight(), vlt.getWidth(), vlt.getHeight());
-        spriteBatch.draw(vrb, Gdx.graphics.getWidth() - vrt.getWidth(), 0f, vlt.getWidth(), vlt.getHeight());
-        spriteBatch.setColor(col);
-
-
-        sceneRenderer.render();
         spriteBatch.end();
 
 
@@ -179,7 +172,9 @@ public class SpaceInvadersScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        //// TODO: 08/05/16 check if now everything works on different devices
 //        viewport.update(width, height);
+        sceneRenderer.resize(width, height);
     }
 
     @Override
@@ -199,6 +194,7 @@ public class SpaceInvadersScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        sceneModel.dispose();
+        sceneRenderer.dispose();
     }
 }
