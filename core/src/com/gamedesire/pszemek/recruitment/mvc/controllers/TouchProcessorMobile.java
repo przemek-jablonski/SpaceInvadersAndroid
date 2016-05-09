@@ -69,7 +69,7 @@ public class TouchProcessorMobile extends AbstractTouchProcessor {
 
         screenVectorInput = camera.unproject(new Vector3(screenX, screenY, 0f));
         differenceVector.sub(screenVectorInput.x, screenVectorInput.y);
-        differenceVector = Utils.transformVectorToDirection(differenceVector, 10);
+        differenceVector = Utils.transformVectorToDirection(differenceVector, 20);
 
         controlledActor.setDirection(differenceVector);
         return true;
