@@ -11,6 +11,10 @@ import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
  * Created by Ciemek on 30/04/16.
+ *
+ * Superclass for every living entity (Actor) in the game.
+ * Provides guidelines of work for extending Actors.
+ * Holds and encapsulates uniform actor stats.
  */
 public abstract class SpaceInvadersActor {
 

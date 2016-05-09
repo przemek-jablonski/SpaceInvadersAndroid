@@ -15,7 +15,6 @@ import com.badlogic.gdx.math.Vector2;
  *  Bunch of convenience methods for keeping rest of the code cleaner and easier to read.
  *  Includes methods for getting center points of the screen, converting two vector
  *  difference into direction, creating color in format (255, 255, 255, 1) etc.
- *
  */
 public class Utils {
 
@@ -40,14 +39,6 @@ public class Utils {
 
     public static Vector2 transformVectorToDirection(float x, float y, float margin) {
         return new Vector2(transformValueToDirection(x, margin), transformValueToDirection(y, margin));
-//        float maxVal;
-//        if (x > y)
-//            maxVal = x;
-//        else
-//            maxVal = y;
-//        Vector2 vec = new Vector2(x/maxVal, y/maxVal);
-//        System.err.println("VEC: " + vec);
-//        return vec;
     }
 
     //todo: not lerping properly, need fix

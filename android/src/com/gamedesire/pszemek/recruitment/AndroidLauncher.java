@@ -23,15 +23,6 @@ public class AndroidLauncher extends AndroidApplication {
 		config.useCompass = true;
 		config.useGyroscope = true;
 
-		//todo: check if I can use vibrations (to for example vibrate on hit or shot fired)
-
-		//todo: directionVector as oppose to teleportation
-
-
-		//todo: SHAKE CAM (on shot fired little, on damage took/dealt - HUGE)!
-		//TODO: CHECK OUT THIS VIDEO ON 25 THINGS TO MAKE GAME BOOM
-
-		//todo: intro screens with gamedesire logo / my linkedin or github / logo of a game
 
 		initialize(new MainGameClass(), config);
 	}

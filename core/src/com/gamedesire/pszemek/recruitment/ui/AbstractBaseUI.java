@@ -9,6 +9,8 @@ import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 06/05/16.
+ *
+ * Base class for User Interface classes in the game.
  */
 public abstract class AbstractBaseUI implements Disposable{
 

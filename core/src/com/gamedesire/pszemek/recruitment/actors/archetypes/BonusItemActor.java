@@ -6,6 +6,7 @@ import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
 
 /**
  * Created by Ciemek on 01/05/16.
+ * Base class for collectible items (pickups, eg. Space Deer) in a game.
  */
 public class BonusItemActor extends SpaceInvadersActor implements IDamageable{
 
@@ -18,7 +19,6 @@ public class BonusItemActor extends SpaceInvadersActor implements IDamageable{
 
     @Override
     public void create() {
-        System.err.println("BONUSITEM: create");
         maxHealthPoints = 1;
         maxShieldPoints = 0;
         onSpawn();
@@ -41,7 +41,6 @@ public class BonusItemActor extends SpaceInvadersActor implements IDamageable{
 
     @Override
     public void onSpawn() {
-        System.err.println("BONUSITEM: onspawn");
         actualHealthPoints = maxHealthPoints;
         actualShieldPoints = maxShieldPoints;
         dead = false;
@@ -50,7 +49,6 @@ public class BonusItemActor extends SpaceInvadersActor implements IDamageable{
 
     @Override
     public float onHit(float damageDealt) {
-        System.err.println("BONUSITEM: ONHIT");
         actualHealthPoints = 0;
         if(!dead)
             onDeath();
@@ -59,7 +57,6 @@ public class BonusItemActor extends SpaceInvadersActor implements IDamageable{
 
     @Override
     public void onDeath() {
-        System.err.println("BONUSITEM: ondeath");
         dead = true;
     }
 

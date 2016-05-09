@@ -8,6 +8,10 @@ import com.gamedesire.pszemek.recruitment.utilities.Constants;
 
 /**
  * Created by Ciemek on 08/05/16.
+ *
+ * Model component for main game scene. Extends from base abstract model and handles every logic queries
+ * and operations that need to be done, on tick by tick basis.
+ *
  */
 public class SpaceInvadersSceneModel extends AbstractSceneModel {
 
@@ -76,10 +80,10 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
         actorHolder.spawnLevel(actualLevel);
         actorHolder.getHero().updateHealthPercentage(50);
         for (int a = 1; a < actorHolder.getActors().size; a++) {
-            actorHolder.getActors().get(a).updateVelocity(19 * actualLevel);
-            actorHolder.getActors().get(a).updateRateOfFireInterval(6 * actualLevel);
+            actorHolder.getActors().get(a).updateVelocity(25 * actualLevel);
+            actorHolder.getActors().get(a).updateRateOfFireInterval(7 * actualLevel);
         }
-        actorHolder.getHero().updateRateOfFireInterval(2 * actualLevel);
+        actorHolder.getHero().updateRateOfFireInterval(3);
     }
 
     private void checkHeroColliding() {
@@ -106,4 +110,9 @@ public class SpaceInvadersSceneModel extends AbstractSceneModel {
 
     public long getGameTimeSecs() { return gameTimeSecs; }
 
+    public boolean isGameOver() {
+        if (heroActor.getActualHealthPoints() <= 0)
+            return true;
+        return false;
+    }
 }

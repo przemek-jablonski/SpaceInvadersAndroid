@@ -11,10 +11,11 @@ import com.gamedesire.pszemek.recruitment.utilities.Utils;
 
 /**
  * Created by Ciemek on 29/04/16.
+ *
+ * Implementation of base Controller for the mobile version of the game.
  */
 public class TouchProcessorMobile extends AbstractTouchProcessor {
 
-    //todo: ship should not TELEPORT to finger's position, but rather MOVE in this directionVector.
 
     Vector2             differenceVector;
     Vector3             screenVectorInput;

@@ -5,6 +5,8 @@ import com.gamedesire.pszemek.recruitment.actors.ActorHolder;
 
 /**
  * Created by Ciemek on 08/05/16.
+ *
+ * Base class for Model components of the game.
  */
 public abstract class AbstractSceneModel implements Disposable {
 

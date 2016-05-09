@@ -9,6 +9,8 @@ import com.gamedesire.pszemek.recruitment.mvc.models.SpaceInvadersSceneModel;
 
 /**
  * Created by Ciemek on 29/04/16.
+ *
+ * Base class for Controllers (Touch/Input Processors) in the game
  */
 public abstract class AbstractTouchProcessor implements InputProcessor {
 

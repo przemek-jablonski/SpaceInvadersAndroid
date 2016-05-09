@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Ciemek on 03/05/16.
+ *
+ * Base class for Projectiles in the game.
  */
 public abstract class ProjectileActor extends SpaceInvadersActor {
 

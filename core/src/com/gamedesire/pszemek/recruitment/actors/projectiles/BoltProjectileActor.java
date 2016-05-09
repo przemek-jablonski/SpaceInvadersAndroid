@@ -1,5 +1,7 @@
 package com.gamedesire.pszemek.recruitment.actors.projectiles;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ActorType;
 import com.gamedesire.pszemek.recruitment.actors.archetypes.ProjectileActor;
@@ -10,6 +12,7 @@ import com.gamedesire.pszemek.recruitment.utilities.Constants;
  * Created by Ciemek on 03/05/16.
  */
 public class BoltProjectileActor extends ProjectileActor {
+
 
     public BoltProjectileActor(Vector2 location, ActorType actorType) {
         this(location, Constants.VECTOR_DIRECTION_UP, actorType);
@@ -37,4 +40,5 @@ public class BoltProjectileActor extends ProjectileActor {
     public void dispose() {
 
     }
+
 }

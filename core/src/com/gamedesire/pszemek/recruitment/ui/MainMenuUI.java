@@ -33,11 +33,11 @@ public class MainMenuUI extends AbstractBaseUI {
     private Image               invadersLogo;
 
     private Table               tutorialTable;
-    private Label            placeFingerText;
-    private Label            holdOrTapText;
-    private Label            shootEnemiesText;
-    private Label            shootSpaceDeersText;
-    private Label           haveFunText;
+    private Label               placeFingerText;
+    private Label               holdOrTapText;
+    private Label               shootEnemiesText;
+    private Label               shootSpaceDeersText;
+    private Label               haveFunText;
     private TextButton          tutorialEndButton;
 
     private SpriteBatch         spriteBatch;

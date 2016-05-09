@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by Ciemek on 08/05/16.
+ *
+ * Base class for View components of the game.
  */
 public abstract class AbstractSceneRenderer implements Disposable {
 

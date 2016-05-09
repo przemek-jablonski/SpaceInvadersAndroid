@@ -31,8 +31,7 @@ import com.gamedesire.pszemek.recruitment.utilities.AssetRouting;
  * Actors' classes themselves.
  *
  * This includes spawning enemies {@link #spawnEnemiesTest()}, player avatar {@link #spawnHero()},
- * referencing all existing actors inside a scene and performing modifications on them as well ( {@link #disposeActor(SpaceInvadersActor)},
- * {@link #renderAll(SpriteBatch)}, {@link #renderAll(SpriteBatch)}) etc.
+ * referencing all existing actors inside a scene and performing modifications on them as well ( {@link #disposeActor(SpaceInvadersActor)} etc.
  */
 public class ActorHolder implements Disposable{
 
@@ -46,6 +45,12 @@ public class ActorHolder implements Disposable{
     //// TODO: 08/05/16 refactor it to observer pattern!
     public boolean      enemyDeathOnHit;
     public Vector2      enemyDeathOnHitLocation;
+    public boolean      enemy002DeathOnHit;
+    public Vector2      enemy002DeathOnHitLocation;
+    public boolean      actorHit;
+    public Vector2      actorHitLocation;
+    public boolean      boltHit;
+    public Vector2      boltHitLocation;
 
 
 
@@ -56,6 +61,12 @@ public class ActorHolder implements Disposable{
 
         enemyDeathOnHit = false;
         enemyDeathOnHitLocation = Vector2.Zero;
+        enemy002DeathOnHit = false;
+        enemy002DeathOnHitLocation = Vector2.Zero;
+        actorHit = false;
+        actorHitLocation = Vector2.Zero;
+        boltHit = false;
+        boltHitLocation = Vector2.Zero;
     }
 
 
@@ -167,7 +178,6 @@ public class ActorHolder implements Disposable{
     }
 
 
-    //// TODO: 08/05/16 cause of disposal!
     private boolean disposeActor(SpaceInvadersActor actor, boolean isOutOfBorders) {
 
         if (actor instanceof ProjectileActor)
@@ -175,9 +185,13 @@ public class ActorHolder implements Disposable{
         if (actor instanceof EnemyActor) {
             enemyDeathOnHit = true;
             enemyDeathOnHitLocation = actor.getActorPosition();
-            //// FIXME: 06/05/16 should be multiplied by level value and healthpoints
             if (!isOutOfBorders)
                 heroPoints += Constants.BASE_POINTS_FOR_ENEMY * (actualLevel * 0.25f + 1f) + actor.getMaxHealthPoints();
+            if (actor instanceof EnemyActor002) {
+                enemy002DeathOnHit = true;
+                enemy002DeathOnHitLocation = actor.getActorPosition();
+            }
+
 
             return actors.removeValue(actor, false);
         }

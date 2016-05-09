@@ -6,6 +6,8 @@ import com.gamedesire.pszemek.recruitment.actors.interfaces.IDamageable;
 
 /**
  * Created by Ciemek on 07/05/16.
+ *
+ * Base class for Enemies in the game
  */
 public abstract class EnemyActor extends SpaceInvadersActor implements IDamageable {
 

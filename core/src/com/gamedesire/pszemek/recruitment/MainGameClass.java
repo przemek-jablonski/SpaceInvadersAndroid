@@ -2,25 +2,26 @@ package com.gamedesire.pszemek.recruitment;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gamedesire.pszemek.recruitment.screens.GameOverScreen;
 import com.gamedesire.pszemek.recruitment.screens.MainMenuScreen;
 import com.gamedesire.pszemek.recruitment.screens.SpaceInvadersScreen;
 import com.gamedesire.pszemek.recruitment.utilities.GameStateEnum;
 
+/**
+ * Main starting class for a game. Serves as a container for Screens (android activities equivalent)
+ */
 public class MainGameClass extends Game {
 
 	private SpriteBatch     spriteBatch;
-    private Game            game;
     public GameStateEnum    gameState;
 
-	//todo: camera and handling multiple device resolutions and aspect ratios (important!)
 
 	@Override
 	public void create () {
-        game = this;
 		spriteBatch = new SpriteBatch();
+
         gameState = GameStateEnum.MAIN_MENU;
         setScreen(new MainMenuScreen(this));
-//		setScreen(new SpaceInvadersScreen(this));
 	}
 
 	@Override
@@ -52,11 +53,17 @@ public class MainGameClass extends Game {
 
     public void stateChanged() {
         getScreen().dispose();
+
         if (gameState == GameStateEnum.SPACE_INVADERS)
             setScreen(new SpaceInvadersScreen(this));
+
+        else if (gameState == GameStateEnum.MAIN_MENU)
+            setScreen(new MainMenuScreen(this));
+
+        else if (gameState == GameStateEnum.GAME_OVER)
+            setScreen(new GameOverScreen(this));
     }
 
-	//accessors:
 	public SpriteBatch getSpriteBatch() {
 		return spriteBatch;
 	}
